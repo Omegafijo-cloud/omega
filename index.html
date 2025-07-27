@@ -1,0 +1,3012 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg width='32' height='32' viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='50' cy='50' r='35' fill='%231A237E'/%3E%3Cellipse cx='50' cy='50' rx='45' ry='25' transform='rotate(-30 50 50)' stroke='%2300BCD4' stroke-width='6' fill='none'/%3E%3Ccircle cx='50' cy='50' r='10' fill='%23FFFFFF'/%3E%3C/svg%3E"/>
+    <title>OMEGA - FIJO SOPORTE (Versión Corporativa)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* Paleta de Colores Base - Se modificarán con JS */
+        :root {
+            --azul-oscuro: #1A237E;
+            --morado: #6A1B9A;
+            --turquesa: #00BCD4;
+            --gris-claro: #F0F0F0;
+            --blanco: #FFFFFF;
+            --texto-oscuro: #333;
+            --texto-intermedio: #555;
+            --texto-claro: #ccc; /* Para tabs no activas */
+            --rojo-claro: #e74c3c;
+            --rojo-oscuro: #c0392b;
+            --verde-claro: #28a745;
+            --verde-oscuro: #218838;
+            
+            /* Colores para la animación de neuronas */
+            --neuron-color-1-rgb: "106, 27, 154"; /* Morado */
+            --neuron-color-2-rgb: "0, 188, 212";   /* Turquesa */
+            --neuron-color-3-rgb: "26, 35, 126";   /* Azul Oscuro */
+            --neuron-connection-rgb: "106, 27, 154"; /* Morado para conexiones por defecto */
+        }
+
+        /* Estilos Generales del Cuerpo */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--gris-claro);
+            color: var(--texto-oscuro);
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            padding-bottom: 80px;
+            overflow-x: hidden;
+        }
+
+        #neuronCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        
+        /* Contenedor de la aplicación que se muestra/oculta */
+        #appContainer {
+            display: none; /* Oculto hasta que la autenticación esté lista */
+        }
+
+        /* Página de Inicio de Sesión (Landing Page) */
+        #loginPage {
+            display: flex; /* Se mostrará por defecto hasta que el usuario inicie sesión */
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            min-height: 100vh;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+        
+        #loginPage h1 {
+            font-size: 4em;
+            margin-bottom: 40px;
+            color: var(--azul-oscuro);
+            text-shadow: 2px 2px 8px rgba(26, 35, 126, 0.4);
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        #loginPage h1 .logo-inline {
+            width: 1.8em; 
+            height: 1.8em; 
+            vertical-align: middle;
+        }
+
+        /* Estilo general para botones */
+        .button, button.data-action-btn {
+            background: linear-gradient(to right, var(--morado), var(--azul-oscuro));
+            border: none;
+            color: var(--blanco);
+            padding: 14px 28px;
+            font-size: 17px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin: 5px; 
+        }
+
+        .button:hover, button.data-action-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(to right, var(--azul-oscuro), var(--morado));
+        }
+
+        .button.clear-button, button.clear-button.data-action-btn {
+            background: linear-gradient(to right, var(--rojo-claro), var(--rojo-oscuro));
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+            padding: 10px 20px;
+            font-size: 14px;
+        }
+        .button.clear-button:hover, button.clear-button.data-action-btn:hover {
+            background: linear-gradient(to right, var(--rojo-oscuro), var(--rojo-claro));
+            transform: translateY(-1px);
+            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.25);
+        }
+
+        .manage-button {
+            background: var(--morado); 
+            color: var(--blanco);
+            padding: 5px 10px;
+            font-size: 12px;
+            border-radius: 15px;
+            cursor: pointer;
+            border: none;
+            margin-left: 10px;
+            text-transform: none;
+            font-weight: 500;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+        }
+        .manage-button.remove-item { background: var(--rojo-claro); }
+        .manage-button:hover { filter: brightness(1.1); transform: translateY(-1px); }
+
+
+        /* Página de Contenido Principal y Barra de Título */
+        #mainContentPage {
+            width: 100%;
+            min-height: 100vh;
+            position: relative;
+            z-index: 1;
+            overflow-y: auto;
+            box-sizing: border-box;
+            background-color: transparent;
+        }
+
+        #mainTitleBar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: var(--azul-oscuro); 
+            color: var(--blanco); 
+            padding: 10px 20px; 
+            border-bottom: 3px solid var(--turquesa); 
+            z-index: 1000;
+            font-size: 1.8em;
+            font-weight: 700;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            height: 70px; 
+            box-sizing: border-box;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        #mainTitleText { flex-grow: 1; text-align: center; color: var(--blanco); }
+        .data-actions-container {
+            display: flex; 
+            flex-direction: row; 
+            gap: 10px; 
+            align-items: center;
+            margin-left: 20px; 
+        }
+        .data-actions-container button.data-action-btn, .data-actions-container label.data-action-btn {
+            padding: 8px 15px;
+            font-size: 14px;
+            border-radius: 20px;
+            background: var(--morado); 
+            color: var(--blanco);
+            display: flex; 
+            align-items: center;
+            justify-content: center;
+        }
+        .data-actions-container button.data-action-btn:hover, .data-actions-container label.data-action-btn:hover {
+            background: var(--azul-oscuro); 
+        }
+        
+        #headerLogo {
+            height: 65px; 
+            width: 65px; 
+            border-radius: 8px;
+            margin-right: 15px;
+        }
+        #mainTitleBar .logo-left { margin-right: auto; } 
+
+
+        /* Timer en la barra superior */
+        #topTimerContainer {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--blanco);
+            font-size: 1.2em;
+            font-weight: 500;
+            margin-left: auto; /* Mueve el temporizador a la derecha */
+        }
+        #topTimerDisplay {
+            font-size: 1.1em;
+            font-weight: 700;
+            color: var(--turquesa); 
+        }
+        #topTimerInputMinutes {
+            width: 60px;
+            padding: 5px 8px;
+            border-radius: 5px;
+            border: 1px solid var(--turquesa);
+            background-color: rgba(255,255,255,0.1);
+            color: var(--blanco);
+            text-align: center;
+            font-size: 1em;
+        }
+        #topTimerInputMinutes::placeholder {
+            color: rgba(255,255,255,0.7);
+        }
+        #topTimerControls button {
+            padding: 6px 12px;
+            font-size: 0.8em; 
+            border-radius: 15px;
+            background: var(--turquesa); 
+            color: var(--azul-oscuro); 
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+        #topTimerControls button:hover {
+            background: #0097A7;
+        }
+        #topTimerControls button.clear-button {
+            background: var(--rojo-claro);
+            color: var(--blanco);
+        }
+        #topTimerControls button.clear-button:hover {
+            background: var(--rojo-oscuro);
+        }
+
+
+        /* Estilos para Tabs */
+        .tab-container {
+            width: 100%;
+            padding-top: 70px; 
+        }
+        .tab-nav {
+            display: flex;
+            background-color: var(--texto-oscuro);
+            border-bottom: 1px solid var(--morado); 
+            position: sticky;
+            top: 70px; 
+            z-index: 999;
+            flex-wrap: wrap;
+        }
+        .tab-nav.sub-tab-nav {
+            background-color: #444;
+            border-bottom: 1px solid var(--turquesa);
+            top: 115px;
+        }
+        .tab-link {
+            padding: 12px 18px; cursor: pointer; border: none;
+            border-bottom: 4px solid transparent; background-color: transparent;
+            font-size: 1em; font-weight: 500; color: var(--blanco);
+            transition: all 0.3s ease; flex-grow: 1; text-align: center;
+        }
+        .tab-link:hover { background-color: #444; color: var(--blanco); }
+        .tab-link.active {
+            border-bottom-color: var(--turquesa); 
+            color: var(--turquesa); 
+            font-weight: 700; background-color: #2a2a2a;
+        }
+        .tab-link.sub-tab-link {
+            font-size: 0.9em;
+            padding: 10px 15px;
+            color: var(--texto-claro);
+        }
+        .tab-link.sub-tab-link.active {
+            border-bottom-color: var(--morado);
+            color: var(--morado);
+            background-color: #3a3a3a;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 25px;
+            animation: fadeInTab 0.5s;
+            background-color: transparent;
+            position: relative; 
+            padding-bottom: 100px; 
+        }
+        .tab-content.active { display: block; }
+        .tab-content.sub-tab-content {
+            padding-top: 25px;
+        }
+        @keyframes fadeInTab {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+
+        /* Contenedores de Formularios y Secciones */
+        .main-container-tab { 
+            display: flex; 
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 25px;
+            width: 100%;
+            margin: 0 auto;
+            box-sizing: border-box;
+        }
+
+        .draggable-box {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.2s ease;
+            margin-bottom: 25px; 
+            position: relative; 
+            z-index: 1; 
+            width: calc(33% - 20px); 
+            min-width: 280px; 
+            box-sizing: border-box;
+            resize: both; 
+            overflow: auto; 
+            cursor: default; 
+        }
+        .draggable-box.dragging {
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            z-index: 100; 
+            opacity: 0.9;
+        }
+        
+        .drag-handle {
+            cursor: grab;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid rgba(106, 27, 154, 0.3);
+            display: flex; 
+            justify-content: center;
+            align-items: center;
+            position: relative; 
+        }
+        .drag-handle:active { cursor: grabbing; }
+
+        .draggable-box h2, .draggable-box h3, .draggable-box h5 {
+            text-align: center; margin-top: 0;
+            font-weight: 700; color: var(--azul-oscuro); 
+            font-size: 2em; 
+            flex-grow: 1; 
+        }
+        .draggable-box h3 { font-size: 1.8em; } 
+        .draggable-box h5 { font-size: 1.6em; } 
+
+        .edit-title-btn, .remove-box-btn {
+            background: none;
+            border: none;
+            font-size: 1.2em;
+            cursor: pointer;
+            color: var(--morado); 
+            margin-left: 10px;
+            padding: 5px;
+            border-radius: 50%;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+        .edit-title-btn:hover { background-color: rgba(106, 27, 154, 0.1); color: var(--azul-oscuro); }
+        .remove-box-btn { color: var(--rojo-claro); font-size: 1.5em; }
+        .remove-box-btn:hover { background-color: rgba(231, 76, 60, 0.1); }
+
+
+        /* Grupos de Formulario y Entradas */
+        .form-group { margin-bottom: 25px; }
+        .form-group label {
+            margin-bottom: 10px; font-size: 16px; color: var(--texto-intermedio); display: block; font-weight: 500;
+        }
+        .form-group input, .form-group textarea, .dropdown, .dynamic-input {
+            width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #ddd;
+            background-color: #fefefe; font-size: 16px; color: var(--texto-oscuro); box-sizing: border-box;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .form-group input:focus, .form-group textarea:focus, .dropdown:focus, .dynamic-input:focus {
+            border-color: var(--turquesa); 
+            box-shadow: 0 0 0 4px rgba(0, 188, 212, 0.2);
+            outline: none;
+        }
+        .form-group textarea, .dynamic-input[type="textarea"] { resize: vertical; min-height: 120px; }
+
+        /* Checkboxes */
+        .checkbox-item-container {
+            display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px;
+        }
+        .checkbox-item-container label {
+            display: flex; align-items: center; font-size: 16px; color: #444; cursor: pointer;
+            transition: color 0.2s ease; flex-grow: 1; margin-bottom:0;
+        }
+        .checkbox-item-container label:hover { color: var(--morado); }
+        .checkbox-item-container input[type="checkbox"] {
+            margin-right: 12px; transform: scale(1.3); accent-color: var(--turquesa); 
+            min-width: 18px; min-height: 18px;
+        }
+        .add-item-btn-container { margin-top: 15px; text-align: right; }
+
+        /* Estilos para Formularios Dinámicos (Memos de Quejas, WF, Orden) */
+        #formContainerMemoQuejas, #formContainerWFMemos, #formContainerOrdenMemos {
+            margin-top: 20px;
+            border-top: 1px dashed rgba(106, 27, 154, 0.3);
+            padding-top: 20px;
+        }
+        #formContainerMemoQuejas .form-group label,
+        #formContainerWFMemos .form-group label,
+        #formContainerOrdenMemos .form-group label {
+            font-size: 15px; 
+            margin-bottom: 6px;
+        }
+        #formContainerMemoQuejas .dynamic-input, #formContainerMemoQuejas textarea,
+        #formContainerWFMemos .dynamic-input, #formContainerWFMemos textarea,
+        #formContainerOrdenMemos .dynamic-input, #formContainerOrdenMemos textarea {
+             padding: 12px;
+             font-size: 16px; 
+             border-radius: 8px;
+        }
+         #formContainerMemoQuejas textarea,
+         #formContainerWFMemos textarea,
+         #formContainerOrdenMemos textarea {
+             min-height: 90px;
+         }
+
+        .dynamic-checkbox-group {
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .dynamic-checkbox-group > label {
+            display: block;
+            margin-bottom: 10px;
+            color: var(--azul-oscuro); 
+            font-size: 16px; 
+            font-weight: 500;
+        }
+        .dynamic-checkbox-group input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--turquesa); 
+            transform: scale(1.2);
+        }
+        .checkbox-group-inline {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+         .checkbox-group-inline div {
+            display: flex;
+            align-items: center;
+        }
+         .checkbox-group-inline div label {
+            font-size: 16px; 
+            color: #444;
+            cursor: pointer;
+            margin-bottom: 0;
+        }
+        .remove-dynamic-field-btn {
+            background: none;
+            border: none;
+            color: var(--rojo-claro);
+            font-size: 1.2em;
+            cursor: pointer;
+            margin-left: 10px;
+            padding: 5px;
+            border-radius: 50%;
+            transition: background-color 0.2s ease;
+        }
+        .remove-dynamic-field-btn:hover {
+            background-color: rgba(231, 76, 60, 0.1);
+        }
+
+        /* Estilos para la lista de transferencias */
+        .transfers-list {
+            background-color: rgba(0, 188, 212, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 188, 212, 0.3);
+        }
+        .transfers-list p {
+            margin: 8px 0;
+            font-size: 16px; 
+            color: var(--texto-intermedio);
+            line-height: 1.6;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .transfers-list strong {
+            color: var(--azul-oscuro); 
+            font-weight: 700;
+        }
+
+        /* Firma */
+        .firma-keiner {
+            margin-top: 40px;
+            margin-bottom: 20px;
+            text-align: left;
+            padding-left: 20px;
+            color: #7f8c8d;
+            font-style: italic;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        /* Contenedor de Widgets Inferiores y Botones Toggle */
+        #bottomWidgetsContainer {
+            position: fixed; bottom: 0; right: 0; padding: 10px;
+            display: flex;
+            gap: 10px;
+            z-index: 9998; align-items: flex-end;
+        }
+        .widget-toggle-button {
+            background: linear-gradient(to right, var(--morado), var(--azul-oscuro));
+            width: 55px; height: 55px;
+            color: var(--blanco); font-size: 26px;
+            border: none; border-radius: 50%;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            cursor: pointer; display: flex; justify-content: center; align-items: center;
+            transition: all 0.3s ease;
+        }
+        .widget-toggle-button:hover {
+            transform: scale(1.05) translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+            background: linear-gradient(to right, var(--azul-oscuro), var(--morado));
+        }
+        .widget-toggle-button.active-toggle { 
+             background: linear-gradient(to right, var(--rojo-claro), var(--rojo-oscuro)); 
+        }
+        #toggleNotes { background: linear-gradient(to right, var(--turquesa), #0097A7); }
+        #toggleNotes.active-toggle { background: linear-gradient(to right, var(--rojo-claro), var(--rojo-oscuro)); }
+        #toggleAddBox { background: linear-gradient(to right, var(--verde-claro), var(--verde-oscuro)); } 
+        #toggleAddBox.active-toggle { background: linear-gradient(to right, var(--rojo-claro), var(--rojo-oscuro)); }
+        #toggleTheme { background: linear-gradient(to right, #ff9800, #f57c00); }
+        #toggleTheme.active-toggle { background: linear-gradient(to right, var(--rojo-claro), var(--rojo-oscuro)); }
+
+
+        /* Paneles de Widgets */
+        .widget-panel {
+            width: 360px;
+            height: auto;
+            max-height: 70vh;
+            overflow-y: auto;
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 15px;
+            box-shadow: 0 0 25px rgba(0,0,0,0.3);
+            display: none; 
+            flex-direction: column;
+            padding: 20px;
+            box-sizing: border-box;
+            animation: fadeInScale 0.3s ease-out forwards;
+            border-top: 4px solid var(--morado); 
+            position: fixed; 
+            z-index: 9997;
+        }
+        .widget-panel.active-widget { display: flex !important; } 
+
+        .widget-panel .widget-header {
+            font-size: 1.6em; font-weight: 700; color: var(--azul-oscuro); 
+            text-align: center; margin-bottom: 15px; padding-bottom: 10px;
+            border-bottom: 1px solid rgba(106, 27, 154, 0.3);
+        }
+
+        /* Notes & Users Widget Específico */
+        #notesArea, #usersArea {
+            width: 100%; flex-grow: 1; padding: 10px; border-radius: 8px;
+            border: 1px solid #ddd; font-size: 16px; margin-bottom: 10px;
+            background-color: #fefefe; min-height: 150px;
+        }
+        #notesArea:focus, #usersArea:focus { border-color: var(--turquesa); box-shadow: 0 0 0 3px rgba(0, 188, 212, 0.15); }
+        .button-group-widget { display: flex; gap: 10px; justify-content: flex-end; }
+        .button-group-widget .button { padding: 8px 15px; font-size: 14px; min-width: 100px; }
+
+        /* Copilot Widget Específico */
+        #copilotWidget { padding: 0; height: 500px; }
+        #copilotWidget iframe { width: 100%; height: 100%; border: none; }
+
+        /* Theme Widget Específico */
+        #themeWidgetPanel .theme-color-group {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed var(--texto-claro);
+        }
+        #themeWidgetPanel .theme-color-group:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+        #themeWidgetPanel label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: var(--texto-intermedio);
+        }
+        #themeWidgetPanel input[type="color"] {
+            width: 100%;
+            height: 40px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 2px;
+            box-sizing: border-box;
+            cursor: pointer;
+        }
+        #themeWidgetPanel .button-group-theme {
+            display: flex;
+            gap: 10px;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+         #themeWidgetPanel .button-group-theme .button {
+            flex-grow: 1;
+         }
+
+
+        /* Dynamic checkbox area within custom boxes */
+        .dynamic-checkbox-area {
+            border-top: 1px dashed rgba(106, 27, 154, 0.3);
+            padding-top: 15px;
+            margin-top: 15px;
+        }
+        .dynamic-checkbox-area .checkbox-item-container {
+            margin-bottom: 10px;
+        }
+        .dynamic-checkbox-area .add-item-btn-container {
+            margin-top: 10px;
+        }
+
+        /* TMO Calculator Specific Styles */
+        #sub-tab-tmo .main-container-tab {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 20px;
+            width: 100%;
+            max-width: 950px;
+            margin: 0 auto;
+            box-sizing: border-box;
+        }
+
+        #sub-tab-tmo #minutesToSecondsConverter,
+        #sub-tab-tmo #tmoMessageBox {
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            width: 100%;
+            max-width: 450px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        #sub-tab-tmo #minutesToSecondsConverter {
+            border-top: 5px solid var(--morado);
+        }
+
+        #sub-tab-tmo #tmoMessageBox {
+            border: 5px solid var(--turquesa);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2em;
+            font-weight: 700;
+            color: var(--azul-oscuro);
+            text-shadow: 1px 1px 3px rgba(26, 35, 126, 0.1);
+            line-height: 1.4;
+            min-height: 200px;
+        }
+
+        #sub-tab-tmo #minutesInput {
+            width: 100%;
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid #ddd;
+            background-color: #fefefe;
+            font-size: 1.4em;
+            color: var(--texto-oscuro);
+            box-sizing: border-box;
+            text-align: center;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        #sub-tab-tmo #minutesInput:focus {
+            border-color: var(--turquesa);
+            box-shadow: 0 0 0 4px rgba(0, 188, 212, 0.25);
+            outline: none;
+        }
+
+        #sub-tab-tmo #secondsResult {
+            text-align: center;
+            font-size: 2.5em;
+            font-weight: 700;
+            margin-top: 30px;
+            padding: 15px 10px;
+            background-color: rgba(0, 188, 212, 0.1);
+            border-radius: 12px;
+            border: 2px solid var(--turquesa);
+            color: var(--turquesa);
+            transition: all 0.3s ease;
+        }
+
+        /* Result Colors for TMO Calculator */
+        #sub-tab-tmo .result-red {
+            color: var(--rojo-oscuro) !important;
+            border-color: var(--rojo-oscuro) !important;
+            background-color: rgba(231, 76, 60, 0.1) !important;
+        }
+
+        #sub-tab-tmo .result-green {
+            color: var(--verde-oscuro) !important;
+            border-color: var(--verde-oscuro) !important;
+            background-color: rgba(40, 167, 69, 0.1) !important;
+        }
+
+        /* Styles for Avisos Tab (tab-avisos) */
+        .notices-display {
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            border-top: 5px solid var(--turquesa);
+            min-height: 250px;
+        }
+        .notices-display h3 {
+            color: var(--azul-oscuro);
+            font-size: 1.8em;
+            margin-top: 0;
+            margin-bottom: 20px;
+            text-align: center;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(0, 188, 212, 0.3);
+        }
+        .notice-item {
+            background-color: #f8f8f8;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #eee;
+            position: relative;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+        .notice-item:last-child {
+            margin-bottom: 0;
+        }
+        .notice-item h4 {
+            color: var(--morado);
+            font-size: 1.4em;
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+        .notice-item p {
+            color: var(--texto-oscuro);
+            font-size: 1em;
+            line-height: 1.6;
+            white-space: pre-wrap;
+        }
+        .notice-item .notice-meta {
+            font-size: 0.85em;
+            color: var(--texto-intermedio);
+            margin-top: 10px;
+            text-align: right;
+        }
+        .no-notices-message {
+            text-align: center;
+            color: var(--texto-intermedio);
+            font-style: italic;
+            padding: 20px;
+        }
+
+        /* Styles for Document Viewer Boxes */
+        .document-viewer-box {
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            border-top: 5px solid var(--morado);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 350px;
+        }
+        .document-viewer-box .drag-handle {
+            margin-bottom: 15px;
+        }
+        .document-viewer-box iframe {
+            flex-grow: 1;
+            min-height: 200px;
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 8px;
+        }
+        .document-iframe-container {
+            width: 100%;
+            height: calc(100% - 60px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .document-viewer-box .button {
+            padding: 8px 15px;
+            font-size: 0.9em;
+            margin-top: 15px;
+        }
+        .iframe-error-message {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            background-color: #fdd;
+            color: #c00;
+            border: 1px solid #f00;
+            border-radius: 8px;
+            font-size: 1.1em;
+            text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        /* Estilos para el aviso emergente */
+        .popup-modal {
+            display: none;
+            position: fixed;
+            z-index: 10001;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .popup-content {
+            background-color: var(--blanco);
+            margin: auto;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            text-align: center;
+            max-width: 500px;
+            position: relative;
+            animation: fadeInScale 0.3s ease-out forwards;
+            border-top: 5px solid var(--turquesa);
+        }
+
+        .popup-content h2 {
+            color: var(--azul-oscuro);
+            font-size: 2em;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .popup-content p {
+            color: var(--texto-oscuro);
+            font-size: 1.1em;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .popup-close-btn {
+            background-color: var(--morado);
+            color: var(--blanco);
+            padding: 10px 25px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .popup-close-btn:hover {
+            background-color: var(--azul-oscuro);
+            transform: translateY(-2px);
+        }
+
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* Estilos para el formulario de inicio de sesión */
+        #loginFormContainer {
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            width: 100%;
+            max-width: 450px;
+            box-sizing: border-box;
+            text-align: center;
+            border-top: 5px solid var(--morado);
+        }
+
+        #loginFormContainer h2 {
+            color: var(--azul-oscuro);
+            font-size: 2.2em;
+            font-weight: 700;
+            margin-top: 0;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(106, 27, 154, 0.3);
+            text-shadow: 1px 1px 3px rgba(26, 35, 126, 0.1);
+        }
+
+        #loginFormContainer .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        #loginFormContainer input[type="email"],
+        #loginFormContainer input[type="password"] {
+            width: 100%;
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid #ddd;
+            background-color: #fefefe;
+            font-size: 1.2em;
+            color: var(--texto-oscuro);
+            box-sizing: border-box;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        #loginFormContainer input[type="email"]:focus,
+        #loginFormContainer input[type="password"]:focus {
+            border-color: var(--turquesa);
+            box-shadow: 0 0 0 4px rgba(0, 188, 212, 0.25);
+            outline: none;
+        }
+
+        #loginFormContainer .button {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.2em;
+            margin-top: 20px;
+        }
+
+        /* Responsive Adjustments */
+        @media (min-width: 900px) {
+            #sub-tab-tmo .main-container-tab {
+                flex-direction: row;
+                align-items: flex-start;
+            }
+            #sub-tab-tmo #tmoMessageBox {
+                min-height: 350px;
+            }
+        }
+
+        @media (max-width: 899px) {
+            #sub-tab-tmo .main-container-tab {
+                flex-direction: column;
+            }
+            #sub-tab-tmo #tmoMessageBox {
+                min-height: 150px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            #minutesToSecondsConverter, #tmoMessageBox {
+                padding: 20px;
+                border-radius: 15px;
+                max-width: 100%;
+            }
+            #minutesToSecondsConverter h3 { font-size: 1.8em; margin-bottom: 20px; padding-bottom: 10px; }
+            #tmoMessageBox { font-size: 1.5em; min-height: 120px; }
+            .form-group label { font-size: 1em; }
+            #minutesInput { padding: 12px; font-size: 1.2em; }
+            .button { padding: 12px 25px; font-size: 1.1em; }
+            #secondsResult { font-size: 2em; margin-top: 25px; padding: 12px 8px; }
+            .popup-content { max-width: 90%; padding: 20px; }
+            .popup-content h2 { font-size: 1.8em; }
+            .popup-content p { font-size: 1em; }
+            #loginFormContainer { padding: 20px; border-radius: 15px; }
+            #loginFormContainer h2 { font-size: 1.8em; }
+            #loginFormContainer input { font-size: 1em; }
+            #loginFormContainer .button { font-size: 1.1em; }
+        }
+
+        @media (max-width: 400px) {
+            #minutesToSecondsConverter, #tmoMessageBox { padding: 15px; border-radius: 10px; }
+            #minutesToSecondsConverter h3 { font-size: 1.6em; }
+            #tmoMessageBox { font-size: 1.2em; min-height: 100px; }
+            #minutesInput { font-size: 1.1em; }
+            .button { font-size: 1em; }
+            #secondsResult { font-size: 1.8em; }
+            #loginFormContainer { padding: 15px; border-radius: 10px; }
+            #loginFormContainer h2 { font-size: 1.6em; }
+            #loginFormContainer input { font-size: 0.9em; }
+            #loginFormContainer .button { font-size: 1em; }
+        }
+
+        @media (max-width: 1650px) {
+            .main-container-tab { justify-content: center; }
+            .draggable-box { width: calc(33% - 20px); max-width: none; min-width: 280px; }
+            .checkboxes-area-tab { display: flex; flex-wrap: wrap; justify-content: center; gap: 25px; width: calc(66% - 20px); min-width: 580px; }
+            .checkboxes-area-tab .checkbox-group { width: calc(50% - 12.5px); }
+        }
+
+        @media (max-width: 1200px) {
+            #loginPage h1 { font-size: 3.5em; }
+            #mainTitleBar { font-size: 1.5em; padding: 12px 15px; height: auto; flex-wrap: wrap; }
+            #mainTitleBar .logo-left { margin-right: 10px; } 
+            #mainTitleText { flex-basis: 100%; text-align: center; margin-bottom: 10px; }
+            #topTimerContainer { flex-basis: 100%; justify-content: center; margin-bottom: 10px; }
+            .data-actions-container { flex-basis: 100%; justify-content: center; margin-left: 0; }
+            .main-container-tab { flex-direction: column; align-items: center; padding: 20px; }
+            .draggable-box { width: 95%; max-width: 600px; margin: 0; margin-bottom: 25px; }
+            .checkboxes-area-tab { width: 95%; max-width: 600px; flex-direction: row; justify-content: center; }
+            .checkboxes-area-tab .checkbox-group { width: calc(50% - 12.5px); }
+            #bottomWidgetsContainer { bottom: 10px; right: 10px; left: auto; justify-content: flex-end; }
+            .widget-panel { bottom: 75px !important; right: 10px !important; left: auto !important; }
+        }
+
+        @media (max-width: 768px) {
+            #loginPage h1 { font-size: 2.8em; }
+            .button { padding: 12px 20px; font-size: 16px; }
+            #mainTitleBar { font-size: 1.3em; height: auto; flex-direction: column; padding: 8px 10px; }
+            #mainTitleBar .logo-left { margin-right: 0; margin-bottom: 5px; } 
+            #mainTitleText { margin-bottom: 5px; font-size: 1.2em; }
+            .data-actions-container { margin-top: 5px; flex-wrap: wrap; justify-content: center;}
+            .data-actions-container button.data-action-btn, .data-actions-container label.data-action-btn { font-size: 12px; padding: 6px 10px; }
+            #topTimerContainer { margin-top: 5px; }
+            #topTimerDisplay { font-size: 1.2em; }
+            #topTimerInputMinutes { width: 50px; font-size: 0.9em; }
+            #topTimerControls button { font-size: 0.8em; padding: 5px 10px; }
+            .tab-nav { top: 120px; } 
+            .tab-container { padding-top: 120px; }
+            .tab-link { font-size: 0.85em; padding: 10px 3px; }
+            .tab-nav.sub-tab-nav { top: 165px; }
+            .tab-content.sub-tab-content { padding-top: 20px; }
+            .draggable-box { width: 100% !important; left: 0 !important; top: auto !important; position: relative !important; margin: 10px auto !important; resize: none; }
+            .checkboxes-area-tab { flex-direction: column; align-items: center; }
+            .checkboxes-area-tab .checkbox-group { width: 100%; max-width: 350px; }
+            .widget-panel { width: calc(100% - 20px); max-width:340px; height: auto; max-height: 60vh; bottom: 75px !important; right: 10px !important;}
+            .widget-toggle-button { width: 50px; height: 50px; font-size: 24px; }
+            #bottomWidgetsContainer { padding: 5px; gap: 5px; justify-content: center; flex-wrap:wrap; }
+            .firma-keiner { font-size: 12px; padding-left: 10px; }
+        }
+        @media (max-width: 480px) {
+            body { padding-bottom: 60px; }
+            .widget-toggle-button { width: 45px; height: 45px; font-size: 20px; }
+            .widget-panel { min-height: 280px; max-height: 55vh; }
+            .firma-keiner { font-size: 11px; }
+        }
+
+    </style>
+</head>
+<body>
+    <canvas id="neuronCanvas"></canvas>
+
+    <!-- Firebase SDKs -->
+    <script type="module">
+        // Import necessary Firebase functions
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // --- GLOBAL FIREBASE & APP STATE VARIABLES ---
+        let app, auth, db;
+        let currentUserId = null;
+        let unsubscribeFromFirestore = null; // To detach the listener on logout
+        let isSaving = false; // Flag to prevent concurrent saves
+        let saveDataTimeout; // For debouncing save operations
+
+        // --- FIREBASE INITIALIZATION ---
+        // IMPORTANT: Replace with your actual Firebase config
+        const firebaseConfig = { 
+            apiKey: "AIzaSyBZhWsp5JODo0m1fcnUCw0w-SdVWK5RFzk", 
+            authDomain: "omega---fijo-soporte.firebaseapp.com", 
+            projectId: "omega---fijo-soporte", 
+            storageBucket: "omega---fijo-soporte.appspot.com", 
+            messagingSenderId: "725387515426", 
+            appId: "1:725387515426:web:3fcd5944419093e8dadc7b", 
+            measurementId: "G-HQ4R55SDNZ" 
+        };
+
+        app = initializeApp(firebaseConfig);
+        auth = getAuth(app);
+        db = getFirestore(app);
+        
+        // Get the app ID from the environment (or use a default)
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+
+        // --- AUTHENTICATION & UI MANAGEMENT ---
+        onAuthStateChanged(auth, (user) => {
+            const loginPage = document.getElementById('loginPage');
+            const appContainer = document.getElementById('appContainer');
+
+            if (user) {
+                // User is signed in
+                currentUserId = user.uid;
+                console.log("Usuario autenticado:", currentUserId);
+                
+                // Hide login page, show main app
+                loginPage.style.display = 'none';
+                appContainer.style.display = 'block';
+                
+                // Start listening for real-time data changes
+                setupFirestoreListener();
+                showImportantNoticeModal();
+            } else {
+                // User is signed out
+                console.log("Usuario no autenticado.");
+                currentUserId = null;
+                
+                // Hide main app, show login page
+                appContainer.style.display = 'none';
+                loginPage.style.display = 'flex';
+                
+                // Detach the real-time listener if it exists
+                if (unsubscribeFromFirestore) {
+                    unsubscribeFromFirestore();
+                    unsubscribeFromFirestore = null;
+                    console.log("Firestore listener detached.");
+                }
+            }
+        });
+
+        // Attempt to sign in with a custom token if provided, otherwise sign in anonymously
+        // This is useful for integration with other systems that can generate Firebase tokens
+        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+            signInWithCustomToken(auth, __initial_auth_token)
+                .catch((error) => {
+                    console.error("Error signing in with custom token, trying anonymously:", error);
+                    signInAnonymously(auth).catch(err => console.error("Anonymous sign-in failed:", err));
+                });
+        } else {
+            // This part is for local development or if no token is provided.
+            // For the user's request, email/password is the primary method.
+            // This anonymous sign-in will be overridden by the email/password login.
+            signInAnonymously(auth).catch(err => console.error("Anonymous sign-in failed:", err));
+        }
+
+        // --- LOGIN/LOGOUT HANDLERS (ACCESSIBLE GLOBALLY) ---
+        window.handleLogin = async () => {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            if (!email || !password) {
+                createCustomAlert('Por favor, ingrese correo y contraseña.');
+                return;
+            }
+
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+                // onAuthStateChanged will handle the UI update
+            } catch (error) {
+                console.error("Error al iniciar sesión:", error.code, error.message);
+                let errorMessage = 'Error al iniciar sesión. Por favor, verifique sus credenciales.';
+                if (error.code === 'auth/invalid-credential' || error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
+                    errorMessage = 'Credenciales inválidas. Usuario o contraseña incorrectos.';
+                } else if (error.code === 'auth/invalid-email') {
+                    errorMessage = 'Formato de correo electrónico inválido.';
+                } else if (error.code === 'auth/too-many-requests') {
+                    errorMessage = 'Demasiados intentos fallidos. Intente de nuevo más tarde.';
+                }
+                createCustomAlert(errorMessage);
+            }
+        };
+
+        window.handleLogout = async () => {
+            try {
+                await signOut(auth);
+                // onAuthStateChanged will handle the UI update
+            } catch (error) {
+                console.error("Error al cerrar sesión:", error);
+                createCustomAlert('Error al cerrar sesión.');
+            }
+        };
+
+        // --- REAL-TIME DATA SYNCHRONIZATION WITH FIRESTORE ---
+
+        /**
+         * Sets up a real-time listener on the user's data document in Firestore.
+         * Any changes in the database will automatically call `applyDataToUI`.
+         */
+        function setupFirestoreListener() {
+            if (!currentUserId) return;
+            
+            // Detach any existing listener before creating a new one
+            if (unsubscribeFromFirestore) unsubscribeFromFirestore();
+
+            const userDocRef = doc(db, `artifacts/${appId}/users/${currentUserId}/userData`, 'appState');
+            
+            unsubscribeFromFirestore = onSnapshot(userDocRef, (docSnap) => {
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    console.log("Datos recibidos de Firestore en tiempo real.");
+                    // When data is received, update the UI, but prevent this update from triggering a save operation.
+                    isSaving = true; 
+                    applyDataToUI(data);
+                    setTimeout(() => { isSaving = false; }, 500); // Release the save lock after a short delay
+                } else {
+                    console.log("No hay datos en Firestore. Se creará un nuevo documento al primer guardado.");
+                    // If no data exists, apply default values to the UI
+                    applyDataToUI({}); 
+                }
+            }, (error) => {
+                console.error("Error en el listener de Firestore:", error);
+                createCustomAlert("Error de conexión con la base de datos. Verifique su conexión a internet.");
+            });
+        }
+
+        /**
+         * Gathers all data from the UI to be saved to Firestore.
+         * @returns {object} An object containing the entire application state.
+         */
+        function getUIDataForSave() {
+            // This function is now more focused on just gathering data from the DOM
+            const data = {
+                themeSettings: {},
+                genericFormData: {},
+                checkboxStatesTab1: [],
+                memoQuejasData: { selectedType: '', fields: {}, checkboxValues: {} },
+                checkboxStatesTab2: [],
+                wfMemosData: { selectedType: '', fields: {} },
+                ordenMemosData: { selectedType: '', fields: {} },
+                notesContent: '',
+                usersContent: '',
+                backupTemplatesContent: '',
+                customTransferItems: [],
+                draggableBoxStates: [],
+                activeTabs: { main: '', sub: '' }
+            };
+
+            try {
+                // Theme
+                themeColorInputs.forEach(inputConf => {
+                    const key = inputConf.cssVar || inputConf.neuronVar;
+                    data.themeSettings[key] = document.documentElement.style.getPropertyValue(key).trim() || defaultThemeSettings[key];
+                });
+
+                // Generic Form
+                data.genericFormData = {
+                    id: document.getElementById('id')?.value || '',
+                    nombreCliente: document.getElementById('nombreCliente')?.value || '',
+                    numeroInconveniente: document.getElementById('numeroInconveniente')?.value || '',
+                    Inconveniente: document.getElementById('Inconveniente')?.value || '',
+                    tipoServicio: document.getElementById('tipoServicio')?.value || '',
+                    pruebasRealizadas: document.getElementById('pruebasRealizadas')?.value || ''
+                };
+
+                // Checkboxes Tab 1 (Genericas)
+                data.checkboxStatesTab1 = Array.from(document.querySelectorAll('#sub-tab-genericas .checkbox-group')).map(group => ({
+                    groupId: group.dataset.groupId,
+                    items: Array.from(group.querySelectorAll('.checkbox-item-container')).map(item => ({
+                        value: item.querySelector('input[type="checkbox"]')?.value || '',
+                        checked: item.querySelector('input[type="checkbox"]')?.checked || false,
+                        title: item.querySelector('label')?.childNodes[1]?.textContent.trim() || '',
+                        isDefault: item.dataset.default === 'true'
+                    }))
+                }));
+
+                // Memos de Quejas
+                const memoDropdown = document.getElementById('opcionesMemoQuejas');
+                if (memoDropdown) {
+                    data.memoQuejasData.selectedType = memoDropdown.value;
+                    const memoFields = document.querySelectorAll('#formContainerMemoQuejas .dynamic-input, #formContainerMemoQuejas textarea');
+                    memoFields.forEach(field => { data.memoQuejasData.fields[field.id] = field.value; });
+                    
+                    const memoCheckboxes = document.querySelectorAll('#formContainerMemoQuejas input[type="checkbox"]');
+                    memoCheckboxes.forEach(cb => { data.memoQuejasData.checkboxValues[cb.id] = cb.checked; });
+                }
+
+                // Checkboxes Tab 2 (Quejas)
+                data.checkboxStatesTab2 = Array.from(document.querySelectorAll('#sub-tab-quejas .checkbox-group')).map(group => ({
+                    groupId: group.dataset.groupId,
+                    items: Array.from(group.querySelectorAll('.checkbox-item-container')).map(item => ({
+                        value: item.querySelector('input[type="checkbox"]')?.value || '',
+                        checked: item.querySelector('input[type="checkbox"]')?.checked || false,
+                        title: item.querySelector('label')?.childNodes[1]?.textContent.trim() || '',
+                        isDefault: item.dataset.default === 'true'
+                    }))
+                }));
+                
+                // WF Memos
+                const wfDropdown = document.getElementById('wfMemosDropdown');
+                if (wfDropdown) {
+                    data.wfMemosData.selectedType = wfDropdown.value;
+                    document.querySelectorAll('#formContainerWFMemos .dynamic-input, #formContainerWFMemos textarea').forEach(field => {
+                        data.wfMemosData.fields[field.id] = field.value;
+                    });
+                }
+                
+                // Orden Memos
+                const ordenDropdown = document.getElementById('ordenMemosDropdown');
+                if (ordenDropdown) {
+                    data.ordenMemosData.selectedType = ordenDropdown.value;
+                    document.querySelectorAll('#formContainerOrdenMemos .dynamic-input, #formContainerOrdenMemos textarea').forEach(field => {
+                        data.ordenMemosData.fields[field.id] = field.value;
+                    });
+                }
+
+                // Widgets
+                data.notesContent = document.getElementById('notesArea')?.value || '';
+                data.usersContent = document.getElementById('usersArea')?.value || '';
+                data.backupTemplatesContent = document.getElementById('backupTemplatesTextarea')?.value || '';
+                
+                // Transfers (global variable `customTransferItems` is the source of truth)
+                data.customTransferItems = window.customTransferItems || [];
+
+                // Draggable Box States
+                data.draggableBoxStates = Array.from(document.querySelectorAll('.draggable-box')).map(box => {
+                    const titleElement = box.querySelector('.drag-handle span');
+                    return {
+                        id: box.id,
+                        tabId: box.closest('.tab-content')?.id,
+                        left: box.style.left,
+                        top: box.style.top,
+                        width: box.style.width,
+                        height: box.style.height,
+                        title: titleElement ? titleElement.textContent.trim() : '',
+                        isDynamic: box.dataset.isDynamic === 'true',
+                        // Note: Dynamic checkbox content within boxes is handled by the main checkbox savers now
+                    };
+                });
+
+                // Active Tabs
+                data.activeTabs.main = document.querySelector('.tab-link:not(.sub-tab-link).active')?.dataset.tab || 'tab-plantillas';
+                data.activeTabs.sub = document.querySelector('.sub-tab-link.active')?.dataset.tab || 'sub-tab-genericas';
+
+            } catch (error) {
+                console.error("Error gathering UI data for save:", error);
+            }
+
+            return data;
+        }
+
+        /**
+         * Debounced function to save all current UI data to Firestore.
+         * Prevents excessive writes by waiting for a pause in user activity.
+         */
+        window.triggerSave = function() {
+            if (isSaving || !currentUserId) {
+                return; // Don't save if a save is in progress, or if the user is not logged in
+            }
+
+            clearTimeout(saveDataTimeout); // Reset the timer
+            saveDataTimeout = setTimeout(async () => {
+                console.log("Debounced save triggered...");
+                isSaving = true; // Set lock
+                
+                const dataToSave = getUIDataForSave();
+                const userDocRef = doc(db, `artifacts/${appId}/users/${currentUserId}/userData`, 'appState');
+
+                try {
+                    await setDoc(userDocRef, dataToSave, { merge: true }); // Use merge to avoid overwriting fields if something goes wrong
+                    console.log("Datos guardados en Firestore.");
+                } catch (error) {
+                    console.error("Error al guardar datos en Firestore:", error);
+                    createCustomAlert('Error al guardar datos.');
+                } finally {
+                    isSaving = false; // Release lock
+                }
+            }, 1500); // Wait 1.5 seconds after the last change to save
+        }
+        
+        /**
+         * Applies the data loaded from Firestore to all relevant UI elements.
+         * @param {object} data - The application state object from Firestore.
+         */
+        function applyDataToUI(data) {
+            // Apply Theme
+            if (data.themeSettings) {
+                Object.keys(data.themeSettings).forEach(varName => {
+                    document.documentElement.style.setProperty(varName, data.themeSettings[varName]);
+                });
+                initializeThemeWidget(); // Update color pickers
+                // Update global JS arrays for neurons
+                globalNeuronColorsRGB[0] = data.themeSettings['--neuron-color-1-rgb'] || defaultThemeSettings['--neuron-color-1-rgb'];
+                globalNeuronColorsRGB[1] = data.themeSettings['--neuron-color-2-rgb'] || defaultThemeSettings['--neuron-color-2-rgb'];
+                globalNeuronColorsRGB[2] = data.themeSettings['--neuron-color-3-rgb'] || defaultThemeSettings['--neuron-color-3-rgb'];
+                globalNeuronConnectionRGB = data.themeSettings['--neuron-connection-rgb'] || defaultThemeSettings['--neuron-connection-rgb'];
+                if (typeof init_particles === "function") init_particles(); // Redraw neurons
+            }
+
+            // Apply Generic Form Data
+            if (data.genericFormData) {
+                document.getElementById('id').value = data.genericFormData.id || '';
+                document.getElementById('nombreCliente').value = data.genericFormData.nombreCliente || '';
+                document.getElementById('numeroInconveniente').value = data.genericFormData.numeroInconveniente || '';
+                document.getElementById('Inconveniente').value = data.genericFormData.Inconveniente || '';
+                document.getElementById('tipoServicio').value = data.genericFormData.tipoServicio || '';
+                document.getElementById('pruebasRealizadas').value = data.genericFormData.pruebasRealizadas || '';
+            }
+
+            // Apply Checkbox States Tab 1
+            if (data.checkboxStatesTab1) {
+                data.checkboxStatesTab1.forEach(savedGroup => {
+                    const groupEl = document.querySelector(`#sub-tab-genericas .checkbox-group[data-group-id="${savedGroup.groupId}"]`);
+                    if (groupEl) {
+                        savedGroup.items.forEach(savedItem => {
+                            const checkbox = groupEl.querySelector(`input[value="${savedItem.value}"]`);
+                            if (checkbox) checkbox.checked = savedItem.checked;
+                        });
+                    }
+                });
+            }
+
+            // Apply Memos de Quejas
+            if (data.memoQuejasData?.selectedType) {
+                const memoDropdown = document.getElementById('opcionesMemoQuejas');
+                memoDropdown.value = data.memoQuejasData.selectedType;
+                renderMemoFields(data.memoQuejasData.selectedType); // Render the correct form
+                Object.keys(data.memoQuejasData.fields).forEach(fieldId => {
+                    const fieldEl = document.getElementById(fieldId);
+                    if (fieldEl) fieldEl.value = data.memoQuejasData.fields[fieldId];
+                });
+                Object.keys(data.memoQuejasData.checkboxValues).forEach(cbId => {
+                    const cbEl = document.getElementById(cbId);
+                    if (cbEl) cbEl.checked = data.memoQuejasData.checkboxValues[cbId];
+                });
+            } else {
+                clearMemoQueja();
+            }
+
+            // Apply Checkbox States Tab 2
+            if (data.checkboxStatesTab2) {
+                data.checkboxStatesTab2.forEach(savedGroup => {
+                    const groupEl = document.querySelector(`#sub-tab-quejas .checkbox-group[data-group-id="${savedGroup.groupId}"]`);
+                    if (groupEl) {
+                        savedGroup.items.forEach(savedItem => {
+                            const checkbox = groupEl.querySelector(`input[value="${savedItem.value}"]`);
+                            if (checkbox) checkbox.checked = savedItem.checked;
+                        });
+                    }
+                });
+            }
+
+            // Apply WF Memos
+            if (data.wfMemosData?.selectedType) {
+                const wfDropdown = document.getElementById('wfMemosDropdown');
+                wfDropdown.value = data.wfMemosData.selectedType;
+                renderWFMemosFields(data.wfMemosData.selectedType);
+                Object.keys(data.wfMemosData.fields).forEach(fieldId => {
+                    const fieldEl = document.getElementById(fieldId);
+                    if(fieldEl) fieldEl.value = data.wfMemosData.fields[fieldId];
+                });
+            } else {
+                clearWFMemos();
+            }
+            
+            // Apply Orden Memos
+            if (data.ordenMemosData?.selectedType) {
+                const ordenDropdown = document.getElementById('ordenMemosDropdown');
+                ordenDropdown.value = data.ordenMemosData.selectedType;
+                renderOrdenMemosFields(data.ordenMemosData.selectedType);
+                Object.keys(data.ordenMemosData.fields).forEach(fieldId => {
+                    const fieldEl = document.getElementById(fieldId);
+                    if(fieldEl) fieldEl.value = data.ordenMemosData.fields[fieldId];
+                });
+            } else {
+                clearOrdenMemos();
+            }
+
+            // Apply Widget Content
+            document.getElementById('notesArea').value = data.notesContent || '';
+            document.getElementById('usersArea').value = data.usersContent || '';
+            document.getElementById('backupTemplatesTextarea').value = data.backupTemplatesContent || '';
+            
+            // Apply Transfers
+            window.customTransferItems = data.customTransferItems || [];
+            renderTransferItems();
+
+            // Apply Draggable Box States
+            if (data.draggableBoxStates) {
+                data.draggableBoxStates.forEach(state => {
+                    const box = document.getElementById(state.id);
+                    if (box) {
+                        // Only apply position if it has been set previously
+                        if (state.left && state.top) {
+                            box.style.position = 'absolute';
+                            box.style.left = state.left;
+                            box.style.top = state.top;
+                            box.style.width = state.width;
+                            box.style.height = state.height;
+                        }
+                        const titleEl = box.querySelector('.drag-handle span');
+                        if (titleEl && state.title) titleEl.textContent = state.title;
+                    }
+                });
+            }
+
+            // Apply active tabs
+            if (data.activeTabs) {
+                switchTab(data.activeTabs.main || 'tab-plantillas', false);
+                // The sub-tab switch is handled inside the main switchTab function now
+            }
+        }
+
+    </script>
+
+    <div id="loginPage">
+        <h1>
+            <svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" class="logo-inline">
+              <circle cx="50" cy="50" r="35" fill="var(--blanco)"/>
+              <circle cx="50" cy="50" r="30" fill="var(--azul-oscuro)"/>
+              <ellipse cx="50" cy="50" rx="45" ry="25" transform="rotate(-30 50 50)" stroke="var(--turquesa)" stroke-width="3" fill="none"/>
+              <ellipse cx="50" cy="50" rx="45" ry="25" transform="rotate(30 50 50)" stroke="var(--morado)" stroke-width="3" fill="none"/>
+              <circle cx="50" cy="50" r="40" stroke="var(--azul-oscuro)" stroke-width="2" fill="none"/>
+              <circle cx="28" cy="58" r="5" fill="var(--turquesa)" class="electron-dot"/>
+              <circle cx="72" cy="42" r="5" fill="var(--blanco)" class="electron-dot"/>
+              <circle cx="28" cy="42" r="5" fill="var(--morado)" class="electron-dot"/>
+              <circle cx="72" cy="58" r="5" fill="var(--blanco)" class="electron-dot"/>
+              <circle cx="50" cy="10" r="5" fill="var(--turquesa)" class="electron-dot"/>
+              <circle cx="50" cy="90" r="5" fill="var(--blanco)" class="electron-dot"/>
+            </svg>
+            MEGA - FIJO SOPORTE
+        </h1>
+        <div id="loginFormContainer">
+            <h2>Iniciar Sesión</h2>
+            <div class="form-group">
+                <label for="loginEmail">Correo Electrónico</label>
+                <input type="email" id="loginEmail" placeholder="Ingrese su correo electrónico" required>
+            </div>
+            <div class="form-group">
+                <label for="loginPassword">Contraseña</label>
+                <input type="password" id="loginPassword" placeholder="Ingrese su contraseña" required>
+            </div>
+            <button id="loginBtn" class="button" onclick="handleLogin()">Iniciar Sesión</button>
+            <p style="margin-top: 20px; font-size: 0.9em; color: var(--texto-intermedio);">
+                Solo los usuarios autorizados pueden iniciar sesión.
+            </p>
+        </div>
+    </div>
+
+    <div id="appContainer">
+        <div id="mainContentPage">
+            <div id="mainTitleBar">
+                <svg id="headerLogo" class="logo-left" width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="50" cy="50" r="35" fill="var(--blanco)"/>
+                  <circle cx="50" cy="50" r="30" fill="var(--azul-oscuro)"/>
+                  <ellipse cx="50" cy="50" rx="45" ry="25" transform="rotate(-30 50 50)" stroke="var(--turquesa)" stroke-width="3" fill="none"/>
+                  <ellipse cx="50" cy="50" rx="45" ry="25" transform="rotate(30 50 50)" stroke="var(--morado)" stroke-width="3" fill="none"/>
+                  <circle cx="50" cy="50" r="40" stroke="var(--azul-oscuro)" stroke-width="2" fill="none"/>
+                  <circle cx="28" cy="58" r="5" fill="var(--turquesa)" class="electron-dot"/>
+                  <circle cx="72" cy="42" r="5" fill="var(--blanco)" class="electron-dot"/>
+                  <circle cx="28" cy="42" r="5" fill="var(--morado)" class="electron-dot"/>
+                  <circle cx="72" cy="58" r="5" fill="var(--blanco)" class="electron-dot"/>
+                  <circle cx="50" cy="10" r="5" fill="var(--turquesa)" class="electron-dot"/>
+                  <circle cx="50" cy="90" r="5" fill="var(--blanco)" class="electron-dot"/>
+                </svg>
+                <span id="mainTitleText">OMEGA-FIJO SOPORTE</span>
+                <div id="topTimerContainer">
+                    <span id="topTimerDisplay">05:00</span>
+                    <input type="number" id="topTimerInputMinutes" value="5" min="1" placeholder="Min"/>
+                    <div id="topTimerControls">
+                        <button id="startTimerBtnTop">▶️</button>
+                        <button id="stopTimerBtnTop" class="clear-button">⏹️</button>
+                        <button id="resetTimerBtnTop">🔄</button>
+                    </div>
+                </div>
+                <div class="data-actions-container">
+                    <!-- El botón de Guardar se ha eliminado. Los datos se guardan automáticamente. -->
+                    <button id="exportDataBtn" class="button data-action-btn" title="Exportar todos los datos de la aplicación como un archivo de respaldo.">Exportar</button>
+                    <label for="importDataInput" class="button data-action-btn" title="Importar un archivo de respaldo. Esto sobrescribirá todos los datos actuales." style="cursor:pointer;">Importar</label>
+                    <input type="file" id="importDataInput" accept=".json" style="display:none;">
+                    <button id="logoutBtn" class="button data-action-btn clear-button" title="Cerrar sesión" onclick="handleLogout()">Salir</button>
+                </div>
+            </div>
+
+            <div class="tab-container">
+                <div class="tab-nav">
+                    <button class="tab-link active" data-tab="tab-plantillas">PLANTILLAS</button>
+                    <button class="tab-link" data-tab="tab-herramientas">HERRAMIENTAS</button>
+                    <button class="tab-link" data-tab="tab-transferencias">TRANSFERENCIAS</button>
+                    <button class="tab-link" data-tab="tab-avisos">AVISOS</button>
+                    <button class="tab-link" data-tab="tab-copia-respaldo">COPIA DE RESPALDO</button>
+                </div>
+
+                <!-- PLANTILLAS Tab Content -->
+                <div id="tab-plantillas" class="tab-content active">
+                    <div class="tab-nav sub-tab-nav">
+                        <button class="tab-link sub-tab-link active" data-tab="sub-tab-genericas">PLANTILLAS GENERICAS</button>
+                        <button class="tab-link sub-tab-link" data-tab="sub-tab-quejas">PLANTILLAS DE QUEJAS</button>
+                        <button class="tab-link sub-tab-link" data-tab="sub-tab-wf">MEMOS DE WF</button>
+                        <button class="tab-link sub-tab-link" data-tab="sub-tab-orden">MEMOS DE ORDEN</button>
+                    </div>
+
+                    <!-- PLANTILLAS GENERICAS Sub-Tab Content -->
+                    <div id="sub-tab-genericas" class="tab-content sub-tab-content active">
+                        <div class="main-container-tab">
+                            <div class="form-container draggable-box" id="form-container-tab1">
+                                <h2 class="drag-handle">
+                                    <span>Plantilla Genérica</span>
+                                    <button type="button" class="edit-title-btn" onclick="editBoxTitle(this.closest('.drag-handle').querySelector('span'))">✏️</button>
+                                </h2>
+                                <form id="clienteForm">
+                                    <div class="form-group"><label for="id">ID de llamada</label><input id="id" name="id" type="text" placeholder="ID de la llamada"/></div>
+                                    <div class="form-group"><label for="nombreCliente">Nombre del contacto</label><input id="nombreCliente" name="nombreCliente" type="text" placeholder="Nombre del Cliente"/></div>
+                                    <div class="form-group"><label for="numeroInconveniente">N° Incidencia</label><input id="numeroInconveniente" name="numeroInconveniente" type="text" placeholder="Número del Inconveniente"/></div>
+                                    <div class="form-group"><label for="Inconveniente">Inconveniente</label><input id="Inconveniente" name="Inconveniente" type="text" placeholder="Inconveniente"/></div>
+                                    <div class="form-group"><label for="tipoServicio">Tipo Servicio</label><input id="tipoServicio" name="tipoServicio" type="text" placeholder="Tipo de Servicio"/></div>
+                                    <div class="form-group"><label for="pruebasRealizadas">PRUEBAS REALIZADAS</label><textarea id="pruebasRealizadas" name="pruebasRealizadas" placeholder="Las pruebas seleccionadas aparecerán aquí"></textarea></div>
+                                    <div class="form-group button-group left-align">
+                                        <button id="copyButton" type="button" class="button">Copiar Plantilla</button>
+                                        <button id="clearGenericFormButton" type="button" class="button clear-button">Limpiar</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="checkboxes-area-tab">
+                                <div class="checkbox-group draggable-box" id="checkbox-group-nivelCero" data-group-id="nivelCero">
+                                    <h3 class="drag-handle">
+                                        <span>Nivel Cero:</span>
+                                        <button type="button" class="edit-title-btn" onclick="editBoxTitle(this.closest('.drag-handle').querySelector('span'))">✏️</button>
+                                    </h3>
+                                    <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="Saldos OK"/> Saldos OK</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
+                                    <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="No hay Fallas"/> Fallas</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
+                                    <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="No presenta bloqueo"/> Bloqueos</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
+                                    <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="No hay OS abiertas"/> Ordenes Servicio</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
+                                    <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="No hay quejas"/> Quejas</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
+                                    <div class="add-item-btn-container"><button type="button" class="manage-button" onclick="addCheckboxItem(this.closest('.checkbox-group'))">Agregar Checkbox</button></div>
+                                </div>
+                                <div class="checkbox-group draggable-box" id="checkbox-group-gponAdslHfc" data-group-id="gponAdslHfc">
+                                    <h3 class="drag-handle">
+                                        <span>GPON - ADSL - HFC</span>
+                                        <button type="button" class="edit-title-btn" onclick="editBoxTitle(this.closest('.drag-handle').querySelector('span'))">✏️</button>
+                                    </h3>
+                                    <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="Se verifica estado de las luces del router"/> Luces router</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
+                                    <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="Envio reset en UMP"/> Reset en UMP</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
+                                    <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="Se Desconecta y Conecta Corriente"/> Conexiones Fisicas</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
+                                    <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="Se Desconecta y Conecta en otro tomacorriente"/> Otro Tomacorriente</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
+                                    <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="Se verifica Splitter"/> Conexiones Splitter</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
+                                    <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="Cambio de baterías"/> Cambio de baterías</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
+                                    <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="Se verifica Coaxial bien apretado"/> Conexiones Coaxial</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
+                                    <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="Se verifica cortes o daños en la fibra"/> Conexiones Fibra Optica</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
+                                    <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="Se manda a realizar test de velocidad (00 Megas)"/> Test de velocidad</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
+                                    <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="Se realiza Ping (0% perdido)"/> Ping</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
+                                    <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="Estado de la ONT activo"/> Estado de la ONT</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
+                                    <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="Niveles SNR en Rojo"/> Niveles SNR Rojo</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
+                                    <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="Luz LOS en ROJO"/> Luz LOS en Rojo</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
+                                    <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="Se envia reboot en Axiros"/> Reset en Axiros</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
+                                    <div class="add-item-btn-container"><button type="button" class="manage-button" onclick="addCheckboxItem(this.closest('.checkbox-group'))">Agregar Checkbox</button></div>
+                                </div>
+                                <div class="checkbox-group draggable-box" id="checkbox-group-tvHfcDthIptv" data-group-id="tvHfcDthIptv">
+                                    <h3 class="drag-handle">
+                                        <span>TV HFC - DTH - IPTV</span>
+                                        <button type="button" class="edit-title-btn" onclick="editBoxTitle(this.closest('.drag-handle').querySelector('span'))">✏️</button>
+                                    </h3>
+                                    <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="Se verifica Conexiones HDMI"/> Conexion HDMI</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
+                                    <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="Se Verifica Conexiones RCA"/> Conexion RCA</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
+                                    <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="Se verifica cable Coaxial"/> Cable Coaxial</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
+                                    <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="XX Stb afectados"/> Stb afectados </label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
+                                    <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="Se valida Serial No. XXXX"/> Serial STB</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
+                                    <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="Mensaje que muestra Tv: XXX"/> Mensaje que muestra Tv</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
+                                    <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="Se Envia Comando XXXX"/> Comandos enviados</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
+                                    <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="Se Envia Reset Fisico"/> Reset Fisico</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
+                                    <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="Se verifica en la GUI, AMCO en verde"/> AMCO en verde</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
+                                    <div class="add-item-btn-container"><button type="button" class="manage-button" onclick="addCheckboxItem(this.closest('.checkbox-group'))">Agregar Checkbox</button></div>
+                                </div>
+                                <div class="checkbox-group draggable-box" id="checkbox-group-otrosChecks" data-group-id="otrosChecks">
+                                    <h3 class="drag-handle">
+                                        <span>Otros</span>
+                                        <button type="button" class="edit-title-btn" onclick="editBoxTitle(this.closest('.drag-handle').querySelector('span'))">✏️</button>
+                                    </h3>
+                                    <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="Se valida DPI ok, nombre completo ok, sin restricciones"/> Se valida titularidad</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
+                                    <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="Cliente no esta en Sitio"/> Cliente no esta en sitio</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
+                                    <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="Cliente esta en Agencia"/> Cliente en Agencia</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
+                                    <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="Cliente no quiere hacer pruebas"/> Cliente no quiere hacer pruebas</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
+                                    <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="Se realiza cambio de contraseña con exito"/> Cambio de contraseña</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
+                                    <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="Servicio funcionando de manera correcta"/>Soporte Efectivo</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
+                                    <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="Se Genera Averia"/>Se genera averia</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
+                                    <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="Se envía reproceso"/> Se envía reproceso</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
+                                    <div class="add-item-btn-container"><button type="button" class="manage-button" onclick="addCheckboxItem(this.closest('.checkbox-group'))">Agregar Checkbox</button></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PLANTILLAS DE QUEJAS Sub-Tab Content -->
+                    <div id="sub-tab-quejas" class="tab-content sub-tab-content">
+                        <div class="main-container-tab">
+                            <div class="memos-config-area draggable-box" id="memos-config-area-tab2">
+                                <h5 class="drag-handle">
+                                    <span>Plantillas de Quejas</span>
+                                    <button type="button" class="edit-title-btn" onclick="editBoxTitle(this.closest('.drag-handle').querySelector('span'))">✏️</button>
+                                </h5>
+                                <div class="dropdown-container">
+                                    <select class="dropdown" id="opcionesMemoQuejas">
+                                        <option disabled selected value="">-- Seleccione Tipo de Memo --</option>
+                                        <option value="INTERNET DSL">INTERNET DSL</option>
+                                        <option value="TV DTH">TV DTH</option>
+                                        <option value="TV HFC">TV HFC</option>
+                                        <option value="INTERNET HFC/LINEA">INTERNET HFC</option>
+                                        <option value="LINEA FIJA">LINEA FIJA</option>
+                                        <option value="GPON/LINEA">GPON</option>
+                                        <option value="IPTV">IPTV</option>
+                                    </select>
+                                    <div id="formContainerMemoQuejas"></div>
+                                    <div class="add-item-btn-container" style="margin-top: 10px; text-align:right;">
+                                        <button type="button" id="addMemoFieldBtn" class="manage-button" style="display:none;">Agregar Campo</button>
+                                    </div>
+                                    <div class="button-group" style="margin-top: 20px;">
+                                        <button id="copyMemoQuejaButton" style="display: none;" class="button">Copiar Memo</button>
+                                        <button id="clearMemoQuejaButton" style="display: none;" class="button clear-button">Limpiar Memo</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="checkboxes-area-tab">
+                                <div class="checkbox-group draggable-box" id="checkbox-group-memoNivelCero" data-group-id="memoNivelCero">
+                                    <h3 class="drag-handle">
+                                        <span>Nivel Cero (Memos):</span>
+                                        <button type="button" class="edit-title-btn" onclick="editBoxTitle(this.closest('.drag-handle').querySelector('span'))">✏️</button>
+                                    </h3>
+                                    <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="Saldos OK"/> Saldos OK</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
+                                    <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="No hay Fallas"/> Fallas</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
+                                    <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="No presenta bloqueo"/> Bloqueos</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
+                                    <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="No hay OS abiertas"/> Ordenes Servicio</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
+                                    <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="No hay quejas"/> Quejas</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
+                                    <div class="add-item-btn-container"><button type="button" class="manage-button" onclick="addCheckboxItem(this.closest('.checkbox-group'))">Agregar Checkbox</button></div>
+                                </div>
+                                <div class="checkbox-group draggable-box" id="checkbox-group-memoGponAdslHfc" data-group-id="memoGponAdslHfc">
+                                    <h3 class="drag-handle">
+                                        <span>GPON - ADSL - HFC (Memos):</span>
+                                        <button type="button" class="edit-title-btn" onclick="editBoxTitle(this.closest('.drag-handle').querySelector('span'))">✏️</button>
+                                    </h3>
+                                    <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="Se verifica estado de las luces del router"/> Luces router</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
+                                    <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="Envio reset en UMP"/> Reset en UMP</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
+                                    <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="Se Desconecta y Conecta Corriente"/> Conexiones Fisicas</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
+                                    <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="Se Desconecta y Conecta en otro tomacorriente"/> Otro Tomacorriente</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
+                                    <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="Se verifica Splitter"/> Conexiones Splitter</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
+                                    <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="Cambio de baterías"/> Cambio de baterías</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
+                                    <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="Se verifica Coaxial bien apretado"/> Conexiones Coaxial</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
+                                    <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="Se verifica cortes o daños en la fibra"/> Conexiones Fibra Optica</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
+                                    <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="Se manda a realizar test de velocidad (00 Megas)"/> Test de velocidad</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
+                                    <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="Se realiza Ping (0% perdido)"/> Ping</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
+                                    <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="Estado de la ONT activo"/> Estado de la ONT</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
+                                    <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="Niveles SNR en Rojo"/> Niveles SNR Rojo</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
+                                    <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="Luz LOS en ROJO"/> Luz LOS en Rojo</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
+                                    <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="Se envia reboot en Axiros"/> Reset en Axiros</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
+                                    <div class="add-item-btn-container"><button type="button" class="manage-button" onclick="addCheckboxItem(this.closest('.checkbox-group'))">Agregar Checkbox</button></div>
+                                </div>
+                                <div class="checkbox-group draggable-box" id="checkbox-group-memoTvHfcDthIptv" data-group-id="memoTvHfcDthIptv">
+                                    <h3 class="drag-handle">
+                                        <span>TV HFC - DTH - IPTV (Memos)</span>
+                                        <button type="button" class="edit-title-btn" onclick="editBoxTitle(this.closest('.drag-handle').querySelector('span'))">✏️</button>
+                                    </h3>
+                                    <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="Se verifica Conexiones HDMI"/> Conexion HDMI</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
+                                    <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="Se Verifica Conexiones RCA"/> Conexion RCA</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
+                                    <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="Se verifica cable Coaxial"/> Cable Coaxial</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
+                                    <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="XX Stb afectados"/> Stb afectados </label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
+                                    <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="Se valida Serial No. XXXX"/> Serial STB</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
+                                    <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="Mensaje que muestra Tv: XXX"/> Mensaje que muestra Tv</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
+                                    <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="Se Envia Comando XXXX"/> Comandos enviados</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
+                                    <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="Se Envia Reset Fisico"/> Reset Fisico</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
+                                    <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="Se verifica en la GUI, AMCO en verde"/> AMCO en verde</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
+                                    <div class="add-item-btn-container"><button type="button" class="manage-button" onclick="addCheckboxItem(this.closest('.checkbox-group'))">Agregar Checkbox</button></div>
+                                </div>
+                                <div class="checkbox-group draggable-box" id="checkbox-group-memoOtrosChecks" data-group-id="memoOtrosChecks">
+                                    <h3 class="drag-handle">
+                                        <span>Otros (Memos)</span>
+                                        <button type="button" class="edit-title-btn" onclick="editBoxTitle(this.closest('.drag-handle').querySelector('span'))">✏️</button>
+                                    </h3>
+                                    <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="Se valida DPI ok, nombre completo ok, sin restricciones"/> Se valida titularidad</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
+                                    <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="Cliente no esta en Sitio"/> Cliente no esta en sitio</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
+                                    <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="Cliente esta en Agencia"/> Cliente en Agencia</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
+                                    <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="Cliente no quiere hacer pruebas"/> Cliente no quiere hacer pruebas</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
+                                    <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="Se realiza cambio de contraseña con exito"/> Cambio de contraseña</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
+                                    <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="Servicio funcionando de manera correcta"/>Soporte Efectivo</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
+                                    <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="Se Genera Averia"/>Se genera averia</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
+                                    <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="Se envía reproceso"/> Se envía reproceso</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
+                                    <div class="add-item-btn-container"><button type="button" class="manage-button" onclick="addCheckboxItem(this.closest('.checkbox-group'))">Agregar Checkbox</button></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- MEMOS DE WF Sub-Tab Content -->
+                    <div id="sub-tab-wf" class="tab-content sub-tab-content">
+                        <div class="main-container-tab">
+                            <div class="wf-memos-area draggable-box" id="wf-memos-area-tab-wf">
+                                <h5 class="drag-handle">
+                                    <span>MEMOS DE WF</span>
+                                    <button type="button" class="edit-title-btn" onclick="editBoxTitle(this.closest('.drag-handle').querySelector('span'))">✏️</button>
+                                </h5>
+                                <div class="dropdown-container">
+                                    <select class="dropdown" id="wfMemosDropdown">
+                                        <option selected disabled value="">-- Seleccione Plantilla WF --</option>
+                                    </select>
+                                    <div id="formContainerWFMemos"></div>
+                                    <div class="button-group" style="margin-top: 20px;">
+                                        <button id="copyWFMemosButton" class="button">Copiar Memo WF</button>
+                                        <button id="clearWFMemosButton" class="button clear-button">Limpiar Memo WF</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- MEMOS DE ORDEN Sub-Tab Content -->
+                    <div id="sub-tab-orden" class="tab-content sub-tab-content">
+                        <div class="main-container-tab">
+                            <div class="orden-memos-area draggable-box" id="orden-memos-area-tab-orden">
+                                <h5 class="drag-handle">
+                                    <span>MEMOS DE ORDEN</span>
+                                    <button type="button" class="edit-title-btn" onclick="editBoxTitle(this.closest('.drag-handle').querySelector('span'))">✏️</button>
+                                </h5>
+                                <div class="dropdown-container">
+                                    <select class="dropdown" id="ordenMemosDropdown">
+                                        <option selected disabled value="">-- Seleccione Plantilla de Orden --</option>
+                                    </select>
+                                    <div id="formContainerOrdenMemos"></div>
+                                    <div class="button-group" style="margin-top: 20px;">
+                                        <button id="copyOrdenMemosButton" class="button">Copiar Memo de Orden</button>
+                                        <button id="clearOrdenMemosButton" class="button clear-button">Limpiar Memo de Orden</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- HERRAMIENTAS Tab Content -->
+                <div id="tab-herramientas" class="tab-content">
+                    <div class="tab-nav sub-tab-nav">
+                        <button class="tab-link sub-tab-link active" data-tab="sub-tab-tmo">CALCULADORA TMO</button>
+                    </div>
+                    <div id="sub-tab-tmo" class="tab-content sub-tab-content active">
+                        <div class="main-container-tab">
+                            <div id="tmoMessageBox">
+                                META TMO 372 SEGUNDOS COMO MÁXIMO!
+                            </div>
+
+                            <div id="minutesToSecondsConverter">
+                                <h3>Calculadora de TMO</h3>
+                                <div class="form-group">
+                                    <label for="minutesInput">Minutos</label>
+                                    <input type="number" id="minutesInput" placeholder="Ingrese minutos" min="0" step="any">
+                                </div>
+                                <button id="convertBtn" class="button">Convertir</button>
+                                <div id="secondsResult">0 Segundos</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TRANSFERENCIAS Tab Content -->
+                <div id="tab-transferencias" class="tab-content">
+                    <div class="transfers-container draggable-box" id="transfers-container-tab4" style="max-width: 700px; margin: auto;">
+                        <h5 class="drag-handle">
+                            <span>Transferencias</span>
+                            <button type="button" class="edit-title-btn" onclick="editBoxTitle(this.closest('.drag-handle').querySelector('span'))">✏️</button>
+                        </h5>
+                        <div id="dynamicTransfersList" class="transfers-list">
+                        </div>
+                        <div class="add-item-btn-container" style="margin-top: 15px; text-align: right;">
+                            <button type="button" class="manage-button" id="addTransferBtn">Agregar Transferencia</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AVISOS Tab Content -->
+                <div id="tab-avisos" class="tab-content">
+                    <div class="main-container-tab" id="tab7-main-container">
+                        <div class="document-viewer-box draggable-box" id="documentViewer1">
+                            <h3 class="drag-handle">
+                                <span>PROCESOS DE MIGRACIÓN</span>
+                                <button type="button" class="edit-title-btn" onclick="editBoxTitle(this.closest('.drag-handle').querySelector('span'))">✏️</button>
+                            </h3>
+                            <div class="document-iframe-container">
+                                <iframe id="docIframe1" src="" style="width: 100%; height: 100%; border: none; border-radius: 8px;"
+                                        onerror="this.style.display='none'; this.parentNode.innerHTML += '<div class=\'iframe-error-message\'>No se pudo cargar el documento. Verifique los permisos o el enlace.</div>'"></iframe>
+                            </div>
+                            <div style="text-align: center; margin-top: 10px;">
+                                <button class="button" onclick="loadDocumentInIframe('docIframe1', 'https://docs.google.com/document/d/e/2PACX-1vQbmQQdlbeHkpEMA9CwGFWUwj7gq4pR6Prx7fHng1MOUGqNUGUuRUUc94qogeiHj6Bu1MavE3wzpUDZ/pub?embedded=true')">Cargar PROCESOS DE MIGRACIÓN (WF)</button>
+                            </div>
+                        </div>
+
+                        <div class="document-viewer-box draggable-box" id="documentViewer2">
+                            <h3 class="drag-handle">
+                                <span>SEGUIMIENTO DE CASOS</span>
+                                <button type="button" class="edit-title-btn" onclick="editBoxTitle(this.closest('.drag-handle').querySelector('span'))">✏️</button>
+                            </h3>
+                            <div class="document-iframe-container">
+                                <iframe id="docIframe2" src="" style="width: 100%; height: 100%; border: none; border-radius: 8px;"
+                                        onerror="this.style.display='none'; this.parentNode.innerHTML += '<div class=\'iframe-error-message\'>No se pudo cargar el documento. Verifique los permisos o el enlace.</div>'"></iframe>
+                            </div>
+                            <div style="text-align: center; margin-top: 10px;">
+                                <button class="button" onclick="loadDocumentInIframe('docIframe2', 'https://docs.google.com/document/d/e/2PACX-1vRketVsJaYapfC4lwnzYr1ndlm6WoCUmRsAY0TQEzYMVfhd3kXOwyuY-jWZG4YAx7qeqUWH50t_0-0Q/pub?embedded=true')">Cargar Documento 2 (DOC)</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- COPIA DE RESPALDO Tab Content -->
+                <div id="tab-copia-respaldo" class="tab-content">
+                    <div class="backup-template-group draggable-box" id="backup-template-group-tab5" style="max-width: 900px; margin: auto;">
+                        <h3 class="drag-handle">
+                            <span>Copia de Respaldo</span>
+                            <button type="button" class="edit-title-btn" onclick="editBoxTitle(this.closest('.drag-handle').querySelector('span'))">✏️</button>
+                        </h3>
+                        <textarea id="backupTemplatesTextarea" placeholder="Aquí se guardarán las plantillas copiadas como respaldo general..." style="min-height:250px;"></textarea>
+                        <div class="button-group left-align">
+                            <button id="copyBackupButton" type="button" class="button">Copiar Respaldo</button>
+                            <button id="clearBackupButton" type="button" class="button clear-button">Limpiar Respaldo</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="firma-keiner"><strong>Desarrollado por: Keiner Valera.</strong></div>
+        </div>
+
+        <div id="bottomWidgetsContainer">
+            <button id="toggleNotes" class="widget-toggle-button" title="Notas Rápidas">📝</button>
+            <button id="toggleUsers" class="widget-toggle-button" title="Lista de Usuarios">👤</button>
+            <button id="toggleCopilot" class="widget-toggle-button" title="Copilot Chat">💬</button>
+            <button id="toggleAddBox" class="widget-toggle-button" title="Agregar Recuadro">➕</button>
+            <button id="toggleTheme" class="widget-toggle-button" title="Personalizar Tema">🎨</button>
+        </div>
+
+        <div id="notesWidget" class="widget-panel">
+            <div class="widget-header">Notas Rápidas</div>
+            <textarea id="notesArea" placeholder="Escribe tus notas aquí..."></textarea>
+            <div class="button-group-widget">
+                <button id="copyNotesButton" class="button">Copiar</button>
+                <button id="clearNotesButton" class="button clear-button">Limpiar</button>
+            </div>
+        </div>
+
+        <div id="usersWidget" class="widget-panel">
+            <div class="widget-header">Lista de Usuarios</div>
+            <textarea id="usersArea" placeholder="Escribe tu lista de usuarios aquí..."></textarea>
+            <div class="button-group-widget">
+                <button id="copyUsersButton" class="button">Copiar</button>
+                <button id="clearUsersButton" class="button clear-button">Limpiar</button>
+            </div>
+        </div>
+
+        <div id="copilotWidget" class="widget-panel">
+            <iframe src="https://copilotstudio.microsoft.com/environments/Default-35058e0b-9a5c-4d1c-aa8e-08d02cd58b1a/bots/cr32d_marketingDigitalPro/webchat?__version__=2" title="Chatbot Copilot"></iframe>
+        </div>
+
+        <div id="addBoxWidget" class="widget-panel">
+            <div class="widget-header">Agregar Recuadro</div>
+            <p style="text-align: center; margin-bottom: 15px; color: var(--texto-intermedio);">Agrega un nuevo recuadro a la pestaña actual.</p>
+            <button id="addBoxToActiveTabBtn" class="button" style="width: 100%;">Agregar Recuadro</button>
+        </div>
+
+        <div id="themeWidgetPanel" class="widget-panel">
+            <div class="widget-header">Personalizar Tema</div>
+            <div class="theme-color-group">
+                <label for="themeColorPrimary">Color Primario (ej. Azul Oscuro):</label>
+                <input type="color" id="themeColorPrimary" data-css-var="--azul-oscuro">
+            </div>
+            <div class="theme-color-group">
+                <label for="themeColorSecondary">Color Secundario (ej. Morado):</label>
+                <input type="color" id="themeColorSecondary" data-css-var="--morado">
+            </div>
+            <div class="theme-color-group">
+                <label for="themeColorAccent">Color Acento (ej. Turquesa):</label>
+                <input type="color" id="themeColorAccent" data-css-var="--turquesa">
+            </div>
+            <div class="theme-color-group">
+                <label for="themeColorBackground">Color Fondo Principal:</label>
+                <input type="color" id="themeColorBackground" data-css-var="--gris-claro">
+            </div>
+            <div class="theme-color-group">
+                <label for="themeColorTextDark">Color Texto Principal (Oscuro):</label>
+                <input type="color" id="themeColorTextDark" data-css-var="--texto-oscuro">
+            </div>
+            <div class="theme-color-group">
+                <label for="themeColorNeuron1">Neurona Color 1:</label>
+                <input type="color" id="themeColorNeuron1" data-neuron-var="--neuron-color-1-rgb">
+            </div>
+            <div class="theme-color-group">
+                <label for="themeColorNeuron2">Neurona Color 2:</label>
+                <input type="color" id="themeColorNeuron2" data-neuron-var="--neuron-color-2-rgb">
+            </div>
+            <div class="theme-color-group">
+                <label for="themeColorNeuron3">Neurona Color 3:</label>
+                <input type="color" id="themeColorNeuron3" data-neuron-var="--neuron-color-3-rgb">
+            </div>
+            <div class="theme-color-group">
+                <label for="themeColorNeuronConnection">Conexión Neuronas:</label>
+                <input type="color" id="themeColorNeuronConnection" data-neuron-var="--neuron-connection-rgb">
+            </div>
+            <div class="button-group-theme">
+                <button id="applyThemeBtn" class="button">Aplicar</button>
+                <button id="resetThemeBtn" class="button clear-button">Restaurar</button>
+            </div>
+        </div>
+
+        <!-- Modal de Aviso Importante -->
+        <div id="importantNoticeModal" class="popup-modal">
+            <div class="popup-content">
+                <h2>¡AVISO IMPORTANTE!</h2>
+                <p>Ahora Omega presenta su nueva pestaña de AVISOS, la cual tiene como finalidad mostrar aquellos documentos importantes que están en circuito en operación como por ejemplo: word de migración y WF para seguimiento de ordenes!</p>
+                <button id="closeNoticeModalBtn" class="popup-close-btn">Entendido</button>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+    // --- GLOBAL VARIABLES & CONFIGURATION ---
+    let openWidgetPanel = null;
+    let globalNeuronColorsRGB = [];
+    let globalNeuronConnectionRGB = '';
+    window.customTransferItems = []; // Made global for easy access
+
+    // Default theme values (ensure these match the :root in CSS)
+    const defaultThemeSettings = {
+        '--azul-oscuro': "#1A237E", '--morado': "#6A1B9A", '--turquesa': "#00BCD4",
+        '--gris-claro': "#F0F0F0", '--blanco': "#FFFFFF", '--texto-oscuro': "#333333",
+        '--texto-intermedio': "#555555", '--texto-claro': "#CCCCCC", '--rojo-claro': "#e74c3c",
+        '--rojo-oscuro': "#c0392b", '--verde-claro': "#28a745", '--verde-oscuro': "#218838",
+        '--neuron-color-1-rgb': "106, 27, 154", '--neuron-color-2-rgb': "0, 188, 212",
+        '--neuron-color-3-rgb': "26, 35, 126", '--neuron-connection-rgb': "106, 27, 154"
+    };
+
+    const themeColorInputs = [
+        { id: 'themeColorPrimary', cssVar: '--azul-oscuro', type: 'css' },
+        { id: 'themeColorSecondary', cssVar: '--morado', type: 'css' },
+        { id: 'themeColorAccent', cssVar: '--turquesa', type: 'css' },
+        { id: 'themeColorBackground', cssVar: '--gris-claro', type: 'css' },
+        { id: 'themeColorTextDark', cssVar: '--texto-oscuro', type: 'css' },
+        { id: 'themeColorNeuron1', neuronVar: '--neuron-color-1-rgb', type: 'neuron' },
+        { id: 'themeColorNeuron2', neuronVar: '--neuron-color-2-rgb', type: 'neuron' },
+        { id: 'themeColorNeuron3', neuronVar: '--neuron-color-3-rgb', type: 'neuron' },
+        { id: 'themeColorNeuronConnection', neuronVar: '--neuron-connection-rgb', type: 'neuron' }
+    ];
+
+    // --- PREDEFINED TEMPLATES ---
+    const predefinedWFMemos = {
+        "migracion gpon": [
+            { label: "Tipo de reporte", type: "text", id: "wf_migracion_tipo_reporte" },
+            { label: "Acepta migración", type: "text", id: "wf_migracion_acepta_migracion" },
+            { label: "Factura Con", type: "text", id: "wf_migracion_factura_con" },
+            { label: "Titular del servicio", type: "text", id: "wf_migracion_titular" },
+            { label: "Contacto en sitio", type: "text", id: "wf_migracion_contacto_sitio" },
+            { label: "No. Contacto", type: "text", id: "wf_migracion_no_contacto" },
+            { label: "Dirección", type: "text", id: "wf_migracion_direccion" },
+            { label: "Horario de visita", type: "text", id: "wf_migracion_horario_visita" },
+            { label: "Comentario", type: "textarea", id: "wf_migracion_comentario" }
+        ],
+        "inconvenientes con vpn": [
+            { label: "NUMERO DE SERVICIO", type: "text", id: "wf_vpn_num_servicio" },
+            { label: "Tipo de CPE", type: "text", id: "wf_vpn_tipo_cpe" },
+            { label: "MAC Cable Modem o CPE", type: "text", id: "wf_vpn_mac_cpe" },
+            { label: "Problema reportado", type: "text", id: "wf_vpn_problema_reportado" },
+            { label: "Nombre del cliente", type: "text", id: "wf_vpn_nombre_cliente" },
+            { label: "Tel Contacto", type: "text", id: "wf_vpn_tel_contacto" },
+            { label: "Nombre completo herramienta o aplicativo de vpn", type: "text", id: "wf_vpn_app_vpn" },
+            { label: "Puertos UDP y TCP que desee verificar", type: "text", id: "wf_vpn_puertos" },
+            { label: "Numero o nombre de error que da el aplicativo", type: "text", id: "wf_vpn_error_app" },
+            { label: "Si es VPN, hacía que IP intenta conectarse", type: "text", id: "wf_vpn_ip_conexion" },
+            { label: "MAC Address de la computadora", type: "text", id: "wf_vpn_mac_computadora" },
+            { label: "Pruebas(si se efectúan)", type: "textarea", id: "wf_vpn_pruebas" },
+            { label: "Comentario", type: "textarea", id: "wf_vpn_comentario" }
+        ],
+        "filtrado mac": [
+            { label: "Problema reportado", type: "text", id: "wf_filtrado_problema" },
+            { label: "Número de Servicio", type: "text", id: "wf_filtrado_num_servicio" },
+            { label: "Nombre del cliente", type: "text", id: "wf_filtrado_nombre_cliente" },
+            { label: "Tel Contacto", type: "text", id: "wf_filtrado_tel_contacto" },
+            { label: "MAC Address", type: "text", id: "wf_filtrado_mac_address" },
+            { label: "Pruebas(si se efectúan)", type: "textarea", id: "wf_filtrado_pruebas" },
+            { label: "Comentario", type: "textarea", id: "wf_filtrado_comentario" }
+        ],
+        "cita incumplida": [
+            { label: "No. Orden", type: "text", id: "wf_cita_no_orden" },
+            { label: "Nombre contacto", type: "text", id: "wf_cita_nombre_contacto" },
+            { label: "Numero de referencia", type: "text", id: "wf_cita_num_referencia" },
+            { label: "Fecha de visita", type: "text", id: "wf_cita_fecha_visita" },
+            { label: "Hora de visita", type: "text", id: "wf_cita_hora_visita" },
+            { label: "Gestor de Despacho que atendió la llamada", type: "text", id: "wf_cita_gestor_despacho" },
+            { label: "Orden", type: "text", id: "wf_cita_orden" },
+            { label: "tipo de orden", type: "text", id: "wf_cita_tipo_orden" },
+            { label: "tecnología", type: "text", id: "wf_cita_tecnologia" },
+            { label: "Región", type: "text", id: "wf_cita_region" },
+            { label: "fecha de nueva visita", type: "text", id: "wf_cita_nueva_visita" },
+            { label: "horario am/pm", type: "text", id: "wf_cita_horario" },
+            { label: "Nombre de cliente", type: "text", id: "wf_cita_nombre_cliente" },
+            { label: "Descripción", type: "textarea", id: "wf_cita_descripcion" }
+        ],
+        "vencido comercial": [
+            { label: "Teléfono de referencia", type: "text", id: "wf_vencido_com_tel_ref" },
+            { label: "No. de O/S", type: "text", id: "wf_vencido_com_os" },
+            { label: "Comentarios", type: "textarea", id: "wf_vencido_com_comentarios" },
+            { label: "Hora visita", type: "text", id: "wf_vencido_com_hora_visita" }
+        ],
+        "velocidad mal configurada": [
+            { label: "No. Contacto", type: "text", id: "wf_velocidad_no_contacto" },
+            { label: "Inconveniente reportado", type: "text", id: "wf_velocidad_inconveniente" },
+            { label: "Virtual Reportado", type: "text", id: "wf_velocidad_virtual_reportado" },
+            { label: "Velocidad Config PISA", type: "text", id: "wf_velocidad_pisa" },
+            { label: "Velocidad config UMP", type: "text", id: "wf_velocidad_ump" }
+        ],
+        "vencido operaciones": [
+            { label: "Teléfono de referencia", type: "text", id: "wf_vencido_op_tel_ref" },
+            { label: "No. de O/S", type: "text", id: "wf_vencido_op_os" },
+            { label: "Comentarios", type: "textarea", id: "wf_vencido_op_comentarios" },
+            { label: "No. Queja", type: "text", id: "wf_vencido_op_queja" },
+            { label: "Hora visita", type: "text", id: "wf_vencido_op_hora_visita" },
+            { label: "Pruebas Realizadas", type: "textarea", id: "wf_vencido_op_pruebas" }
+        ],
+        "locucion mora activa": [
+            { label: "Nombre de quien reporta", type: "text", id: "wf_mora_nombre_reporta" },
+            { label: "Número afectado", type: "text", id: "wf_mora_num_afectado" },
+            { label: "Tel de Ref", type: "text", id: "wf_mora_tel_ref" },
+            { label: "O/S generada", type: "text", id: "wf_mora_os_generada" },
+            { label: "Fecha de pago", type: "text", id: "wf_mora_fecha_pago" },
+            { label: "IVR", type: "text", id: "wf_mora_ivr" },
+            { label: "Observaciones", type: "textarea", id: "wf_mora_observaciones" }
+        ],
+        "bloqueo mayor a 2 horas": [
+            { label: "Nombre de quien reporta", type: "text", id: "wf_bloqueo_nombre_reporta" },
+            { label: "Servicio a liberar", type: "text", id: "wf_bloqueo_servicio" },
+            { label: "No. afectado", type: "text", id: "wf_bloqueo_num_afectado" },
+            { label: "Tipo de bloqueo", type: "text", id: "wf_bloqueo_tipo" },
+            { label: "Tel de Ref", type: "text", id: "wf_bloqueo_tel_ref" },
+            { label: "Hora de Pago", type: "text", id: "wf_bloqueo_hora_pago" },
+            { label: "Reincidente", type: "text", id: "wf_bloqueo_reincidente" },
+            { label: "Comentarios", type: "textarea", id: "wf_bloqueo_comentarios" }
+        ],
+        "daño a la infraestructura": [
+            { label: "Contacto", type: "text", id: "wf_infra_contacto" },
+            { label: "Teléfono de contacto", type: "text", id: "wf_infra_tel_contacto" },
+            { label: "Dirección de daño", type: "text", id: "wf_infra_direccion_dano" },
+            { label: "Daño que reporta", type: "textarea", id: "wf_infra_dano_reporta" }
+        ],
+        "claro video": [
+            { label: "Nombre del Cliente", type: "text", id: "wf_clarovideo_nombre" },
+            { label: "Número telefónico", type: "text", id: "wf_clarovideo_telefono" },
+            { label: "Correo electrónico a registrar", type: "text", id: "wf_clarovideo_correo" },
+            { label: "Qué problema reporta", type: "textarea", id: "wf_clarovideo_problema" },
+            { label: "Fecha de nacimiento", type: "text", id: "wf_clarovideo_fecha_nac" },
+            { label: "Telefonos de contacto", type: "text", id: "wf_clarovideo_tels_contacto" },
+            { label: "Plataforma donde está tratando de registrarse", type: "text", id: "wf_clarovideo_plataforma" }
+        ],
+        "reparación en tiempo vencido": [
+            { label: "Teléfono de referencia", type: "text", id: "wf_rep_venc_tel_ref" },
+            { label: "No. de O/S", type: "text", id: "wf_rep_venc_os" },
+            { label: "Comentarios", type: "textarea", id: "wf_rep_venc_comentarios" },
+            { label: "No. Queja", type: "text", id: "wf_rep_venc_queja" },
+            { label: "Hora visita", type: "text", id: "wf_rep_venc_hora_visita" },
+            { label: "Pruebas Realizadas", type: "textarea", id: "wf_rep_venc_pruebas" }
+        ],
+        "mala atención al tecnico": [
+            { label: "Motivo", type: "text", id: "wf_mala_atencion_motivo" },
+            { label: "Número afectado", type: "text", id: "wf_mala_atencion_num_afectado" },
+            { label: "Nombre completo del cliente", type: "text", id: "wf_mala_atencion_nombre_cliente" },
+            { label: "Nombre de quien reporta", type: "text", id: "wf_mala_atencion_nombre_reporta" },
+            { label: "Teléfono de referencia", type: "text", id: "wf_mala_atencion_tel_ref" },
+            { label: "Fecha de solicitud", type: "text", id: "wf_mala_atencion_fecha_solicitud" },
+            { label: "Servicio contratado", type: "text", id: "wf_mala_atencion_servicio" },
+            { label: "Dirección de instalación", type: "text", id: "wf_mala_atencion_direccion" },
+            { label: "Descripción del reclamo", type: "textarea", id: "wf_mala_atencion_descripcion" }
+        ],
+        "check en rojo": [
+            { label: "Número", type: "text", id: "wf_check_rojo_numero" },
+            { label: "Correo Claro Video", type: "text", id: "wf_check_rojo_correo" },
+            { label: "Plan o paquete contratado", type: "text", id: "wf_check_rojo_plan" },
+            { label: "Check con error en GUI", type: "text", id: "wf_check_rojo_error_gui" },
+            { label: "Número de contacto", type: "text", id: "wf_check_rojo_num_contacto" },
+            { label: "Cliente", type: "text", id: "wf_check_rojo_cliente" },
+            { label: "Descripción", type: "textarea", id: "wf_check_rojo_descripcion" },
+            { label: "Pruebas realizadas", type: "textarea", id: "wf_check_rojo_pruebas" }
+        ],
+        "sin acceso a guía interactiva": [
+            { label: "Número", type: "text", id: "wf_guia_numero" },
+            { label: "Correo Claro Video", type: "text", id: "wf_guia_correo" },
+            { label: "Plan o paquete contratado", type: "text", id: "wf_guia_plan" },
+            { label: "Check AMCO y PLE", type: "text", id: "wf_guia_check_amco_ple" },
+            { label: "Mensaje que muestra TV", type: "text", id: "wf_guia_mensaje_tv" },
+            { label: "Número de contacto", type: "text", id: "wf_guia_num_contacto" },
+            { label: "Cliente", type: "text", id: "wf_guia_cliente" },
+            { label: "Descripción", type: "textarea", id: "wf_guia_descripcion" },
+            { label: "Pruebas realizadas", type: "textarea", id: "wf_guia_pruebas" }
+        ],
+        "configuración wifi": [
+            { label: "Quien genera queja", type: "text", id: "wf_wifi_quien_queja" },
+            { label: "Luz Pon", type: "text", id: "wf_wifi_luz_pon" },
+            { label: "Luz Los", type: "text", id: "wf_wifi_luz_los" },
+            { label: "Serie", type: "text", id: "wf_wifi_serie" },
+            { label: "Canal dañado", type: "text", id: "wf_wifi_canal_danado" },
+            { label: "Problema reportado", type: "textarea", id: "wf_wifi_problema_reportado" },
+            { label: "Pruebas Realizadas", type: "textarea", id: "wf_wifi_pruebas_realizadas" },
+            { label: "Contacto en sitio", type: "text", id: "wf_wifi_contacto_sitio" },
+            { label: "Teléfonos de referencias", type: "text", id: "wf_wifi_tels_referencias" },
+            { label: "Dirección", type: "text", id: "wf_wifi_direccion" }
+        ],
+        "reparación en plazo vigente": [
+            { label: "Teléfono de referencia", type: "text", id: "wf_reparacion_plazo_vigente_tel_ref" },
+            { label: "Comentarios", type: "textarea", id: "wf_reparacion_plazo_vigente_comentarios", defaultValue: "Seguimiento a queja en tiempo Vigente" },
+            { label: "No. Queja", type: "text", id: "wf_reparacion_plazo_vigente_no_queja" },
+            { label: "Hora visita", type: "text", id: "wf_reparacion_plazo_vigente_hora_visita", defaultValue: "8:00 a 5:00" },
+            { label: "Pruebas Realizadas", type: "textarea", id: "wf_reparacion_plazo_vigente_pruebas_realizadas", defaultValue: "Cl Indica que no ha llegado el técnico y le urge, por favor verificar." }
+        ],
+        "otros wf": [
+            { label: "Nombre de contacto", type: "text", id: "wf_otros_nombre_contacto" },
+            { label: "Teléfonos de referencia", type: "text", id: "wf_otros_tels_referencia" },
+            { label: "Numero de orden y/o queja", type: "text", id: "wf_otros_num_orden_queja" },
+            { label: "Inconveniente del cliente", type: "textarea", id: "wf_otros_inconveniente_cliente" },
+            { label: "Pruebas Realizada", type: "textarea", id: "wf_otros_pruebas_realizadas" }
+        ]
+    };
+
+    const predefinedOrdenMemos = {
+        "cableado ethernet": [
+            { label: "ASUNTO", type: "text", id: "orden_ethernet_asunto" },
+            { label: "NUMERO DE SERVICIO", type: "text", id: "orden_ethernet_num_servicio" },
+            { label: "NOMBRE DE TITULAR", type: "text", id: "orden_ethernet_nombre_titular" },
+            { label: "DPI TITULAR", type: "text", id: "orden_ethernet_dpi_titular" },
+            { label: "TELEFONO REFERENCIA", type: "text", id: "orden_ethernet_tel_referencia" },
+            { label: "DIRECCIÓN INSTALACIÓN", type: "text", id: "orden_ethernet_direccion" },
+            { label: "HORARIO DE VISITA", type: "text", id: "orden_ethernet_horario_visita" },
+            { label: "OBSERVACIONES", type: "textarea", id: "orden_ethernet_observaciones" },
+            { label: "TIENDA / CALL CENTER", type: "text", id: "orden_ethernet_tienda" }
+        ],
+        "orden de repetidores": [
+            { label: "ASUNTO", type: "text", id: "orden_repetidores_asunto" },
+            { label: "NUMERO DE SERVICIO", type: "text", id: "orden_repetidores_num_servicio" },
+            { label: "NOMBRE DE TITULAR", type: "text", id: "orden_repetidores_nombre_titular" },
+            { label: "DPI TITULAR", type: "text", id: "orden_repetidores_dpi_titular" },
+            { label: "TELEFONO REFERENCIA", type: "text", id: "orden_repetidores_tel_referencia" },
+            { label: "DIRECCIÓN INSTALACIÓN", type: "text", id: "orden_repetidores_direccion" },
+            { label: "HORARIO DE VISITA", type: "text", id: "orden_repetidores_horario_visita" },
+            { label: "OBSERVACIONES", type: "textarea", id: "orden_repetidores_observaciones" },
+            { label: "TIENDA / CALL CENTER", type: "text", id: "orden_repetidores_tienda" }
+        ],
+        "instalación en plazo vigente": [
+            { label: "Teléfono de referencia", type: "text", id: "orden_instalacion_plazo_vigente_tel_ref" },
+            { label: "No. de O/S", type: "text", id: "orden_instalacion_plazo_vigente_no_os" },
+            { label: "Comentarios", type: "textarea", id: "orden_instalacion_plazo_vigente_comentarios", defaultValue: "Seguimiento a orden en tiempo Vigente" },
+            { label: "Hora visita", type: "text", id: "orden_instalacion_plazo_vigente_hora_visita", defaultValue: "8:00 a 5:00" },
+            { label: "Pruebas Realizadas", type: "textarea", id: "orden_instalacion_plazo_vigente_pruebas_realizadas", defaultValue: "Cliente solicita informacion sobre instalacion, se encuentra en tiempo vigente" }
+        ]
+    };
+    
+    // --- BUG FIX: Added checkboxes and corrected textarea for "LINEA FIJA" memo ---
+    const predefinedMemoTemplates = {
+        "INTERNET DSL": [
+            { label: "Luz Portadora", type: "checkbox-group", options: ["Fija", "Apagada", "Intermitente"], id:"luzPortadora" },
+            { label: "Luz Internet", type: "checkbox-group", options: ["Fija", "Apagada", "Intermitente"], id:"luzInternet" },
+            { label: "Estado del Puerto", type: "checkbox-group", options: ["UP", "DOWN", "DORMANT"], id:"estadoPuerto" },
+            { label: "SNR", type: "textarea", id:"SNRniveles" },
+            { label: "Estatus de niveles", type: "checkbox-group", options: ["Correctos", "Erroneos"], id:"estatusNiveles" },
+            { label: "Velocidad Current igual a Pisa", type: "text", id: "velocidadPisa" },
+            { label: "Canal dañado", type: "checkbox-group", options: ["Datos", "Voz", "Todos"], id:"canalDanado" },
+            { label: "Problema Reportado", type: "textarea", id: "problemaReportadoQueja" },
+            { label: "Pruebas Realizadas", type: "textarea", id: "pruebasRealizadasQueja", isTestArea: true },
+            { label: "Contacto En Sitio", type: "text", id: "contactoEnSitioQueja" },
+            { label: "Tel Contacto", type: "text", id: "telContactoQueja" },
+            { label: "Dirección", type: "text", id: "direccionQueja" },
+            { label: "Queja", type: "text", id: "quejaNumero" },
+            { label: "ID", type: "text", id: "idLlamadaQueja" }
+        ],
+        "TV DTH": [
+            { label: "Número", type: "text", id:"tvDthNumero" }, { label: "No. Tvs Afectados", type: "text", id:"tvDthAfectados" },
+            { label: "Serie STB", type: "text", id:"tvDthSerie" }, { label: "Smart Card", type: "text", id:"tvDthSmartCard" },
+            { label: "Modelo STB", type: "text", id:"tvDthModelo" }, { label: "Mensaje Que Muestra Tv", type: "text", id:"tvDthMensaje" },
+            { label: "Pruebas Realizadas", type: "textarea", id:"tvDthPruebas", isTestArea: true }, { label: "Contacto En Sitio", type: "text", id:"tvDthContacto" },
+            { label: "Tel. Contacto", type: "text", id:"tvDthTel" }, { label: "Dirección", type: "text", id:"tvDthDireccion" },
+            { label: "Queja", type: "text", id:"tvDthQueja" }, { label: "ID", type: "text", id:"tvDthId" }
+        ],
+         "TV HFC": [
+            { label: "Número", type: "text", id:"tvHfcNumero" }, { label: "No. Tvs Afectados", type: "text", id:"tvHfcAfectados" },
+            { label: "No. Serie Stb", type: "text", id:"tvHfcSerie" }, { label: "Mensaje Que Muestra Tv", type: "text", id:"tvHfcMensaje" },
+            { label: "Pruebas Realizadas", type: "textarea", id:"tvHfcPruebas", isTestArea: true }, { label: "Contacto En Sitio", type: "text", id:"tvHfcContacto" },
+            { label: "Tel. Contacto", type: "text", id:"tvHfcTel" }, { label: "Dirección", type: "text", id:"tvHfcDireccion" },
+            { label: "Queja", type: "text", id:"tvHfcQueja" }, { label: "ID", type: "text", id:"tvHfcId" }
+        ],
+        "INTERNET HFC/LINEA": [
+            { label: "Estado del Puerto", type: "checkbox-group", options: ["UP", "DOWN", "DORMANT"], id:"hfcEstadoPuerto" },
+            { label: "Luz portadora", type: "checkbox-group", options: ["fija", "intermitente", "apagada"], id:"hfcluzportadora" },
+            { label: "Luz online", type: "checkbox-group", options: ["fija", "intermitente", "apagada"], id:"hfcluzonline" },
+            { label: "Niveles De Señal", type: "text", id:"hfcNivelesSenal" }, { label: "Niveles De Ruido", type: "text", id:"hfcNivelesRuido" },
+            { label: "Estatus de niveles", type: "checkbox-group", options: ["Correctos", "Erroneos"], id:"hfcEstatusNiveles" },
+            { label: "Mac Address", type: "text", id:"hfcMac" }, { label: "Problema Reportado", type: "textarea", id:"hfcProblema" },
+            { label: "Pruebas Realizadas", type: "textarea", id:"hfcPruebas", isTestArea: true }, { label: "Contacto En Sitio", type: "text", id:"hfcContacto" },
+            { label: "Tel. Contacto", type: "text", id:"hfcTel" }, { label: "Dirección", type: "text", id:"hfcDireccion" },
+            { label: "Queja", type: "text", id:"hfcQueja" }, { label: "ID", type: "text", id:"hfcId" }
+        ],
+        "LINEA FIJA": [
+            { label: "Al Levantar El Auricular", type: "text", id:"lfAuricular" },
+            { label: "Cuando Le Llaman", type: "text", id:"lfLlaman" },
+            { label: "Diagnóstico", type: "checkbox-group", options: ["Sin tono", "Tono ocupado", "Ruido en la línea", "No saca llamadas", "No entran llamadas", "Llamadas se cortan"], id:"lfDiagnostico" },
+            { label: "Pruebas Realizadas", type: "textarea", id:"lfPruebas", isTestArea: true },
+            { label: "Contacto", type: "text", id:"lfContacto" },
+            { label: "Tel Referencia", type: "text", id:"lfTelRef" },
+            { label: "Dirección", type: "text", id:"lfDireccion" },
+            { label: "Queja", type: "text", id:"lfQueja" },
+            { label: "ID", type: "text", id:"lfId" }
+        ],
+        "GPON/LINEA": [
+            { label: "Estatus de niveles:", type: "checkbox-group", options: ["Correctos", "Erroneos"], id:"gponEstatusNiveles" },
+            { label: "Canal Dañado", type: "checkbox-group", options: ["Datos", "Voz", "Todos"], id:"gponCanalDanado" },
+            { label: "PON", type: "checkbox-group", options: ["fija", "apagada", "intermitente"], id:"gponluzpon" },
+            { label: "LOS", type: "checkbox-group", options: ["fija", "apagada", "roja"], id:"gponluzlos" },
+            { label: "Problema Reportado", type: "textarea", id:"gponProblema" }, { label: "Pruebas Realizadas", type: "textarea", id:"gponPruebas", isTestArea: true },
+            { label: "Contacto En Sitio", type: "text", id:"gponContacto" }, { label: "Tel De Contacto", type: "text", id:"gponTel" },
+            { label: "Dirección", type: "text", id:"gponDireccion" }, { label: "Queja", type: "text", id:"gponQueja" },
+            { label: "ID", type: "text", id:"gponId" }
+        ],
+        "IPTV": [
+            { label: "Número de Serie", type: "text", id:"iptvSerie" }, { label: "Número", type: "text", id:"iptvNumero" },
+            { label: "Mensaje Que Muestra Tv", type: "text", id:"iptvMensaje" }, { label: "Descripción", type: "textarea", id:"iptvDescripcion" },
+            { label: "Pruebas Realizadas", type: "textarea", id:"iptvPruebas", isTestArea: true }, { label: "Nombre Cliente", type: "text", id:"iptvCliente" },
+            { label: "Número De Contacto", type: "text", id:"iptvTel" }, { label: "Dirección", type: "text", id:"iptvDireccion" },
+            { label: "Queja", type: "text", id:"iptvQueja" }, { label: "ID", type: "text", id:"iptvId" }
+        ]
+    };
+    
+    document.addEventListener('DOMContentLoaded', function () {
+        // --- INITIAL SETUP AND EVENT LISTENERS ---
+        
+        // Setup automatic saving for all relevant inputs
+        function setupAutoSaveListeners() {
+            document.querySelectorAll('input, textarea, select').forEach(element => {
+                element.addEventListener('input', () => window.triggerSave());
+            });
+        }
+        setupAutoSaveListeners(); // Initial setup
+
+        // --- NEURON ANIMATION ---
+        (function() {
+            const canvas = document.getElementById('neuronCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            let particlesArray = [];
+
+            class Particle {
+                constructor(x, y, size, color, speedX, speedY) {
+                    this.x = x; this.y = y; this.size = size; this.color = color;
+                    this.speedX = speedX; this.speedY = speedY;
+                }
+                draw() {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fillStyle = this.color;
+                    ctx.fill();
+                }
+                update() {
+                    if (this.x + this.size > canvas.width || this.x - this.size < 0) this.speedX = -this.speedX;
+                    if (this.y + this.size > canvas.height || this.y - this.size < 0) this.speedY = -this.speedY;
+                    this.x += this.speedX; this.y += this.speedY;
+                    this.draw();
+                }
+            }
+
+            window.init_particles = function() {
+                particlesArray = [];
+                const numberOfParticles = (canvas.height * canvas.width) / 10000;
+                for (let i = 0; i < numberOfParticles; i++) {
+                    const size = Math.random() * 2.5 + 1.5;
+                    const x = Math.random() * (innerWidth - size * 2) + size;
+                    const y = Math.random() * (innerHeight - size * 2) + size;
+                    const speedX = (Math.random() * 0.8) - 0.4;
+                    const speedY = (Math.random() * 0.8) - 0.4;
+                    const randomRgbString = globalNeuronColorsRGB[Math.floor(Math.random() * globalNeuronColorsRGB.length)];
+                    const color = `rgba(${randomRgbString}, 0.7)`;
+                    particlesArray.push(new Particle(x, y, size, color, speedX, speedY));
+                }
+            }
+
+            function animate_particles() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                particlesArray.forEach(particle => particle.update());
+                connect_particles();
+                requestAnimationFrame(animate_particles);
+            }
+
+            window.connect_particles = function() {
+                let opacityValue = 1;
+                const connectionRgb = globalNeuronConnectionRGB;
+                for (let a = 0; a < particlesArray.length; a++) {
+                    for (let b = a + 1; b < particlesArray.length; b++) {
+                        let distance = Math.sqrt(((particlesArray[a].x - particlesArray[b].x) ** 2) + ((particlesArray[a].y - particlesArray[b].y) ** 2));
+                        if (distance < (canvas.width / 100 * 12) ) {
+                            opacityValue = 1 - (distance / (canvas.width / 100 * 12) );
+                            ctx.strokeStyle = `rgba(${connectionRgb}, ${opacityValue * 0.4})`; 
+                            ctx.lineWidth = 0.5;
+                            ctx.beginPath();
+                            ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
+                            ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
+                            ctx.stroke();
+                        }
+                    }
+                }
+            }
+            
+            // Initialize neuron colors from defaults before first draw
+            globalNeuronColorsRGB = [
+                defaultThemeSettings['--neuron-color-1-rgb'],
+                defaultThemeSettings['--neuron-color-2-rgb'],
+                defaultThemeSettings['--neuron-color-3-rgb']
+            ];
+            globalNeuronConnectionRGB = defaultThemeSettings['--neuron-connection-rgb'];
+            
+            init_particles();
+            animate_particles();
+            window.addEventListener('resize', () => {
+                canvas.width = innerWidth; canvas.height = innerHeight;
+                init_particles();
+            });
+        })();
+        
+        // --- TAB LOGIC ---
+        window.switchTab = function(tabId, isSubTab = false) {
+            let links, contents, parentContent;
+            
+            if (isSubTab) {
+                parentContent = document.getElementById(tabId).closest('.tab-content');
+                links = parentContent.querySelectorAll('.sub-tab-link');
+                contents = parentContent.querySelectorAll('.sub-tab-content');
+            } else {
+                links = document.querySelectorAll('.tab-nav:not(.sub-tab-nav) .tab-link');
+                contents = document.querySelectorAll('.tab-content:not(.sub-tab-content)');
+            }
+
+            links.forEach(l => l.classList.remove('active'));
+            contents.forEach(c => c.classList.remove('active'));
+
+            const activeLink = document.querySelector(`[data-tab="${tabId}"]`);
+            const activeContent = document.getElementById(tabId);
+
+            if (activeLink) activeLink.classList.add('active');
+            if (activeContent) activeContent.classList.add('active');
+
+            // If switching a main tab, activate its first sub-tab by default
+            if (!isSubTab && activeContent && activeContent.querySelector('.sub-tab-nav')) {
+                const firstSubTabLink = activeContent.querySelector('.sub-tab-link');
+                if (firstSubTabLink && !activeContent.querySelector('.sub-tab-link.active')) {
+                    switchTab(firstSubTabLink.dataset.tab, true);
+                }
+            }
+            window.triggerSave();
+        }
+
+        document.querySelectorAll('.tab-link').forEach(link => {
+            link.addEventListener('click', (event) => {
+                const isSub = link.classList.contains('sub-tab-link');
+                if(isSub) event.stopPropagation();
+                switchTab(link.dataset.tab, isSub);
+            });
+        });
+
+        // --- WIDGETS LOGIC ---
+        function toggleWidget(widgetToToggle, button) {
+            const isAlreadyOpen = widgetToToggle === openWidgetPanel;
+
+            if (openWidgetPanel) {
+                openWidgetPanel.classList.remove('active-widget'); 
+                const oldButton = document.querySelector('.widget-toggle-button.active-toggle');
+                 if(oldButton) {
+                    oldButton.classList.remove('active-toggle');
+                    if (oldButton.id === 'toggleCopilot') oldButton.textContent = '💬';
+                    else if (oldButton.id === 'toggleNotes') oldButton.textContent = '📝';
+                    else if (oldButton.id === 'toggleUsers') oldButton.textContent = '👤';
+                    else if (oldButton.id === 'toggleAddBox') oldButton.textContent = '➕'; 
+                    else if (oldButton.id === 'toggleTheme') oldButton.textContent = '🎨';
+                 }
+            }
+
+            if (isAlreadyOpen) {
+                openWidgetPanel = null; 
+            } else {
+                widgetToToggle.classList.add('active-widget'); 
+                const buttonRect = button.getBoundingClientRect();
+                widgetToToggle.style.bottom = `${window.innerHeight - buttonRect.top + 10}px`; 
+
+                let panelRight = window.innerWidth - buttonRect.right;
+                if (buttonRect.right < widgetToToggle.offsetWidth) { 
+                    panelRight = 10; 
+                }
+                widgetToToggle.style.right = `${panelRight}px`;
+
+                button.classList.add('active-toggle');
+                button.textContent = '❌'; 
+                openWidgetPanel = widgetToToggle;
+            }
+        }
+        
+        document.getElementById('toggleNotes')?.addEventListener('click', function() { toggleWidget(document.getElementById('notesWidget'), this); });
+        document.getElementById('toggleUsers')?.addEventListener('click', function() { toggleWidget(document.getElementById('usersWidget'), this); });
+        document.getElementById('toggleCopilot')?.addEventListener('click', function() { toggleWidget(document.getElementById('copilotWidget'), this); });
+        document.getElementById('toggleAddBox')?.addEventListener('click', function() { toggleWidget(document.getElementById('addBoxWidget'), this); });
+        document.getElementById('toggleTheme')?.addEventListener('click', function() { toggleWidget(document.getElementById('themeWidgetPanel'), this); });
+
+        // --- THEME WIDGET LOGIC ---
+        function hexToRgbString(hex) {
+            let r = 0, g = 0, b = 0;
+            if (hex.length == 4) { r = "0x" + hex[1] + hex[1]; g = "0x" + hex[2] + hex[2]; b = "0x" + hex[3] + hex[3]; }
+            else if (hex.length == 7) { r = "0x" + hex[1] + hex[2]; g = "0x" + hex[3] + hex[4]; b = "0x" + hex[5] + hex[6]; }
+            return `${+r}, ${+g}, ${+b}`;
+        }
+
+        function rgbStringToHex(rgbString) {
+            if (!rgbString || typeof rgbString !== 'string') return '#000000';
+            const rgb = rgbString.split(',').map(Number);
+            return "#" + ((1 << 24) + (rgb[0] << 16) + (rgb[1] << 8) + rgb[2]).toString(16).slice(1).toUpperCase();
+        }
+        
+        function applyCurrentTheme() {
+            themeColorInputs.forEach(inputConfig => {
+                const inputElement = document.getElementById(inputConfig.id);
+                if (inputElement) {
+                    const colorValue = inputElement.value;
+                    if (inputConfig.type === 'css') {
+                        document.documentElement.style.setProperty(inputConfig.cssVar, colorValue);
+                    } else if (inputConfig.type === 'neuron') {
+                        const rgbString = hexToRgbString(colorValue);
+                        document.documentElement.style.setProperty(inputConfig.neuronVar, rgbString);
+                        if (inputConfig.neuronVar === '--neuron-color-1-rgb') globalNeuronColorsRGB[0] = rgbString;
+                        else if (inputConfig.neuronVar === '--neuron-color-2-rgb') globalNeuronColorsRGB[1] = rgbString;
+                        else if (inputConfig.neuronVar === '--neuron-color-3-rgb') globalNeuronColorsRGB[2] = rgbString;
+                        else if (inputConfig.neuronVar === '--neuron-connection-rgb') globalNeuronConnectionRGB = rgbString;
+                    }
+                }
+            });
+            if (typeof init_particles === "function") init_particles();
+            window.triggerSave();
+        }
+
+        function resetThemeToDefaults() {
+            Object.keys(defaultThemeSettings).forEach(varName => {
+                document.documentElement.style.setProperty(varName, defaultThemeSettings[varName]);
+            });
+            globalNeuronColorsRGB = [ defaultThemeSettings['--neuron-color-1-rgb'], defaultThemeSettings['--neuron-color-2-rgb'], defaultThemeSettings['--neuron-color-3-rgb'] ];
+            globalNeuronConnectionRGB = defaultThemeSettings['--neuron-connection-rgb'];
+            initializeThemeWidget();
+            if (typeof init_particles === "function") init_particles();
+            createCustomAlert('Tema restaurado a los valores por defecto.');
+            window.triggerSave();
+        }
+
+        window.initializeThemeWidget = function() {
+            themeColorInputs.forEach(inputConfig => {
+                const inputElement = document.getElementById(inputConfig.id);
+                if (inputElement) {
+                    let currentValue;
+                    if (inputConfig.type === 'css') {
+                        currentValue = getComputedStyle(document.documentElement).getPropertyValue(inputConfig.cssVar).trim();
+                    } else if (inputConfig.type === 'neuron') {
+                        const rgbString = getComputedStyle(document.documentElement).getPropertyValue(inputConfig.neuronVar).trim();
+                        currentValue = rgbStringToHex(rgbString);
+                    }
+                    inputElement.value = currentValue;
+                }
+            });
+        }
+
+        document.getElementById('applyThemeBtn')?.addEventListener('click', applyCurrentTheme);
+        document.getElementById('resetThemeBtn')?.addEventListener('click', resetThemeToDefaults);
+        
+        // --- TIMER LOGIC ---
+        const topTimerDisplay = document.getElementById('topTimerDisplay');
+        const topTimerInputMinutes = document.getElementById('topTimerInputMinutes');
+        const startTimerBtnTop = document.getElementById('startTimerBtnTop');
+        const stopTimerBtnTop = document.getElementById('stopTimerBtnTop');
+        const resetTimerBtnTop = document.getElementById('resetTimerBtnTop');
+        let timerInterval, totalSeconds = 0, initialSetMinutes = 5;
+
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+        function updateTopTimerDisplay() { if (topTimerDisplay) topTimerDisplay.textContent = formatTime(totalSeconds); }
+        function setInitialTimerValuesTop() {
+            initialSetMinutes = parseInt(topTimerInputMinutes.value, 10) || 5;
+            totalSeconds = initialSetMinutes * 60;
+            updateTopTimerDisplay();
+        }
+        startTimerBtnTop?.addEventListener('click', () => {
+            clearInterval(timerInterval);
+            if (totalSeconds <= 0) setInitialTimerValuesTop();
+            if(totalSeconds <= 0) return;
+            timerInterval = setInterval(() => {
+                totalSeconds--;
+                updateTopTimerDisplay();
+                if (totalSeconds < 0) {
+                    clearInterval(timerInterval);
+                    createCustomAlert("Time's up!");
+                }
+            }, 1000);
+        });
+        stopTimerBtnTop?.addEventListener('click', () => clearInterval(timerInterval));
+        resetTimerBtnTop?.addEventListener('click', () => { clearInterval(timerInterval); setInitialTimerValuesTop(); });
+        if(topTimerInputMinutes) { setInitialTimerValuesTop(); topTimerInputMinutes.addEventListener('change', setInitialTimerValuesTop); }
+
+        // --- WIDGETS (Notes & Users) COPY/CLEAR LOGIC ---
+        document.getElementById('copyNotesButton')?.addEventListener('click', () => copyToClipboard('notesArea', 'Notas copiadas.'));
+        document.getElementById('clearNotesButton')?.addEventListener('click', () => clearTextarea('notesArea', '¿Limpiar notas?'));
+        document.getElementById('copyUsersButton')?.addEventListener('click', () => copyToClipboard('usersArea', 'Lista de usuarios copiada.'));
+        document.getElementById('clearUsersButton')?.addEventListener('click', () => clearTextarea('usersArea', '¿Limpiar lista de usuarios?'));
+        
+        function copyToClipboard(elementId, message) {
+            const el = document.getElementById(elementId);
+            if (el && el.value) {
+                navigator.clipboard.writeText(el.value).then(() => createCustomAlert(message));
+            }
+        }
+        function clearTextarea(elementId, confirmMessage) {
+            createCustomConfirm(confirmMessage, () => {
+                const el = document.getElementById(elementId);
+                if (el) el.value = '';
+                window.triggerSave();
+            });
+        }
+        
+        // --- GENERIC TEMPLATE LOGIC ---
+        window.actualizarPruebasRealizadas = function() {
+            const checkboxes = document.querySelectorAll('#sub-tab-genericas .checkbox-group input[type="checkbox"]:checked');
+            const pruebasRealizadasEl = document.getElementById('pruebasRealizadas');
+            if (pruebasRealizadasEl) {
+                pruebasRealizadasEl.value = Array.from(checkboxes).map(cb => cb.value.trim()).join(', ');
+                window.triggerSave();
+            }
+        };
+        document.getElementById('clearGenericFormButton')?.addEventListener('click', () => {
+            document.getElementById('clienteForm').reset();
+            document.querySelectorAll('#sub-tab-genericas .checkbox-group input[type="checkbox"]').forEach(cb => cb.checked = false);
+            actualizarPruebasRealizadas();
+        });
+        document.querySelectorAll('#sub-tab-genericas .checkbox-group input[type="checkbox"]').forEach(cb => {
+            cb.addEventListener('change', actualizarPruebasRealizadas);
+        });
+        document.getElementById('copyButton')?.addEventListener('click', function () {
+            const contenido = `ID de llamada: ${document.getElementById('id')?.value || ''}\nNombre del contacto: ${document.getElementById('nombreCliente')?.value || ''}\nN° Incidencia: ${document.getElementById('numeroInconveniente')?.value || ''}\nInconveniente: ${document.getElementById('Inconveniente')?.value || ''}\nTipo Servicio: ${document.getElementById('tipoServicio')?.value || ''}\n\nPRUEBAS REALIZADAS:\n${document.getElementById('pruebasRealizadas')?.value || ''}`;
+            navigator.clipboard.writeText(contenido).then(() => {
+                createCustomAlert('Contenido de la plantilla copiado.');
+                const backupArea = document.getElementById('backupTemplatesTextarea');
+                if (backupArea) {
+                    const timestamp = new Date().toLocaleString();
+                    backupArea.value += `--- Plantilla Genérica (${timestamp}) ---\n${contenido}\n\n`;
+                    window.triggerSave();
+                }
+            });
+        });
+
+        // --- CHECKBOX DYNAMICS (ADD/REMOVE) ---
+        window.addCheckboxItem = function(checkboxGroupElement) {
+            let newItemTitle = prompt("Ingrese el TÍTULO para el nuevo checkbox (lo que se muestra):");
+            if (!newItemTitle || !newItemTitle.trim()) return;
+            let newItemContent = prompt("Ingrese el CONTENIDO para el nuevo checkbox (lo que se copia):", newItemTitle);
+            if (newItemContent === null) return;
+
+            const container = document.createElement('div');
+            container.className = 'checkbox-item-container';
+            container.innerHTML = `<label><input type="checkbox" value="${newItemContent}"> ${newItemTitle}</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button>`;
+            
+            const addButtonContainer = checkboxGroupElement.querySelector('.add-item-btn-container');
+            checkboxGroupElement.insertBefore(container, addButtonContainer);
+            
+            // Re-attach listeners for the correct tab
+            const activeTabId = checkboxGroupElement.closest('.sub-tab-content').id;
+            if (activeTabId === 'sub-tab-genericas') {
+                container.querySelector('input').addEventListener('change', actualizarPruebasRealizadas);
+            } else if (activeTabId === 'sub-tab-quejas') {
+                container.querySelector('input').addEventListener('change', updateMemoPruebasRealizadas);
+            }
+            window.triggerSave();
+        };
+        window.removeCheckboxItem = function(buttonElement) {
+            createCustomConfirm('¿Seguro que quieres eliminar este ítem?', () => {
+                const itemContainer = buttonElement.closest('.checkbox-item-container');
+                const activeTabId = itemContainer.closest('.sub-tab-content').id;
+                itemContainer.remove();
+                if (activeTabId === 'sub-tab-genericas') actualizarPruebasRealizadas();
+                else if (activeTabId === 'sub-tab-quejas') updateMemoPruebasRealizadas();
+                window.triggerSave();
+            });
+        };
+
+        // --- MEMOS DE QUEJAS LOGIC ---
+        const opcionesMemoQuejasDropdown = document.getElementById('opcionesMemoQuejas');
+        const formContainerMemoQuejas = document.getElementById('formContainerMemoQuejas');
+
+        window.renderMemoFields = function(templateName) {
+            formContainerMemoQuejas.innerHTML = ''; 
+            const templateFields = predefinedMemoTemplates[templateName] || [];
+
+            const quienGeneraWrapper = document.createElement('div');
+            quienGeneraWrapper.className = 'dynamic-checkbox-group';
+            quienGeneraWrapper.innerHTML = `<label>Quien genera queja:</label><div class="checkbox-group-inline">
+                <div><input type="checkbox" value="Telefónico" id="quejaTelefonico"><label for="quejaTelefonico">Telefónico</label></div>
+                <div><input type="checkbox" value="Corporativo" id="quejaCorporativo"><label for="quejaCorporativo">Corporativo</label></div>
+            </div>`;
+            formContainerMemoQuejas.appendChild(quienGeneraWrapper);
+
+            templateFields.forEach((field) => {
+                const wrapper = document.createElement('div');
+                wrapper.className = 'form-group';
+                const labelEl = document.createElement('label');
+                labelEl.textContent = field.label;
+                labelEl.htmlFor = field.id;
+                wrapper.appendChild(labelEl);
+
+                if(field.type === 'checkbox-group') {
+                    const grupo = document.createElement('div');
+                    grupo.className = 'checkbox-group-inline'; 
+                    field.options.forEach((opcion, optIndex) => {
+                        grupo.innerHTML += `<div><input type="checkbox" value="${opcion}" id="${field.id}_${optIndex}"><label for="${field.id}_${optIndex}">${opcion}</label></div>`;
+                    });
+                    wrapper.appendChild(grupo);
+                } else {
+                    const input = field.type === 'textarea' ? document.createElement('textarea') : document.createElement('input');
+                    if (field.type !== 'textarea') input.type = field.type;
+                    input.placeholder = field.label;
+                    input.className = 'dynamic-input';
+                    input.id = field.id;
+                    if(field.isTestArea) input.dataset.isTestArea = "true";
+                    wrapper.appendChild(input);
+                }
+                formContainerMemoQuejas.appendChild(wrapper);
+            });
+            
+            // Attach listeners to all new checkboxes for this form
+            formContainerMemoQuejas.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+                cb.addEventListener('change', updateMemoPruebasRealizadas);
+            });
+        }
+
+        window.updateMemoPruebasRealizadas = function() {
+            const testArea = formContainerMemoQuejas.querySelector('textarea[data-is-test-area="true"]');
+            if (testArea) {
+                const checkboxesInMemoTab = document.querySelectorAll('#sub-tab-quejas .checkboxes-area-tab input[type="checkbox"]:checked');
+                const checkboxesInDynamicForm = formContainerMemoQuejas.querySelectorAll('input[type="checkbox"]:checked');
+                const allChecked = [...checkboxesInMemoTab, ...checkboxesInDynamicForm];
+                testArea.value = allChecked.map(chk => chk.value.trim()).join(', ');
+                window.triggerSave();
+            }
+        };
+
+        opcionesMemoQuejasDropdown?.addEventListener('change', function () {
+            const seleccion = this.value;
+            renderMemoFields(seleccion); 
+            document.getElementById('copyMemoQuejaButton').style.display = 'block';
+            document.getElementById('clearMemoQuejaButton').style.display = 'block';
+            window.triggerSave();
+        });
+
+        window.clearMemoQueja = function() {
+            formContainerMemoQuejas.innerHTML = '';
+            if(opcionesMemoQuejasDropdown) opcionesMemoQuejasDropdown.selectedIndex = 0;
+            document.getElementById('copyMemoQuejaButton').style.display = 'none';
+            document.getElementById('clearMemoQuejaButton').style.display = 'none';
+            document.querySelectorAll('#sub-tab-quejas .checkbox-group input[type="checkbox"]').forEach(cb => cb.checked = false);
+            window.triggerSave();
+        };
+        document.getElementById('clearMemoQuejaButton')?.addEventListener('click', clearMemoQueja);
+
+        document.getElementById('copyMemoQuejaButton')?.addEventListener('click', function () {
+            let content = '';
+            formContainerMemoQuejas.querySelectorAll('.form-group, .dynamic-checkbox-group').forEach(grupo => {
+                const labelText = grupo.querySelector('label')?.textContent.replace(':', '') || 'Campo';
+                const checkboxes = grupo.querySelectorAll('input[type="checkbox"]:checked');
+                const inputs = grupo.querySelectorAll('.dynamic-input, textarea');
+
+                if (checkboxes.length > 0) {
+                    content += `${labelText}: ${Array.from(checkboxes).map(cb => cb.value).join(', ')}\n`;
+                }
+                inputs.forEach(input => {
+                    content += `${labelText}: ${input.value || '(Sin valor)'}\n`;
+                });
+            });
+            navigator.clipboard.writeText(content.trim()).then(() => {
+                createCustomAlert('Contenido del memo de queja copiado.');
+            });
+        });
+
+        // --- WF & ORDEN MEMOS LOGIC ---
+        const wfMemosDropdown = document.getElementById('wfMemosDropdown');
+        const ordenMemosDropdown = document.getElementById('ordenMemosDropdown');
+        
+        function populateDropdown(dropdown, templates) {
+            Object.keys(templates).forEach(key => {
+                const option = document.createElement('option');
+                option.value = key;
+                option.textContent = key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+                dropdown.appendChild(option);
+            });
+        }
+        
+        function renderMemoForm(containerId, templates, templateName) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            const fields = templates[templateName] || [];
+            fields.forEach(field => {
+                const wrapper = document.createElement('div');
+                wrapper.className = 'form-group';
+                wrapper.innerHTML = `<label for="${field.id}">${field.label}</label>
+                                     <${field.type === 'textarea' ? 'textarea' : 'input type="text"'} 
+                                        id="${field.id}" 
+                                        class="dynamic-input" 
+                                        placeholder="${field.label}" 
+                                        value="${field.defaultValue || ''}"></${field.type === 'textarea' ? 'textarea' : 'input'}>`;
+                container.appendChild(wrapper);
+            });
+        }
+        
+        function setupMemoLogic(type) {
+            const dropdown = document.getElementById(`${type}MemosDropdown`);
+            const containerId = `formContainer${type.charAt(0).toUpperCase() + type.slice(1)}Memos`;
+            const templates = type === 'wf' ? predefinedWFMemos : predefinedOrdenMemos;
+            
+            populateDropdown(dropdown, templates);
+            
+            dropdown.addEventListener('change', function() {
+                renderMemoForm(containerId, templates, this.value);
+                document.getElementById(`copy${type.charAt(0).toUpperCase() + type.slice(1)}MemosButton`).style.display = 'block';
+                document.getElementById(`clear${type.charAt(0).toUpperCase() + type.slice(1)}MemosButton`).style.display = 'block';
+                window.triggerSave();
+            });
+            
+            document.getElementById(`copy${type.charAt(0).toUpperCase() + type.slice(1)}MemosButton`)?.addEventListener('click', () => {
+                let content = `ASUNTO: ${dropdown.options[dropdown.selectedIndex].text}\n`;
+                document.querySelectorAll(`#${containerId} .dynamic-input, #${containerId} textarea`).forEach(field => {
+                    const label = field.previousElementSibling.textContent;
+                    content += `${label}: ${field.value || '(Sin valor)'}\n`;
+                });
+                navigator.clipboard.writeText(content.trim()).then(() => createCustomAlert(`Memo de ${type.toUpperCase()} copiado.`));
+            });
+            
+            window[`clear${type.charAt(0).toUpperCase() + type.slice(1)}Memos`] = function() {
+                document.getElementById(containerId).innerHTML = '';
+                dropdown.selectedIndex = 0;
+                document.getElementById(`copy${type.charAt(0).toUpperCase() + type.slice(1)}MemosButton`).style.display = 'none';
+                document.getElementById(`clear${type.charAt(0).toUpperCase() + type.slice(1)}MemosButton`).style.display = 'none';
+                window.triggerSave();
+            }
+            document.getElementById(`clear${type.charAt(0).toUpperCase() + type.slice(1)}MemosButton`)?.addEventListener('click', window[`clear${type.charAt(0).toUpperCase() + type.slice(1)}Memos`]);
+        }
+
+        setupMemoLogic('wf');
+        setupMemoLogic('orden');
+
+        // --- TRANSFERS LOGIC ---
+        const dynamicTransfersList = document.getElementById('dynamicTransfersList');
+        const addTransferBtn = document.getElementById('addTransferBtn');
+        const defaultTransferItems = [
+            { service: "SERVICIO MOVIL", value: "gt_movil_soporte" },
+            { service: "COMERCIAL", value: "GT_RESIDENCIAL_INFORMACION" },
+            { service: "CENTRO DE PAGOS", value: "GT_CENTRO DE PAGOS" },
+            { service: "AGREGAR NUMERO A LA LLAMADA", value: "GT_RESIDENCIAL_SOPORTE_LINEA -" },
+            { service: "CORPORATIVO", value: "24201414" },
+            { service: "CAMBIO DE CONTRASEÑA Y DEMAS", value: "24201400" },
+            { service: "LLAMADAS DESDE TIGO", value: "25028850" },
+            { service: "WHATSAPP", value: "42147100" },
+            { service: "migración gpon", value: "gt_quejas_migracion_gpon" }
+        ];
+        
+        window.renderTransferItems = function() {
+            dynamicTransfersList.innerHTML = ''; 
+            const allTransfers = [...defaultTransferItems, ...window.customTransferItems];
+            allTransfers.forEach((item, index) => {
+                const isCustom = index >= defaultTransferItems.length;
+                const p = document.createElement('p');
+                p.innerHTML = `<strong>${item.service}:</strong> ${item.value} 
+                             ${isCustom ? `<button type="button" class="manage-button remove-item" onclick="removeTransferItem('${item.service}')">X</button>` : ''}`;
+                dynamicTransfersList.appendChild(p);
+            });
+        }
+        
+        addTransferBtn?.addEventListener('click', () => {
+            const service = prompt("Ingrese el SERVICIO para la nueva transferencia:");
+            if (!service) return;
+            const value = prompt("Ingrese el VALOR (número o nombre):");
+            if (value === null) return;
+            window.customTransferItems.push({ service: service.trim(), value: value.trim() });
+            renderTransferItems();
+            window.triggerSave();
+        });
+
+        window.removeTransferItem = function(serviceToRemove) {
+            createCustomConfirm(`¿Eliminar la transferencia "${serviceToRemove}"?`, () => {
+                window.customTransferItems = window.customTransferItems.filter(item => item.service !== serviceToRemove);
+                renderTransferItems();
+                window.triggerSave();
+            });
+        }
+
+        // --- IMPORT/EXPORT LOGIC ---
+        document.getElementById('exportDataBtn')?.addEventListener('click', () => {
+            const dataToExport = getUIDataForSave();
+            const dataStr = JSON.stringify(dataToExport, null, 2);
+            const blob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `omega_backup_${new Date().toISOString().slice(0,10)}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        });
+
+        document.getElementById('importDataInput')?.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    try {
+                        const importedData = JSON.parse(e.target.result);
+                        createCustomConfirm('¿Importar este archivo? Se sobrescribirán todos los datos actuales.', () => {
+                            applyDataToUI(importedData);
+                            window.triggerSave(); // Save the newly imported data
+                            createCustomAlert('Datos importados y guardados.');
+                        });
+                    } catch (error) {
+                        createCustomAlert('Error al importar. El archivo no es un JSON válido.');
+                    }
+                };
+                reader.readAsText(file);
+            }
+        });
+
+        // --- DRAGGABLE/RESIZABLE BOXES LOGIC ---
+        function makeElementDraggableAndResizable(elmnt) {
+            let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+            const dragHandle = elmnt.querySelector(".drag-handle");
+            if (dragHandle) dragHandle.onmousedown = dragMouseDown;
+
+            function dragMouseDown(e) {
+                e.preventDefault();
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+                document.onmouseup = closeDragElement;
+                document.onmousemove = elementDrag;
+                elmnt.classList.add("dragging");
+            }
+
+            function elementDrag(e) {
+                e.preventDefault();
+                pos1 = pos3 - e.clientX;
+                pos2 = pos4 - e.clientY;
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+                elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+                elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+            }
+
+            function closeDragElement() {
+                document.onmouseup = null;
+                document.onmousemove = null;
+                elmnt.classList.remove("dragging");
+                window.triggerSave(); // Save position on drop
+            }
+        }
+        document.querySelectorAll('.draggable-box').forEach(makeElementDraggableAndResizable);
+        
+        // --- MISC & UTILITY FUNCTIONS ---
+        window.editBoxTitle = function(titleSpanElement) {
+            const newTitle = prompt("Editar título del recuadro:", titleSpanElement.textContent.trim());
+            if (newTitle) {
+                titleSpanElement.textContent = newTitle.trim();
+                window.triggerSave();
+            }
+        };
+        window.loadDocumentInIframe = function(iframeId, docUrl) {
+            const iframe = document.getElementById(iframeId);
+            if (iframe) iframe.src = docUrl;
+        };
+        const importantNoticeModal = document.getElementById('importantNoticeModal');
+        window.showImportantNoticeModal = function() {
+            if (importantNoticeModal) importantNoticeModal.style.display = 'flex';
+        }
+        document.getElementById('closeNoticeModalBtn')?.addEventListener('click', () => {
+            if (importantNoticeModal) importantNoticeModal.style.display = 'none';
+        });
+        function createCustomAlert(message) {
+            const modalId = 'customAlertModal';
+            document.getElementById(modalId)?.remove();
+            const modal = document.createElement('div');
+            modal.id = modalId;
+            modal.className = 'popup-modal';
+            modal.style.display = 'flex';
+            modal.innerHTML = `<div class="popup-content" style="max-width: 400px;"><p style="margin-bottom: 20px; font-size: 1.1em;">${message}</p><button class="button">OK</button></div>`;
+            document.body.appendChild(modal);
+            modal.querySelector('button').onclick = () => modal.remove();
+        }
+        function createCustomConfirm(message, onConfirm) {
+            const modalId = 'customConfirmModal';
+            document.getElementById(modalId)?.remove();
+            const modal = document.createElement('div');
+            modal.id = modalId;
+            modal.className = 'popup-modal';
+            modal.style.display = 'flex';
+            modal.innerHTML = `<div class="popup-content" style="max-width: 400px;"><p style="margin-bottom: 20px; font-size: 1.1em;">${message}</p><button id="confirmYes" class="button">Sí</button><button id="confirmNo" class="button clear-button">No</button></div>`;
+            document.body.appendChild(modal);
+            modal.querySelector('#confirmYes').onclick = () => { onConfirm(); modal.remove(); };
+            modal.querySelector('#confirmNo').onclick = () => modal.remove();
+        }
+        
+        // Final initializations
+        initializeTMOCalculator();
+        
+    }); // End DOMContentLoaded
+    </script>
+</body>
+</html>
