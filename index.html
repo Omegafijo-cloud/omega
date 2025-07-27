@@ -51,14 +51,12 @@
             z-index: -1;
         }
         
-        /* Contenedor de la aplicación que se muestra/oculta */
         #appContainer {
-            display: none; /* Oculto hasta que la autenticación esté lista */
+            display: none;
         }
 
-        /* Página de Inicio de Sesión (Landing Page) */
         #loginPage {
-            display: flex; /* Se mostrará por defecto hasta que el usuario inicie sesión */
+            display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
@@ -87,7 +85,6 @@
             vertical-align: middle;
         }
 
-        /* Estilo general para botones */
         .button, button.data-action-btn {
             background: linear-gradient(to right, var(--morado), var(--azul-oscuro));
             border: none;
@@ -112,14 +109,28 @@
 
         .button.clear-button, button.clear-button.data-action-btn {
             background: linear-gradient(to right, var(--rojo-claro), var(--rojo-oscuro));
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
-            padding: 10px 20px;
-            font-size: 14px;
         }
         .button.clear-button:hover, button.clear-button.data-action-btn:hover {
             background: linear-gradient(to right, var(--rojo-oscuro), var(--rojo-claro));
-            transform: translateY(-1px);
-            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.25);
+        }
+        
+        .social-button {
+            background: #FFFFFF;
+            color: #5e5e5e;
+            font-weight: 500;
+            text-transform: none;
+            border: 1px solid #c7c7c7;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 12px;
+            font-size: 1.1em;
+        }
+        .social-button:hover {
+            background: #f2f2f2;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
         }
 
         .manage-button {
@@ -139,7 +150,6 @@
         .manage-button:hover { filter: brightness(1.1); transform: translateY(-1px); }
 
 
-        /* Página de Contenido Principal y Barra de Título */
         #mainContentPage {
             width: 100%;
             min-height: 100vh;
@@ -200,7 +210,6 @@
         #mainTitleBar .logo-left { margin-right: auto; } 
 
 
-        /* Timer en la barra superior */
         #topTimerContainer {
             display: flex;
             align-items: center;
@@ -208,7 +217,7 @@
             color: var(--blanco);
             font-size: 1.2em;
             font-weight: 500;
-            margin-left: auto; /* Mueve el temporizador a la derecha */
+            margin-left: auto;
         }
         #topTimerDisplay {
             font-size: 1.1em;
@@ -250,7 +259,6 @@
         }
 
 
-        /* Estilos para Tabs */
         .tab-container {
             width: 100%;
             padding-top: 70px; 
@@ -310,7 +318,6 @@
         }
 
 
-        /* Contenedores de Formularios y Secciones */
         .main-container-tab { 
             display: flex; 
             flex-wrap: wrap;
@@ -321,30 +328,24 @@
             box-sizing: border-box;
         }
 
-        .draggable-box {
+        .draggable-box { /* Renamed from draggable-box to fixed-box */
             background-color: rgba(255, 255, 255, 0.9);
             padding: 20px;
             border-radius: 20px;
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
             transition: box-shadow 0.2s ease;
             margin-bottom: 25px; 
-            position: relative; 
+            position: relative; /* Changed to relative for normal flow */
             z-index: 1; 
             width: calc(33% - 20px); 
             min-width: 280px; 
             box-sizing: border-box;
-            resize: both; 
-            overflow: auto; 
-            cursor: default; 
+            /* Removed resize: both; overflow: auto; cursor: grab; */
         }
-        .draggable-box.dragging {
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-            z-index: 100; 
-            opacity: 0.9;
-        }
+        /* Removed .draggable-box.dragging styles */
         
         .drag-handle {
-            cursor: grab;
+            /* Removed cursor: grab; */
             padding-bottom: 10px;
             margin-bottom: 20px;
             border-bottom: 2px solid rgba(106, 27, 154, 0.3);
@@ -353,7 +354,7 @@
             align-items: center;
             position: relative; 
         }
-        .drag-handle:active { cursor: grabbing; }
+        /* Removed .drag-handle:active styles */
 
         .draggable-box h2, .draggable-box h3, .draggable-box h5 {
             text-align: center; margin-top: 0;
@@ -365,6 +366,7 @@
         .draggable-box h5 { font-size: 1.6em; } 
 
         .edit-title-btn, .remove-box-btn {
+            /* These buttons are now removed from HTML, keeping styles in case of future use */
             background: none;
             border: none;
             font-size: 1.2em;
@@ -380,7 +382,6 @@
         .remove-box-btn:hover { background-color: rgba(231, 76, 60, 0.1); }
 
 
-        /* Grupos de Formulario y Entradas */
         .form-group { margin-bottom: 25px; }
         .form-group label {
             margin-bottom: 10px; font-size: 16px; color: var(--texto-intermedio); display: block; font-weight: 500;
@@ -397,7 +398,6 @@
         }
         .form-group textarea, .dynamic-input[type="textarea"] { resize: vertical; min-height: 120px; }
 
-        /* Checkboxes */
         .checkbox-item-container {
             display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px;
         }
@@ -412,7 +412,6 @@
         }
         .add-item-btn-container { margin-top: 15px; text-align: right; }
 
-        /* Estilos para Formularios Dinámicos (Memos de Quejas, WF, Orden) */
         #formContainerMemoQuejas, #formContainerWFMemos, #formContainerOrdenMemos {
             margin-top: 20px;
             border-top: 1px dashed rgba(106, 27, 154, 0.3);
@@ -485,7 +484,6 @@
             background-color: rgba(231, 76, 60, 0.1);
         }
 
-        /* Estilos para la lista de transferencias */
         .transfers-list {
             background-color: rgba(0, 188, 212, 0.1);
             padding: 15px;
@@ -506,7 +504,6 @@
             font-weight: 700;
         }
 
-        /* Firma */
         .firma-keiner {
             margin-top: 40px;
             margin-bottom: 20px;
@@ -518,7 +515,6 @@
             font-weight: bold;
         }
 
-        /* Contenedor de Widgets Inferiores y Botones Toggle */
         #bottomWidgetsContainer {
             position: fixed; bottom: 0; right: 0; padding: 10px;
             display: flex;
@@ -544,13 +540,11 @@
         }
         #toggleNotes { background: linear-gradient(to right, var(--turquesa), #0097A7); }
         #toggleNotes.active-toggle { background: linear-gradient(to right, var(--rojo-claro), var(--rojo-oscuro)); }
-        #toggleAddBox { background: linear-gradient(to right, var(--verde-claro), var(--verde-oscuro)); } 
-        #toggleAddBox.active-toggle { background: linear-gradient(to right, var(--rojo-claro), var(--rojo-oscuro)); }
+        /* Removed #toggleAddBox styles */
         #toggleTheme { background: linear-gradient(to right, #ff9800, #f57c00); }
         #toggleTheme.active-toggle { background: linear-gradient(to right, var(--rojo-claro), var(--rojo-oscuro)); }
 
 
-        /* Paneles de Widgets */
         .widget-panel {
             width: 360px;
             height: auto;
@@ -576,7 +570,6 @@
             border-bottom: 1px solid rgba(106, 27, 154, 0.3);
         }
 
-        /* Notes & Users Widget Específico */
         #notesArea, #usersArea {
             width: 100%; flex-grow: 1; padding: 10px; border-radius: 8px;
             border: 1px solid #ddd; font-size: 16px; margin-bottom: 10px;
@@ -586,11 +579,9 @@
         .button-group-widget { display: flex; gap: 10px; justify-content: flex-end; }
         .button-group-widget .button { padding: 8px 15px; font-size: 14px; min-width: 100px; }
 
-        /* Copilot Widget Específico */
         #copilotWidget { padding: 0; height: 500px; }
         #copilotWidget iframe { width: 100%; height: 100%; border: none; }
 
-        /* Theme Widget Específico */
         #themeWidgetPanel .theme-color-group {
             margin-bottom: 15px;
             padding-bottom: 15px;
@@ -626,7 +617,6 @@
          }
 
 
-        /* Dynamic checkbox area within custom boxes */
         .dynamic-checkbox-area {
             border-top: 1px dashed rgba(106, 27, 154, 0.3);
             padding-top: 15px;
@@ -639,7 +629,6 @@
             margin-top: 10px;
         }
 
-        /* TMO Calculator Specific Styles */
         #sub-tab-tmo .main-container-tab {
             display: flex;
             flex-direction: row;
@@ -690,8 +679,7 @@
             font-size: 1.4em;
             color: var(--texto-oscuro);
             box-sizing: border-box;
-            text-align: center;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            transition: border-color: 0.3s ease, box-shadow 0.3s ease;
         }
 
         #sub-tab-tmo #minutesInput:focus {
@@ -713,7 +701,6 @@
             transition: all 0.3s ease;
         }
 
-        /* Result Colors for TMO Calculator */
         #sub-tab-tmo .result-red {
             color: var(--rojo-oscuro) !important;
             border-color: var(--rojo-oscuro) !important;
@@ -726,7 +713,6 @@
             background-color: rgba(40, 167, 69, 0.1) !important;
         }
 
-        /* Styles for Avisos Tab (tab-avisos) */
         .notices-display {
             background-color: rgba(255, 255, 255, 0.95);
             padding: 25px;
@@ -781,7 +767,6 @@
             padding: 20px;
         }
 
-        /* Styles for Document Viewer Boxes */
         .document-viewer-box {
             background-color: rgba(255, 255, 255, 0.95);
             padding: 25px;
@@ -832,7 +817,6 @@
             box-sizing: border-box;
         }
 
-        /* Estilos para el aviso emergente */
         .popup-modal {
             display: none;
             position: fixed;
@@ -896,7 +880,6 @@
             to { opacity: 1; transform: scale(1); }
         }
 
-        /* Estilos para el formulario de inicio de sesión */
         #loginFormContainer {
             background-color: rgba(255, 255, 255, 0.95);
             padding: 40px;
@@ -935,7 +918,7 @@
             font-size: 1.2em;
             color: var(--texto-oscuro);
             box-sizing: border-box;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            transition: border-color: 0.3s ease, box-shadow 0.3s ease;
         }
 
         #loginFormContainer input[type="email"]:focus,
@@ -949,10 +932,9 @@
             width: 100%;
             padding: 15px;
             font-size: 1.2em;
-            margin-top: 20px;
+            margin-top: 10px;
         }
 
-        /* Responsive Adjustments */
         @media (min-width: 900px) {
             #sub-tab-tmo .main-container-tab {
                 flex-direction: row;
@@ -993,26 +975,6 @@
             #loginFormContainer .button { font-size: 1.1em; }
         }
 
-        @media (max-width: 400px) {
-            #minutesToSecondsConverter, #tmoMessageBox { padding: 15px; border-radius: 10px; }
-            #minutesToSecondsConverter h3 { font-size: 1.6em; }
-            #tmoMessageBox { font-size: 1.2em; min-height: 100px; }
-            #minutesInput { font-size: 1.1em; }
-            .button { font-size: 1em; }
-            #secondsResult { font-size: 1.8em; }
-            #loginFormContainer { padding: 15px; border-radius: 10px; }
-            #loginFormContainer h2 { font-size: 1.6em; }
-            #loginFormContainer input { font-size: 0.9em; }
-            #loginFormContainer .button { font-size: 1em; }
-        }
-
-        @media (max-width: 1650px) {
-            .main-container-tab { justify-content: center; }
-            .draggable-box { width: calc(33% - 20px); max-width: none; min-width: 280px; }
-            .checkboxes-area-tab { display: flex; flex-wrap: wrap; justify-content: center; gap: 25px; width: calc(66% - 20px); min-width: 580px; }
-            .checkboxes-area-tab .checkbox-group { width: calc(50% - 12.5px); }
-        }
-
         @media (max-width: 1200px) {
             #loginPage h1 { font-size: 3.5em; }
             #mainTitleBar { font-size: 1.5em; padding: 12px 15px; height: auto; flex-wrap: wrap; }
@@ -1020,21 +982,6 @@
             #mainTitleText { flex-basis: 100%; text-align: center; margin-bottom: 10px; }
             #topTimerContainer { flex-basis: 100%; justify-content: center; margin-bottom: 10px; }
             .data-actions-container { flex-basis: 100%; justify-content: center; margin-left: 0; }
-            .main-container-tab { flex-direction: column; align-items: center; padding: 20px; }
-            .draggable-box { width: 95%; max-width: 600px; margin: 0; margin-bottom: 25px; }
-            .checkboxes-area-tab { width: 95%; max-width: 600px; flex-direction: row; justify-content: center; }
-            .checkboxes-area-tab .checkbox-group { width: calc(50% - 12.5px); }
-            #bottomWidgetsContainer { bottom: 10px; right: 10px; left: auto; justify-content: flex-end; }
-            .widget-panel { bottom: 75px !important; right: 10px !important; left: auto !important; }
-        }
-
-        @media (max-width: 768px) {
-            #loginPage h1 { font-size: 2.8em; }
-            .button { padding: 12px 20px; font-size: 16px; }
-            #mainTitleBar { font-size: 1.3em; height: auto; flex-direction: column; padding: 8px 10px; }
-            #mainTitleBar .logo-left { margin-right: 0; margin-bottom: 5px; } 
-            #mainTitleText { margin-bottom: 5px; font-size: 1.2em; }
-            .data-actions-container { margin-top: 5px; flex-wrap: wrap; justify-content: center;}
             .data-actions-container button.data-action-btn, .data-actions-container label.data-action-btn { font-size: 12px; padding: 6px 10px; }
             #topTimerContainer { margin-top: 5px; }
             #topTimerDisplay { font-size: 1.2em; }
@@ -1045,13 +992,19 @@
             .tab-link { font-size: 0.85em; padding: 10px 3px; }
             .tab-nav.sub-tab-nav { top: 165px; }
             .tab-content.sub-tab-content { padding-top: 20px; }
-            .draggable-box { width: 100% !important; left: 0 !important; top: auto !important; position: relative !important; margin: 10px auto !important; resize: none; }
+            /* Draggable box changes for responsiveness */
+            .draggable-box { 
+                width: 100% !important; 
+                /* Removed left, top, position overrides */
+                margin: 10px auto !important; 
+                /* Removed resize: none; */
+            }
             .checkboxes-area-tab { flex-direction: column; align-items: center; }
             .checkboxes-area-tab .checkbox-group { width: 100%; max-width: 350px; }
             .widget-panel { width: calc(100% - 20px); max-width:340px; height: auto; max-height: 60vh; bottom: 75px !important; right: 10px !important;}
             .widget-toggle-button { width: 50px; height: 50px; font-size: 24px; }
             #bottomWidgetsContainer { padding: 5px; gap: 5px; justify-content: center; flex-wrap:wrap; }
-            .firma-keiner { font-size: 12px; padding-left: 10px; }
+            .firma-keiner { font-size: 11px; padding-left: 10px; }
         }
         @media (max-width: 480px) {
             body { padding-bottom: 60px; }
@@ -1067,20 +1020,17 @@
 
     <!-- Firebase SDKs -->
     <script type="module">
-        // Import necessary Firebase functions
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // --- GLOBAL FIREBASE & APP STATE VARIABLES ---
         let app, auth, db;
         let currentUserId = null;
-        let unsubscribeFromFirestore = null; // To detach the listener on logout
-        let isSaving = false; // Flag to prevent concurrent saves
-        let saveDataTimeout; // For debouncing save operations
+        let unsubscribeFromFirestore = null;
+        let isSaving = false;
+        let saveDataTimeout;
+        let isInitialLoad = true; // Flag to handle the first data load
 
-        // --- FIREBASE INITIALIZATION ---
-        // IMPORTANT: Replace with your actual Firebase config
         const firebaseConfig = { 
             apiKey: "AIzaSyBZhWsp5JODo0m1fcnUCw0w-SdVWK5RFzk", 
             authDomain: "omega---fijo-soporte.firebaseapp.com", 
@@ -1095,72 +1045,41 @@
         auth = getAuth(app);
         db = getFirestore(app);
         
-        // Get the app ID from the environment (or use a default)
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
 
-        // --- AUTHENTICATION & UI MANAGEMENT ---
         onAuthStateChanged(auth, (user) => {
             const loginPage = document.getElementById('loginPage');
             const appContainer = document.getElementById('appContainer');
 
             if (user) {
-                // User is signed in
                 currentUserId = user.uid;
                 console.log("Usuario autenticado:", currentUserId);
-                
-                // Hide login page, show main app
                 loginPage.style.display = 'none';
                 appContainer.style.display = 'block';
-                
-                // Start listening for real-time data changes
-                setupFirestoreListener();
+                isInitialLoad = true; // Reset flag on new login
+                setupFirestoreListener(); // Keep listener for real-time updates
                 showImportantNoticeModal();
             } else {
-                // User is signed out
                 console.log("Usuario no autenticado.");
                 currentUserId = null;
-                
-                // Hide main app, show login page
                 appContainer.style.display = 'none';
                 loginPage.style.display = 'flex';
-                
-                // Detach the real-time listener if it exists
                 if (unsubscribeFromFirestore) {
                     unsubscribeFromFirestore();
                     unsubscribeFromFirestore = null;
-                    console.log("Firestore listener detached.");
                 }
             }
         });
 
-        // Attempt to sign in with a custom token if provided, otherwise sign in anonymously
-        // This is useful for integration with other systems that can generate Firebase tokens
-        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-            signInWithCustomToken(auth, __initial_auth_token)
-                .catch((error) => {
-                    console.error("Error signing in with custom token, trying anonymously:", error);
-                    signInAnonymously(auth).catch(err => console.error("Anonymous sign-in failed:", err));
-                });
-        } else {
-            // This part is for local development or if no token is provided.
-            // For the user's request, email/password is the primary method.
-            // This anonymous sign-in will be overridden by the email/password login.
-            signInAnonymously(auth).catch(err => console.error("Anonymous sign-in failed:", err));
-        }
-
-        // --- LOGIN/LOGOUT HANDLERS (ACCESSIBLE GLOBALLY) ---
         window.handleLogin = async () => {
             const email = document.getElementById('loginEmail').value;
             const password = document.getElementById('loginPassword').value;
-            
             if (!email || !password) {
                 createCustomAlert('Por favor, ingrese correo y contraseña.');
                 return;
             }
-
             try {
                 await signInWithEmailAndPassword(auth, email, password);
-                // onAuthStateChanged will handle the UI update
             } catch (error) {
                 console.error("Error al iniciar sesión:", error.code, error.message);
                 let errorMessage = 'Error al iniciar sesión. Por favor, verifique sus credenciales.';
@@ -1168,62 +1087,61 @@
                     errorMessage = 'Credenciales inválidas. Usuario o contraseña incorrectos.';
                 } else if (error.code === 'auth/invalid-email') {
                     errorMessage = 'Formato de correo electrónico inválido.';
-                } else if (error.code === 'auth/too-many-requests') {
-                    errorMessage = 'Demasiados intentos fallidos. Intente de nuevo más tarde.';
                 }
                 createCustomAlert(errorMessage);
             }
         };
 
+        // Removed window.handleGoogleLogin as per user request
+
         window.handleLogout = async () => {
             try {
                 await signOut(auth);
-                // onAuthStateChanged will handle the UI update
             } catch (error) {
                 console.error("Error al cerrar sesión:", error);
                 createCustomAlert('Error al cerrar sesión.');
             }
         };
 
-        // --- REAL-TIME DATA SYNCHRONIZATION WITH FIRESTORE ---
-
-        /**
-         * Sets up a real-time listener on the user's data document in Firestore.
-         * Any changes in the database will automatically call `applyDataToUI`.
-         */
         function setupFirestoreListener() {
             if (!currentUserId) return;
-            
-            // Detach any existing listener before creating a new one
             if (unsubscribeFromFirestore) unsubscribeFromFirestore();
-
             const userDocRef = doc(db, `artifacts/${appId}/users/${currentUserId}/userData`, 'appState');
-            
             unsubscribeFromFirestore = onSnapshot(userDocRef, (docSnap) => {
                 if (docSnap.exists()) {
-                    const data = docSnap.data();
-                    console.log("Datos recibidos de Firestore en tiempo real.");
-                    // When data is received, update the UI, but prevent this update from triggering a save operation.
                     isSaving = true; 
-                    applyDataToUI(data);
-                    setTimeout(() => { isSaving = false; }, 500); // Release the save lock after a short delay
+                    applyDataToUI(docSnap.data());
+                    setTimeout(() => { isSaving = false; }, 500);
                 } else {
-                    console.log("No hay datos en Firestore. Se creará un nuevo documento al primer guardado.");
-                    // If no data exists, apply default values to the UI
                     applyDataToUI({}); 
                 }
             }, (error) => {
                 console.error("Error en el listener de Firestore:", error);
-                createCustomAlert("Error de conexión con la base de datos. Verifique su conexión a internet.");
             });
         }
 
-        /**
-         * Gathers all data from the UI to be saved to Firestore.
-         * @returns {object} An object containing the entire application state.
-         */
+        // Function to manually load data from Firebase
+        window.loadDataFromFirebase = async function() {
+            if (!currentUserId) {
+                createCustomAlert('No hay usuario autenticado para cargar datos.');
+                return;
+            }
+            const userDocRef = doc(db, `artifacts/${appId}/users/${currentUserId}/userData`, 'appState');
+            try {
+                const docSnap = await getDoc(userDocRef);
+                if (docSnap.exists()) {
+                    applyDataToUI(docSnap.data());
+                    createCustomAlert('¡Datos cargados exitosamente!');
+                } else {
+                    createCustomAlert('No se encontraron datos guardados para este usuario.');
+                }
+            } catch (error) {
+                console.error("Error al cargar datos de Firestore:", error);
+                createCustomAlert('Error al cargar datos.');
+            }
+        };
+
         function getUIDataForSave() {
-            // This function is now more focused on just gathering data from the DOM
             const data = {
                 themeSettings: {},
                 genericFormData: {},
@@ -1236,18 +1154,15 @@
                 usersContent: '',
                 backupTemplatesContent: '',
                 customTransferItems: [],
-                draggableBoxStates: [],
+                // Removed draggableBoxStates as boxes are no longer draggable
                 activeTabs: { main: '', sub: '' }
             };
 
             try {
-                // Theme
                 themeColorInputs.forEach(inputConf => {
                     const key = inputConf.cssVar || inputConf.neuronVar;
                     data.themeSettings[key] = document.documentElement.style.getPropertyValue(key).trim() || defaultThemeSettings[key];
                 });
-
-                // Generic Form
                 data.genericFormData = {
                     id: document.getElementById('id')?.value || '',
                     nombreCliente: document.getElementById('nombreCliente')?.value || '',
@@ -1256,8 +1171,6 @@
                     tipoServicio: document.getElementById('tipoServicio')?.value || '',
                     pruebasRealizadas: document.getElementById('pruebasRealizadas')?.value || ''
                 };
-
-                // Checkboxes Tab 1 (Genericas)
                 data.checkboxStatesTab1 = Array.from(document.querySelectorAll('#sub-tab-genericas .checkbox-group')).map(group => ({
                     groupId: group.dataset.groupId,
                     items: Array.from(group.querySelectorAll('.checkbox-item-container')).map(item => ({
@@ -1267,19 +1180,12 @@
                         isDefault: item.dataset.default === 'true'
                     }))
                 }));
-
-                // Memos de Quejas
                 const memoDropdown = document.getElementById('opcionesMemoQuejas');
                 if (memoDropdown) {
                     data.memoQuejasData.selectedType = memoDropdown.value;
-                    const memoFields = document.querySelectorAll('#formContainerMemoQuejas .dynamic-input, #formContainerMemoQuejas textarea');
-                    memoFields.forEach(field => { data.memoQuejasData.fields[field.id] = field.value; });
-                    
-                    const memoCheckboxes = document.querySelectorAll('#formContainerMemoQuejas input[type="checkbox"]');
-                    memoCheckboxes.forEach(cb => { data.memoQuejasData.checkboxValues[cb.id] = cb.checked; });
+                    document.querySelectorAll('#formContainerMemoQuejas .dynamic-input, #formContainerMemoQuejas textarea').forEach(field => { data.memoQuejasData.fields[field.id] = field.value; });
+                    document.querySelectorAll('#formContainerMemoQuejas input[type="checkbox"]').forEach(cb => { data.memoQuejasData.checkboxValues[cb.id] = cb.checked; });
                 }
-
-                // Checkboxes Tab 2 (Quejas)
                 data.checkboxStatesTab2 = Array.from(document.querySelectorAll('#sub-tab-quejas .checkbox-group')).map(group => ({
                     groupId: group.dataset.groupId,
                     items: Array.from(group.querySelectorAll('.checkbox-item-container')).map(item => ({
@@ -1289,8 +1195,6 @@
                         isDefault: item.dataset.default === 'true'
                     }))
                 }));
-                
-                // WF Memos
                 const wfDropdown = document.getElementById('wfMemosDropdown');
                 if (wfDropdown) {
                     data.wfMemosData.selectedType = wfDropdown.value;
@@ -1298,8 +1202,6 @@
                         data.wfMemosData.fields[field.id] = field.value;
                     });
                 }
-                
-                // Orden Memos
                 const ordenDropdown = document.getElementById('ordenMemosDropdown');
                 if (ordenDropdown) {
                     data.ordenMemosData.selectedType = ordenDropdown.value;
@@ -1307,91 +1209,51 @@
                         data.ordenMemosData.fields[field.id] = field.value;
                     });
                 }
-
-                // Widgets
                 data.notesContent = document.getElementById('notesArea')?.value || '';
                 data.usersContent = document.getElementById('usersArea')?.value || '';
                 data.backupTemplatesContent = document.getElementById('backupTemplatesTextarea')?.value || '';
-                
-                // Transfers (global variable `customTransferItems` is the source of truth)
-                data.customTransferItems = window.customTransferItems || [];
-
-                // Draggable Box States
-                data.draggableBoxStates = Array.from(document.querySelectorAll('.draggable-box')).map(box => {
-                    const titleElement = box.querySelector('.drag-handle span');
-                    return {
-                        id: box.id,
-                        tabId: box.closest('.tab-content')?.id,
-                        left: box.style.left,
-                        top: box.style.top,
-                        width: box.style.width,
-                        height: box.style.height,
-                        title: titleElement ? titleElement.textContent.trim() : '',
-                        isDynamic: box.dataset.isDynamic === 'true',
-                        // Note: Dynamic checkbox content within boxes is handled by the main checkbox savers now
-                    };
-                });
-
-                // Active Tabs
+                window.customTransferItems = window.customTransferItems || [];
+                data.customTransferItems = window.customTransferItems; // Ensure customTransferItems is saved
+                // Removed draggableBoxStates saving logic
                 data.activeTabs.main = document.querySelector('.tab-link:not(.sub-tab-link).active')?.dataset.tab || 'tab-plantillas';
                 data.activeTabs.sub = document.querySelector('.sub-tab-link.active')?.dataset.tab || 'sub-tab-genericas';
-
             } catch (error) {
                 console.error("Error gathering UI data for save:", error);
             }
-
             return data;
         }
 
-        /**
-         * Debounced function to save all current UI data to Firestore.
-         * Prevents excessive writes by waiting for a pause in user activity.
-         */
         window.triggerSave = function() {
-            if (isSaving || !currentUserId) {
-                return; // Don't save if a save is in progress, or if the user is not logged in
-            }
-
-            clearTimeout(saveDataTimeout); // Reset the timer
+            if (isSaving || !currentUserId) return;
+            clearTimeout(saveDataTimeout);
             saveDataTimeout = setTimeout(async () => {
-                console.log("Debounced save triggered...");
-                isSaving = true; // Set lock
-                
+                isSaving = true;
                 const dataToSave = getUIDataForSave();
                 const userDocRef = doc(db, `artifacts/${appId}/users/${currentUserId}/userData`, 'appState');
-
                 try {
-                    await setDoc(userDocRef, dataToSave, { merge: true }); // Use merge to avoid overwriting fields if something goes wrong
-                    console.log("Datos guardados en Firestore.");
+                    await setDoc(userDocRef, dataToSave, { merge: true });
+                    createCustomAlert('¡Datos guardados exitosamente!'); // Confirmation message
                 } catch (error) {
                     console.error("Error al guardar datos en Firestore:", error);
-                    createCustomAlert('Error al guardar datos.');
+                    createCustomAlert('Error al guardar datos.'); // Error message
                 } finally {
-                    isSaving = false; // Release lock
+                    isSaving = false;
                 }
-            }, 1500); // Wait 1.5 seconds after the last change to save
+            }, 100); // Reduced delay for immediate feedback
         }
         
-        /**
-         * Applies the data loaded from Firestore to all relevant UI elements.
-         * @param {object} data - The application state object from Firestore.
-         */
         function applyDataToUI(data) {
-            // Apply Theme
             if (data.themeSettings) {
                 Object.keys(data.themeSettings).forEach(varName => {
                     document.documentElement.style.setProperty(varName, data.themeSettings[varName]);
                 });
-                initializeThemeWidget(); // Update color pickers
-                // Update global JS arrays for neurons
+                initializeThemeWidget();
                 globalNeuronColorsRGB[0] = data.themeSettings['--neuron-color-1-rgb'] || defaultThemeSettings['--neuron-color-1-rgb'];
                 globalNeuronColorsRGB[1] = data.themeSettings['--neuron-color-2-rgb'] || defaultThemeSettings['--neuron-color-2-rgb'];
                 globalNeuronColorsRGB[2] = data.themeSettings['--neuron-color-3-rgb'] || defaultThemeSettings['--neuron-color-3-rgb'];
                 globalNeuronConnectionRGB = data.themeSettings['--neuron-connection-rgb'] || defaultThemeSettings['--neuron-connection-rgb'];
-                if (typeof init_particles === "function") init_particles(); // Redraw neurons
+                if (typeof init_particles === "function") init_particles();
             }
-
-            // Apply Generic Form Data
             if (data.genericFormData) {
                 document.getElementById('id').value = data.genericFormData.id || '';
                 document.getElementById('nombreCliente').value = data.genericFormData.nombreCliente || '';
@@ -1400,8 +1262,6 @@
                 document.getElementById('tipoServicio').value = data.genericFormData.tipoServicio || '';
                 document.getElementById('pruebasRealizadas').value = data.genericFormData.pruebasRealizadas || '';
             }
-
-            // Apply Checkbox States Tab 1
             if (data.checkboxStatesTab1) {
                 data.checkboxStatesTab1.forEach(savedGroup => {
                     const groupEl = document.querySelector(`#sub-tab-genericas .checkbox-group[data-group-id="${savedGroup.groupId}"]`);
@@ -1413,12 +1273,10 @@
                     }
                 });
             }
-
-            // Apply Memos de Quejas
             if (data.memoQuejasData?.selectedType) {
                 const memoDropdown = document.getElementById('opcionesMemoQuejas');
                 memoDropdown.value = data.memoQuejasData.selectedType;
-                renderMemoFields(data.memoQuejasData.selectedType); // Render the correct form
+                renderMemoFields(data.memoQuejasData.selectedType);
                 Object.keys(data.memoQuejasData.fields).forEach(fieldId => {
                     const fieldEl = document.getElementById(fieldId);
                     if (fieldEl) fieldEl.value = data.memoQuejasData.fields[fieldId];
@@ -1430,8 +1288,6 @@
             } else {
                 clearMemoQueja();
             }
-
-            // Apply Checkbox States Tab 2
             if (data.checkboxStatesTab2) {
                 data.checkboxStatesTab2.forEach(savedGroup => {
                     const groupEl = document.querySelector(`#sub-tab-quejas .checkbox-group[data-group-id="${savedGroup.groupId}"]`);
@@ -1443,8 +1299,6 @@
                     }
                 });
             }
-
-            // Apply WF Memos
             if (data.wfMemosData?.selectedType) {
                 const wfDropdown = document.getElementById('wfMemosDropdown');
                 wfDropdown.value = data.wfMemosData.selectedType;
@@ -1456,8 +1310,6 @@
             } else {
                 clearWFMemos();
             }
-            
-            // Apply Orden Memos
             if (data.ordenMemosData?.selectedType) {
                 const ordenDropdown = document.getElementById('ordenMemosDropdown');
                 ordenDropdown.value = data.ordenMemosData.selectedType;
@@ -1469,39 +1321,27 @@
             } else {
                 clearOrdenMemos();
             }
-
-            // Apply Widget Content
             document.getElementById('notesArea').value = data.notesContent || '';
             document.getElementById('usersArea').value = data.usersContent || '';
             document.getElementById('backupTemplatesTextarea').value = data.backupTemplatesContent || '';
-            
-            // Apply Transfers
             window.customTransferItems = data.customTransferItems || [];
             renderTransferItems();
+            
+            // Only run tab activation on the very first load after login
+            if (isInitialLoad) {
+                const mainTabToActivate = data.activeTabs?.main || 'tab-plantillas';
+                const subTabToActivate = data.activeTabs?.sub || 'sub-tab-genericas';
 
-            // Apply Draggable Box States
-            if (data.draggableBoxStates) {
-                data.draggableBoxStates.forEach(state => {
-                    const box = document.getElementById(state.id);
-                    if (box) {
-                        // Only apply position if it has been set previously
-                        if (state.left && state.top) {
-                            box.style.position = 'absolute';
-                            box.style.left = state.left;
-                            box.style.top = state.top;
-                            box.style.width = state.width;
-                            box.style.height = state.height;
-                        }
-                        const titleEl = box.querySelector('.drag-handle span');
-                        if (titleEl && state.title) titleEl.textContent = state.title;
-                    }
-                });
-            }
+                // Activate main tab
+                switchTab(mainTabToActivate, false, true); // Pass a flag to prevent saving
 
-            // Apply active tabs
-            if (data.activeTabs) {
-                switchTab(data.activeTabs.main || 'tab-plantillas', false);
-                // The sub-tab switch is handled inside the main switchTab function now
+                // Find the correct sub-tab nav and activate the sub-tab
+                const mainContent = document.getElementById(mainTabToActivate);
+                if (mainContent && mainContent.querySelector('.sub-tab-nav')) {
+                    switchTab(subTabToActivate, true, true); // Pass a flag to prevent saving
+                }
+                
+                isInitialLoad = false; // Prevent this from running again
             }
         }
 
@@ -1535,6 +1375,7 @@
                 <input type="password" id="loginPassword" placeholder="Ingrese su contraseña" required>
             </div>
             <button id="loginBtn" class="button" onclick="handleLogin()">Iniciar Sesión</button>
+            
             <p style="margin-top: 20px; font-size: 0.9em; color: var(--texto-intermedio);">
                 Solo los usuarios autorizados pueden iniciar sesión.
             </p>
@@ -1568,39 +1409,35 @@
                     </div>
                 </div>
                 <div class="data-actions-container">
-                    <!-- El botón de Guardar se ha eliminado. Los datos se guardan automáticamente. -->
-                    <button id="exportDataBtn" class="button data-action-btn" title="Exportar todos los datos de la aplicación como un archivo de respaldo.">Exportar</button>
-                    <label for="importDataInput" class="button data-action-btn" title="Importar un archivo de respaldo. Esto sobrescribirá todos los datos actuales." style="cursor:pointer;">Importar</label>
-                    <input type="file" id="importDataInput" accept=".json" style="display:none;">
+                    <button id="saveDataBtn" class="button data-action-btn" title="Guardar todos los datos de la aplicación." onclick="window.triggerSave()">Guardar</button>
+                    <button id="loadDataBtn" class="button data-action-btn" title="Cargar los datos guardados de la aplicación." onclick="window.loadDataFromFirebase()">Cargar</button>
                     <button id="logoutBtn" class="button data-action-btn clear-button" title="Cerrar sesión" onclick="handleLogout()">Salir</button>
                 </div>
             </div>
 
             <div class="tab-container">
                 <div class="tab-nav">
-                    <button class="tab-link active" data-tab="tab-plantillas">PLANTILLAS</button>
+                    <button class="tab-link" data-tab="tab-plantillas">PLANTILLAS</button>
                     <button class="tab-link" data-tab="tab-herramientas">HERRAMIENTAS</button>
                     <button class="tab-link" data-tab="tab-transferencias">TRANSFERENCIAS</button>
                     <button class="tab-link" data-tab="tab-avisos">AVISOS</button>
                     <button class="tab-link" data-tab="tab-copia-respaldo">COPIA DE RESPALDO</button>
                 </div>
 
-                <!-- PLANTILLAS Tab Content -->
-                <div id="tab-plantillas" class="tab-content active">
+                <div id="tab-plantillas" class="tab-content">
                     <div class="tab-nav sub-tab-nav">
-                        <button class="tab-link sub-tab-link active" data-tab="sub-tab-genericas">PLANTILLAS GENERICAS</button>
+                        <button class="tab-link sub-tab-link" data-tab="sub-tab-genericas">PLANTILLAS GENERICAS</button>
                         <button class="tab-link sub-tab-link" data-tab="sub-tab-quejas">PLANTILLAS DE QUEJAS</button>
                         <button class="tab-link sub-tab-link" data-tab="sub-tab-wf">MEMOS DE WF</button>
                         <button class="tab-link sub-tab-link" data-tab="sub-tab-orden">MEMOS DE ORDEN</button>
                     </div>
 
-                    <!-- PLANTILLAS GENERICAS Sub-Tab Content -->
-                    <div id="sub-tab-genericas" class="tab-content sub-tab-content active">
+                    <div id="sub-tab-genericas" class="tab-content sub-tab-content">
                         <div class="main-container-tab">
                             <div class="form-container draggable-box" id="form-container-tab1">
                                 <h2 class="drag-handle">
                                     <span>Plantilla Genérica</span>
-                                    <button type="button" class="edit-title-btn" onclick="editBoxTitle(this.closest('.drag-handle').querySelector('span'))">✏️</button>
+                                    <!-- Removed edit-title-btn -->
                                 </h2>
                                 <form id="clienteForm">
                                     <div class="form-group"><label for="id">ID de llamada</label><input id="id" name="id" type="text" placeholder="ID de la llamada"/></div>
@@ -1619,7 +1456,7 @@
                                 <div class="checkbox-group draggable-box" id="checkbox-group-nivelCero" data-group-id="nivelCero">
                                     <h3 class="drag-handle">
                                         <span>Nivel Cero:</span>
-                                        <button type="button" class="edit-title-btn" onclick="editBoxTitle(this.closest('.drag-handle').querySelector('span'))">✏️</button>
+                                        <!-- Removed edit-title-btn -->
                                     </h3>
                                     <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="Saldos OK"/> Saldos OK</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
                                     <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="No hay Fallas"/> Fallas</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
@@ -1631,7 +1468,7 @@
                                 <div class="checkbox-group draggable-box" id="checkbox-group-gponAdslHfc" data-group-id="gponAdslHfc">
                                     <h3 class="drag-handle">
                                         <span>GPON - ADSL - HFC</span>
-                                        <button type="button" class="edit-title-btn" onclick="editBoxTitle(this.closest('.drag-handle').querySelector('span'))">✏️</button>
+                                        <!-- Removed edit-title-btn -->
                                     </h3>
                                     <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="Se verifica estado de las luces del router"/> Luces router</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
                                     <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="Envio reset en UMP"/> Reset en UMP</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
@@ -1652,7 +1489,7 @@
                                 <div class="checkbox-group draggable-box" id="checkbox-group-tvHfcDthIptv" data-group-id="tvHfcDthIptv">
                                     <h3 class="drag-handle">
                                         <span>TV HFC - DTH - IPTV</span>
-                                        <button type="button" class="edit-title-btn" onclick="editBoxTitle(this.closest('.drag-handle').querySelector('span'))">✏️</button>
+                                        <!-- Removed edit-title-btn -->
                                     </h3>
                                     <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="Se verifica Conexiones HDMI"/> Conexion HDMI</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
                                     <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="Se Verifica Conexiones RCA"/> Conexion RCA</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
@@ -1668,7 +1505,7 @@
                                 <div class="checkbox-group draggable-box" id="checkbox-group-otrosChecks" data-group-id="otrosChecks">
                                     <h3 class="drag-handle">
                                         <span>Otros</span>
-                                        <button type="button" class="edit-title-btn" onclick="editBoxTitle(this.closest('.drag-handle').querySelector('span'))">✏️</button>
+                                        <!-- Removed edit-title-btn -->
                                     </h3>
                                     <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="Se valida DPI ok, nombre completo ok, sin restricciones"/> Se valida titularidad</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
                                     <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="Cliente no esta en Sitio"/> Cliente no esta en sitio</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
@@ -1684,14 +1521,13 @@
                         </div>
                     </div>
 
-                    <!-- PLANTILLAS DE QUEJAS Sub-Tab Content -->
                     <div id="sub-tab-quejas" class="tab-content sub-tab-content">
                         <div class="main-container-tab">
                             <div class="memos-config-area draggable-box" id="memos-config-area-tab2">
                                 <h5 class="drag-handle">
                                     <span>Plantillas de Quejas</span>
-                                    <button type="button" class="edit-title-btn" onclick="editBoxTitle(this.closest('.drag-handle').querySelector('span'))">✏️</button>
-                                </h5>
+                                    <!-- Removed edit-title-btn -->
+                                </h4>
                                 <div class="dropdown-container">
                                     <select class="dropdown" id="opcionesMemoQuejas">
                                         <option disabled selected value="">-- Seleccione Tipo de Memo --</option>
@@ -1717,7 +1553,7 @@
                                 <div class="checkbox-group draggable-box" id="checkbox-group-memoNivelCero" data-group-id="memoNivelCero">
                                     <h3 class="drag-handle">
                                         <span>Nivel Cero (Memos):</span>
-                                        <button type="button" class="edit-title-btn" onclick="editBoxTitle(this.closest('.drag-handle').querySelector('span'))">✏️</button>
+                                        <!-- Removed edit-title-btn -->
                                     </h3>
                                     <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="Saldos OK"/> Saldos OK</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
                                     <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="No hay Fallas"/> Fallas</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
@@ -1729,7 +1565,7 @@
                                 <div class="checkbox-group draggable-box" id="checkbox-group-memoGponAdslHfc" data-group-id="memoGponAdslHfc">
                                     <h3 class="drag-handle">
                                         <span>GPON - ADSL - HFC (Memos):</span>
-                                        <button type="button" class="edit-title-btn" onclick="editBoxTitle(this.closest('.drag-handle').querySelector('span'))">✏️</button>
+                                        <!-- Removed edit-title-btn -->
                                     </h3>
                                     <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="Se verifica estado de las luces del router"/> Luces router</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
                                     <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="Envio reset en UMP"/> Reset en UMP</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
@@ -1750,7 +1586,7 @@
                                 <div class="checkbox-group draggable-box" id="checkbox-group-memoTvHfcDthIptv" data-group-id="memoTvHfcDthIptv">
                                     <h3 class="drag-handle">
                                         <span>TV HFC - DTH - IPTV (Memos)</span>
-                                        <button type="button" class="edit-title-btn" onclick="editBoxTitle(this.closest('.drag-handle').querySelector('span'))">✏️</button>
+                                        <!-- Removed edit-title-btn -->
                                     </h3>
                                     <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="Se verifica Conexiones HDMI"/> Conexion HDMI</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
                                     <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="Se Verifica Conexiones RCA"/> Conexion RCA</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
@@ -1766,7 +1602,7 @@
                                 <div class="checkbox-group draggable-box" id="checkbox-group-memoOtrosChecks" data-group-id="memoOtrosChecks">
                                     <h3 class="drag-handle">
                                         <span>Otros (Memos)</span>
-                                        <button type="button" class="edit-title-btn" onclick="editBoxTitle(this.closest('.drag-handle').querySelector('span'))">✏️</button>
+                                        <!-- Removed edit-title-btn -->
                                     </h3>
                                     <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="Se valida DPI ok, nombre completo ok, sin restricciones"/> Se valida titularidad</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
                                     <div class="checkbox-item-container" data-default="true"><label><input type="checkbox" value="Cliente no esta en Sitio"/> Cliente no esta en sitio</label><button type="button" class="manage-button remove-item" onclick="removeCheckboxItem(this)">X</button></div>
@@ -1782,13 +1618,12 @@
                         </div>
                     </div>
 
-                    <!-- MEMOS DE WF Sub-Tab Content -->
                     <div id="sub-tab-wf" class="tab-content sub-tab-content">
                         <div class="main-container-tab">
                             <div class="wf-memos-area draggable-box" id="wf-memos-area-tab-wf">
                                 <h5 class="drag-handle">
                                     <span>MEMOS DE WF</span>
-                                    <button type="button" class="edit-title-btn" onclick="editBoxTitle(this.closest('.drag-handle').querySelector('span'))">✏️</button>
+                                    <!-- Removed edit-title-btn -->
                                 </h5>
                                 <div class="dropdown-container">
                                     <select class="dropdown" id="wfMemosDropdown">
@@ -1804,13 +1639,12 @@
                         </div>
                     </div>
 
-                    <!-- MEMOS DE ORDEN Sub-Tab Content -->
                     <div id="sub-tab-orden" class="tab-content sub-tab-content">
                         <div class="main-container-tab">
                             <div class="orden-memos-area draggable-box" id="orden-memos-area-tab-orden">
                                 <h5 class="drag-handle">
                                     <span>MEMOS DE ORDEN</span>
-                                    <button type="button" class="edit-title-btn" onclick="editBoxTitle(this.closest('.drag-handle').querySelector('span'))">✏️</button>
+                                    <!-- Removed edit-title-btn -->
                                 </h5>
                                 <div class="dropdown-container">
                                     <select class="dropdown" id="ordenMemosDropdown">
@@ -1827,7 +1661,6 @@
                     </div>
                 </div>
 
-                <!-- HERRAMIENTAS Tab Content -->
                 <div id="tab-herramientas" class="tab-content">
                     <div class="tab-nav sub-tab-nav">
                         <button class="tab-link sub-tab-link active" data-tab="sub-tab-tmo">CALCULADORA TMO</button>
@@ -1851,12 +1684,11 @@
                     </div>
                 </div>
 
-                <!-- TRANSFERENCIAS Tab Content -->
                 <div id="tab-transferencias" class="tab-content">
                     <div class="transfers-container draggable-box" id="transfers-container-tab4" style="max-width: 700px; margin: auto;">
                         <h5 class="drag-handle">
                             <span>Transferencias</span>
-                            <button type="button" class="edit-title-btn" onclick="editBoxTitle(this.closest('.drag-handle').querySelector('span'))">✏️</button>
+                            <!-- Removed edit-title-btn -->
                         </h5>
                         <div id="dynamicTransfersList" class="transfers-list">
                         </div>
@@ -1866,13 +1698,12 @@
                     </div>
                 </div>
 
-                <!-- AVISOS Tab Content -->
                 <div id="tab-avisos" class="tab-content">
                     <div class="main-container-tab" id="tab7-main-container">
                         <div class="document-viewer-box draggable-box" id="documentViewer1">
                             <h3 class="drag-handle">
                                 <span>PROCESOS DE MIGRACIÓN</span>
-                                <button type="button" class="edit-title-btn" onclick="editBoxTitle(this.closest('.drag-handle').querySelector('span'))">✏️</button>
+                                <!-- Removed edit-title-btn -->
                             </h3>
                             <div class="document-iframe-container">
                                 <iframe id="docIframe1" src="" style="width: 100%; height: 100%; border: none; border-radius: 8px;"
@@ -1886,7 +1717,7 @@
                         <div class="document-viewer-box draggable-box" id="documentViewer2">
                             <h3 class="drag-handle">
                                 <span>SEGUIMIENTO DE CASOS</span>
-                                <button type="button" class="edit-title-btn" onclick="editBoxTitle(this.closest('.drag-handle').querySelector('span'))">✏️</button>
+                                <!-- Removed edit-title-btn -->
                             </h3>
                             <div class="document-iframe-container">
                                 <iframe id="docIframe2" src="" style="width: 100%; height: 100%; border: none; border-radius: 8px;"
@@ -1899,12 +1730,11 @@
                     </div>
                 </div>
 
-                <!-- COPIA DE RESPALDO Tab Content -->
                 <div id="tab-copia-respaldo" class="tab-content">
                     <div class="backup-template-group draggable-box" id="backup-template-group-tab5" style="max-width: 900px; margin: auto;">
                         <h3 class="drag-handle">
                             <span>Copia de Respaldo</span>
-                            <button type="button" class="edit-title-btn" onclick="editBoxTitle(this.closest('.drag-handle').querySelector('span'))">✏️</button>
+                            <!-- Removed edit-title-btn -->
                         </h3>
                         <textarea id="backupTemplatesTextarea" placeholder="Aquí se guardarán las plantillas copiadas como respaldo general..." style="min-height:250px;"></textarea>
                         <div class="button-group left-align">
@@ -1923,7 +1753,7 @@
             <button id="toggleNotes" class="widget-toggle-button" title="Notas Rápidas">📝</button>
             <button id="toggleUsers" class="widget-toggle-button" title="Lista de Usuarios">👤</button>
             <button id="toggleCopilot" class="widget-toggle-button" title="Copilot Chat">💬</button>
-            <button id="toggleAddBox" class="widget-toggle-button" title="Agregar Recuadro">➕</button>
+            <!-- Removed toggleAddBox button -->
             <button id="toggleTheme" class="widget-toggle-button" title="Personalizar Tema">🎨</button>
         </div>
 
@@ -1941,7 +1771,7 @@
             <textarea id="usersArea" placeholder="Escribe tu lista de usuarios aquí..."></textarea>
             <div class="button-group-widget">
                 <button id="copyUsersButton" class="button">Copiar</button>
-                <button id="clearUsersButton" class="button clear-button">Limpiar</button>
+                <button id="clearUsers" class="button clear-button">Limpiar</button>
             </div>
         </div>
 
@@ -1949,11 +1779,7 @@
             <iframe src="https://copilotstudio.microsoft.com/environments/Default-35058e0b-9a5c-4d1c-aa8e-08d02cd58b1a/bots/cr32d_marketingDigitalPro/webchat?__version__=2" title="Chatbot Copilot"></iframe>
         </div>
 
-        <div id="addBoxWidget" class="widget-panel">
-            <div class="widget-header">Agregar Recuadro</div>
-            <p style="text-align: center; margin-bottom: 15px; color: var(--texto-intermedio);">Agrega un nuevo recuadro a la pestaña actual.</p>
-            <button id="addBoxToActiveTabBtn" class="button" style="width: 100%;">Agregar Recuadro</button>
-        </div>
+        <!-- Removed addBoxWidget panel -->
 
         <div id="themeWidgetPanel" class="widget-panel">
             <div class="widget-header">Personalizar Tema</div>
@@ -1999,7 +1825,6 @@
             </div>
         </div>
 
-        <!-- Modal de Aviso Importante -->
         <div id="importantNoticeModal" class="popup-modal">
             <div class="popup-content">
                 <h2>¡AVISO IMPORTANTE!</h2>
@@ -2015,9 +1840,8 @@
     let openWidgetPanel = null;
     let globalNeuronColorsRGB = [];
     let globalNeuronConnectionRGB = '';
-    window.customTransferItems = []; // Made global for easy access
+    window.customTransferItems = [];
 
-    // Default theme values (ensure these match the :root in CSS)
     const defaultThemeSettings = {
         '--azul-oscuro': "#1A237E", '--morado': "#6A1B9A", '--turquesa': "#00BCD4",
         '--gris-claro': "#F0F0F0", '--blanco': "#FFFFFF", '--texto-oscuro': "#333333",
@@ -2039,300 +1863,52 @@
         { id: 'themeColorNeuronConnection', neuronVar: '--neuron-connection-rgb', type: 'neuron' }
     ];
 
-    // --- PREDEFINED TEMPLATES ---
     const predefinedWFMemos = {
-        "migracion gpon": [
-            { label: "Tipo de reporte", type: "text", id: "wf_migracion_tipo_reporte" },
-            { label: "Acepta migración", type: "text", id: "wf_migracion_acepta_migracion" },
-            { label: "Factura Con", type: "text", id: "wf_migracion_factura_con" },
-            { label: "Titular del servicio", type: "text", id: "wf_migracion_titular" },
-            { label: "Contacto en sitio", type: "text", id: "wf_migracion_contacto_sitio" },
-            { label: "No. Contacto", type: "text", id: "wf_migracion_no_contacto" },
-            { label: "Dirección", type: "text", id: "wf_migracion_direccion" },
-            { label: "Horario de visita", type: "text", id: "wf_migracion_horario_visita" },
-            { label: "Comentario", type: "textarea", id: "wf_migracion_comentario" }
-        ],
-        "inconvenientes con vpn": [
-            { label: "NUMERO DE SERVICIO", type: "text", id: "wf_vpn_num_servicio" },
-            { label: "Tipo de CPE", type: "text", id: "wf_vpn_tipo_cpe" },
-            { label: "MAC Cable Modem o CPE", type: "text", id: "wf_vpn_mac_cpe" },
-            { label: "Problema reportado", type: "text", id: "wf_vpn_problema_reportado" },
-            { label: "Nombre del cliente", type: "text", id: "wf_vpn_nombre_cliente" },
-            { label: "Tel Contacto", type: "text", id: "wf_vpn_tel_contacto" },
-            { label: "Nombre completo herramienta o aplicativo de vpn", type: "text", id: "wf_vpn_app_vpn" },
-            { label: "Puertos UDP y TCP que desee verificar", type: "text", id: "wf_vpn_puertos" },
-            { label: "Numero o nombre de error que da el aplicativo", type: "text", id: "wf_vpn_error_app" },
-            { label: "Si es VPN, hacía que IP intenta conectarse", type: "text", id: "wf_vpn_ip_conexion" },
-            { label: "MAC Address de la computadora", type: "text", id: "wf_vpn_mac_computadora" },
-            { label: "Pruebas(si se efectúan)", type: "textarea", id: "wf_vpn_pruebas" },
-            { label: "Comentario", type: "textarea", id: "wf_vpn_comentario" }
-        ],
-        "filtrado mac": [
-            { label: "Problema reportado", type: "text", id: "wf_filtrado_problema" },
-            { label: "Número de Servicio", type: "text", id: "wf_filtrado_num_servicio" },
-            { label: "Nombre del cliente", type: "text", id: "wf_filtrado_nombre_cliente" },
-            { label: "Tel Contacto", type: "text", id: "wf_filtrado_tel_contacto" },
-            { label: "MAC Address", type: "text", id: "wf_filtrado_mac_address" },
-            { label: "Pruebas(si se efectúan)", type: "textarea", id: "wf_filtrado_pruebas" },
-            { label: "Comentario", type: "textarea", id: "wf_filtrado_comentario" }
-        ],
-        "cita incumplida": [
-            { label: "No. Orden", type: "text", id: "wf_cita_no_orden" },
-            { label: "Nombre contacto", type: "text", id: "wf_cita_nombre_contacto" },
-            { label: "Numero de referencia", type: "text", id: "wf_cita_num_referencia" },
-            { label: "Fecha de visita", type: "text", id: "wf_cita_fecha_visita" },
-            { label: "Hora de visita", type: "text", id: "wf_cita_hora_visita" },
-            { label: "Gestor de Despacho que atendió la llamada", type: "text", id: "wf_cita_gestor_despacho" },
-            { label: "Orden", type: "text", id: "wf_cita_orden" },
-            { label: "tipo de orden", type: "text", id: "wf_cita_tipo_orden" },
-            { label: "tecnología", type: "text", id: "wf_cita_tecnologia" },
-            { label: "Región", type: "text", id: "wf_cita_region" },
-            { label: "fecha de nueva visita", type: "text", id: "wf_cita_nueva_visita" },
-            { label: "horario am/pm", type: "text", id: "wf_cita_horario" },
-            { label: "Nombre de cliente", type: "text", id: "wf_cita_nombre_cliente" },
-            { label: "Descripción", type: "textarea", id: "wf_cita_descripcion" }
-        ],
-        "vencido comercial": [
-            { label: "Teléfono de referencia", type: "text", id: "wf_vencido_com_tel_ref" },
-            { label: "No. de O/S", type: "text", id: "wf_vencido_com_os" },
-            { label: "Comentarios", type: "textarea", id: "wf_vencido_com_comentarios" },
-            { label: "Hora visita", type: "text", id: "wf_vencido_com_hora_visita" }
-        ],
-        "velocidad mal configurada": [
-            { label: "No. Contacto", type: "text", id: "wf_velocidad_no_contacto" },
-            { label: "Inconveniente reportado", type: "text", id: "wf_velocidad_inconveniente" },
-            { label: "Virtual Reportado", type: "text", id: "wf_velocidad_virtual_reportado" },
-            { label: "Velocidad Config PISA", type: "text", id: "wf_velocidad_pisa" },
-            { label: "Velocidad config UMP", type: "text", id: "wf_velocidad_ump" }
-        ],
-        "vencido operaciones": [
-            { label: "Teléfono de referencia", type: "text", id: "wf_vencido_op_tel_ref" },
-            { label: "No. de O/S", type: "text", id: "wf_vencido_op_os" },
-            { label: "Comentarios", type: "textarea", id: "wf_vencido_op_comentarios" },
-            { label: "No. Queja", type: "text", id: "wf_vencido_op_queja" },
-            { label: "Hora visita", type: "text", id: "wf_vencido_op_hora_visita" },
-            { label: "Pruebas Realizadas", type: "textarea", id: "wf_vencido_op_pruebas" }
-        ],
-        "locucion mora activa": [
-            { label: "Nombre de quien reporta", type: "text", id: "wf_mora_nombre_reporta" },
-            { label: "Número afectado", type: "text", id: "wf_mora_num_afectado" },
-            { label: "Tel de Ref", type: "text", id: "wf_mora_tel_ref" },
-            { label: "O/S generada", type: "text", id: "wf_mora_os_generada" },
-            { label: "Fecha de pago", type: "text", id: "wf_mora_fecha_pago" },
-            { label: "IVR", type: "text", id: "wf_mora_ivr" },
-            { label: "Observaciones", type: "textarea", id: "wf_mora_observaciones" }
-        ],
-        "bloqueo mayor a 2 horas": [
-            { label: "Nombre de quien reporta", type: "text", id: "wf_bloqueo_nombre_reporta" },
-            { label: "Servicio a liberar", type: "text", id: "wf_bloqueo_servicio" },
-            { label: "No. afectado", type: "text", id: "wf_bloqueo_num_afectado" },
-            { label: "Tipo de bloqueo", type: "text", id: "wf_bloqueo_tipo" },
-            { label: "Tel de Ref", type: "text", id: "wf_bloqueo_tel_ref" },
-            { label: "Hora de Pago", type: "text", id: "wf_bloqueo_hora_pago" },
-            { label: "Reincidente", type: "text", id: "wf_bloqueo_reincidente" },
-            { label: "Comentarios", type: "textarea", id: "wf_bloqueo_comentarios" }
-        ],
-        "daño a la infraestructura": [
-            { label: "Contacto", type: "text", id: "wf_infra_contacto" },
-            { label: "Teléfono de contacto", type: "text", id: "wf_infra_tel_contacto" },
-            { label: "Dirección de daño", type: "text", id: "wf_infra_direccion_dano" },
-            { label: "Daño que reporta", type: "textarea", id: "wf_infra_dano_reporta" }
-        ],
-        "claro video": [
-            { label: "Nombre del Cliente", type: "text", id: "wf_clarovideo_nombre" },
-            { label: "Número telefónico", type: "text", id: "wf_clarovideo_telefono" },
-            { label: "Correo electrónico a registrar", type: "text", id: "wf_clarovideo_correo" },
-            { label: "Qué problema reporta", type: "textarea", id: "wf_clarovideo_problema" },
-            { label: "Fecha de nacimiento", type: "text", id: "wf_clarovideo_fecha_nac" },
-            { label: "Telefonos de contacto", type: "text", id: "wf_clarovideo_tels_contacto" },
-            { label: "Plataforma donde está tratando de registrarse", type: "text", id: "wf_clarovideo_plataforma" }
-        ],
-        "reparación en tiempo vencido": [
-            { label: "Teléfono de referencia", type: "text", id: "wf_rep_venc_tel_ref" },
-            { label: "No. de O/S", type: "text", id: "wf_rep_venc_os" },
-            { label: "Comentarios", type: "textarea", id: "wf_rep_venc_comentarios" },
-            { label: "No. Queja", type: "text", id: "wf_rep_venc_queja" },
-            { label: "Hora visita", type: "text", id: "wf_rep_venc_hora_visita" },
-            { label: "Pruebas Realizadas", type: "textarea", id: "wf_rep_venc_pruebas" }
-        ],
-        "mala atención al tecnico": [
-            { label: "Motivo", type: "text", id: "wf_mala_atencion_motivo" },
-            { label: "Número afectado", type: "text", id: "wf_mala_atencion_num_afectado" },
-            { label: "Nombre completo del cliente", type: "text", id: "wf_mala_atencion_nombre_cliente" },
-            { label: "Nombre de quien reporta", type: "text", id: "wf_mala_atencion_nombre_reporta" },
-            { label: "Teléfono de referencia", type: "text", id: "wf_mala_atencion_tel_ref" },
-            { label: "Fecha de solicitud", type: "text", id: "wf_mala_atencion_fecha_solicitud" },
-            { label: "Servicio contratado", type: "text", id: "wf_mala_atencion_servicio" },
-            { label: "Dirección de instalación", type: "text", id: "wf_mala_atencion_direccion" },
-            { label: "Descripción del reclamo", type: "textarea", id: "wf_mala_atencion_descripcion" }
-        ],
-        "check en rojo": [
-            { label: "Número", type: "text", id: "wf_check_rojo_numero" },
-            { label: "Correo Claro Video", type: "text", id: "wf_check_rojo_correo" },
-            { label: "Plan o paquete contratado", type: "text", id: "wf_check_rojo_plan" },
-            { label: "Check con error en GUI", type: "text", id: "wf_check_rojo_error_gui" },
-            { label: "Número de contacto", type: "text", id: "wf_check_rojo_num_contacto" },
-            { label: "Cliente", type: "text", id: "wf_check_rojo_cliente" },
-            { label: "Descripción", type: "textarea", id: "wf_check_rojo_descripcion" },
-            { label: "Pruebas realizadas", type: "textarea", id: "wf_check_rojo_pruebas" }
-        ],
-        "sin acceso a guía interactiva": [
-            { label: "Número", type: "text", id: "wf_guia_numero" },
-            { label: "Correo Claro Video", type: "text", id: "wf_guia_correo" },
-            { label: "Plan o paquete contratado", type: "text", id: "wf_guia_plan" },
-            { label: "Check AMCO y PLE", type: "text", id: "wf_guia_check_amco_ple" },
-            { label: "Mensaje que muestra TV", type: "text", id: "wf_guia_mensaje_tv" },
-            { label: "Número de contacto", type: "text", id: "wf_guia_num_contacto" },
-            { label: "Cliente", type: "text", id: "wf_guia_cliente" },
-            { label: "Descripción", type: "textarea", id: "wf_guia_descripcion" },
-            { label: "Pruebas realizadas", type: "textarea", id: "wf_guia_pruebas" }
-        ],
-        "configuración wifi": [
-            { label: "Quien genera queja", type: "text", id: "wf_wifi_quien_queja" },
-            { label: "Luz Pon", type: "text", id: "wf_wifi_luz_pon" },
-            { label: "Luz Los", type: "text", id: "wf_wifi_luz_los" },
-            { label: "Serie", type: "text", id: "wf_wifi_serie" },
-            { label: "Canal dañado", type: "text", id: "wf_wifi_canal_danado" },
-            { label: "Problema reportado", type: "textarea", id: "wf_wifi_problema_reportado" },
-            { label: "Pruebas Realizadas", type: "textarea", id: "wf_wifi_pruebas_realizadas" },
-            { label: "Contacto en sitio", type: "text", id: "wf_wifi_contacto_sitio" },
-            { label: "Teléfonos de referencias", type: "text", id: "wf_wifi_tels_referencias" },
-            { label: "Dirección", type: "text", id: "wf_wifi_direccion" }
-        ],
-        "reparación en plazo vigente": [
-            { label: "Teléfono de referencia", type: "text", id: "wf_reparacion_plazo_vigente_tel_ref" },
-            { label: "Comentarios", type: "textarea", id: "wf_reparacion_plazo_vigente_comentarios", defaultValue: "Seguimiento a queja en tiempo Vigente" },
-            { label: "No. Queja", type: "text", id: "wf_reparacion_plazo_vigente_no_queja" },
-            { label: "Hora visita", type: "text", id: "wf_reparacion_plazo_vigente_hora_visita", defaultValue: "8:00 a 5:00" },
-            { label: "Pruebas Realizadas", type: "textarea", id: "wf_reparacion_plazo_vigente_pruebas_realizadas", defaultValue: "Cl Indica que no ha llegado el técnico y le urge, por favor verificar." }
-        ],
-        "otros wf": [
-            { label: "Nombre de contacto", type: "text", id: "wf_otros_nombre_contacto" },
-            { label: "Teléfonos de referencia", type: "text", id: "wf_otros_tels_referencia" },
-            { label: "Numero de orden y/o queja", type: "text", id: "wf_otros_num_orden_queja" },
-            { label: "Inconveniente del cliente", type: "textarea", id: "wf_otros_inconveniente_cliente" },
-            { label: "Pruebas Realizada", type: "textarea", id: "wf_otros_pruebas_realizadas" }
-        ]
+        "migracion gpon": [{ label: "Tipo de reporte", type: "text", id: "wf_migracion_tipo_reporte" }, { label: "Acepta migración", type: "text", id: "wf_migracion_acepta_migracion" }, { label: "Factura Con", type: "text", id: "wf_migracion_factura_con" }, { label: "Titular del servicio", type: "text", id: "wf_migracion_titular" }, { label: "Contacto en sitio", type: "text", id: "wf_migracion_contacto_sitio" }, { label: "No. Contacto", type: "text", id: "wf_migracion_no_contacto" }, { label: "Dirección", type: "text", id: "wf_migracion_direccion" }, { label: "Horario de visita", type: "text", id: "wf_migracion_horario_visita" }, { label: "Comentario", type: "textarea", id: "wf_migracion_comentario" }],
+        "inconvenientes con vpn": [{ label: "NUMERO DE SERVICIO", type: "text", id: "wf_vpn_num_servicio" }, { label: "Tipo de CPE", type: "text", id: "wf_vpn_tipo_cpe" }, { label: "MAC Cable Modem o CPE", type: "text", id: "wf_vpn_mac_cpe" }, { label: "Problema reportado", type: "text", id: "wf_vpn_problema_reportado" }, { label: "Nombre del cliente", type: "text", id: "wf_vpn_nombre_cliente" }, { label: "Tel Contacto", type: "text", id: "wf_vpn_tel_contacto" }, { label: "Nombre completo herramienta o aplicativo de vpn", type: "text", id: "wf_vpn_app_vpn" }, { label: "Puertos UDP y TCP que desee verificar", type: "text", id: "wf_vpn_puertos" }, { label: "Numero o nombre de error que da el aplicativo", type: "text", id: "wf_vpn_error_app" }, { label: "Si es VPN, hacía que IP intenta conectarse", type: "text", id: "wf_vpn_ip_conexion" }, { label: "MAC Address de la computadora", type: "text", id: "wf_vpn_mac_computadora" }, { label: "Pruebas(si se efectúan)", type: "textarea", id: "wf_vpn_pruebas" }, { label: "Comentario", type: "textarea", id: "wf_vpn_comentario" }],
+        "filtrado mac": [{ label: "Problema reportado", type: "text", id: "wf_filtrado_problema" }, { label: "Número de Servicio", type: "text", id: "wf_filtrado_num_servicio" }, { label: "Nombre del cliente", type: "text", id: "wf_filtrado_nombre_cliente" }, { label: "Tel Contacto", type: "text", id: "wf_filtrado_tel_contacto" }, { label: "MAC Address", type: "text", id: "wf_filtrado_mac_address" }, { label: "Pruebas(si se efectúan)", type: "textarea", id: "wf_filtrado_pruebas" }, { label: "Comentario", type: "textarea", id: "wf_filtrado_comentario" }],
+        "cita incumplida": [{ label: "No. Orden", type: "text", id: "wf_cita_no_orden" }, { label: "Nombre contacto", type: "text", id: "wf_cita_nombre_contacto" }, { label: "Numero de referencia", type: "text", id: "wf_cita_num_referencia" }, { label: "Fecha de visita", type: "text", id: "wf_cita_fecha_visita" }, { label: "Hora de visita", type: "text", id: "wf_cita_hora_visita" }, { label: "Gestor de Despacho que atendió la llamada", type: "text", id: "wf_cita_gestor_despacho" }, { label: "Orden", type: "text", id: "wf_cita_orden" }, { label: "tipo de orden", type: "text", id: "wf_cita_tipo_orden" }, { label: "tecnología", type: "text", id: "wf_cita_tecnologia" }, { label: "Región", type: "text", id: "wf_cita_region" }, { label: "fecha de nueva visita", type: "text", id: "wf_cita_nueva_visita" }, { label: "horario am/pm", type: "text", id: "wf_cita_horario" }, { label: "Nombre de cliente", type: "text", id: "wf_cita_nombre_cliente" }, { label: "Descripción", type: "textarea", id: "wf_cita_descripcion" }],
+        "vencido comercial": [{ label: "Teléfono de referencia", type: "text", id: "wf_vencido_com_tel_ref" }, { label: "No. de O/S", type: "text", id: "wf_vencido_com_os" }, { label: "Comentarios", type: "textarea", id: "wf_vencido_com_comentarios" }, { label: "Hora visita", type: "text", id: "wf_vencido_com_hora_visita" }],
+        "velocidad mal configurada": [{ label: "No. Contacto", type: "text", id: "wf_velocidad_no_contacto" }, { label: "Inconveniente reportado", type: "text", id: "wf_velocidad_inconveniente" }, { label: "Virtual Reportado", type: "text", id: "wf_velocidad_virtual_reportado" }, { label: "Velocidad Config PISA", type: "text", id: "wf_velocidad_pisa" }, { label: "Velocidad config UMP", type: "text", id: "wf_velocidad_ump" }],
+        "vencido operaciones": [{ label: "Teléfono de referencia", type: "text", id: "wf_vencido_op_tel_ref" }, { label: "No. de O/S", type: "text", id: "wf_vencido_op_os" }, { label: "Comentarios", type: "textarea", id: "wf_vencido_op_comentarios" }, { label: "No. Queja", type: "text", id: "wf_vencido_op_queja" }, { label: "Hora visita", type: "text", id: "wf_vencido_op_hora_visita" }, { label: "Pruebas Realizadas", type: "textarea", id: "wf_vencido_op_pruebas" }],
+        "locucion mora activa": [{ label: "Nombre de quien reporta", type: "text", id: "wf_mora_nombre_reporta" }, { label: "Número afectado", type: "text", id: "wf_mora_num_afectado" }, { label: "Tel de Ref", type: "text", id: "wf_mora_tel_ref" }, { label: "O/S generada", type: "text", id: "wf_mora_os_generada" }, { label: "Fecha de pago", type: "text", id: "wf_mora_fecha_pago" }, { label: "IVR", type: "text", id: "wf_mora_ivr" }, { label: "Observaciones", type: "textarea", id: "wf_mora_observaciones" }],
+        "bloqueo mayor a 2 horas": [{ label: "Nombre de quien reporta", type: "text", id: "wf_bloqueo_nombre_reporta" }, { label: "Servicio a liberar", type: "text", id: "wf_bloqueo_servicio" }, { label: "No. afectado", type: "text", id: "wf_bloqueo_num_afectado" }, { label: "Tipo de bloqueo", type: "text", id: "wf_bloqueo_tipo" }, { label: "Tel de Ref", type: "text", id: "wf_bloqueo_tel_ref" }, { label: "Hora de Pago", type: "text", id: "wf_bloqueo_hora_pago" }, { label: "Reincidente", type: "text", id: "wf_bloqueo_reincidente" }, { label: "Comentarios", type: "textarea", id: "wf_bloqueo_comentarios" }],
+        "daño a la infraestructura": [{ label: "Contacto", type: "text", id: "wf_infra_contacto" }, { label: "Teléfono de contacto", type: "text", id: "wf_infra_tel_contacto" }, { label: "Dirección de daño", type: "text", id: "wf_infra_direccion_dano" }, { label: "Daño que reporta", type: "textarea", id: "wf_infra_dano_reporta" }],
+        "claro video": [{ label: "Nombre del Cliente", type: "text", id: "wf_clarovideo_nombre" }, { label: "Número telefónico", type: "text", id: "wf_clarovideo_telefono" }, { label: "Correo electrónico a registrar", type: "text", id: "wf_clarovideo_correo" }, { label: "Qué problema reporta", type: "textarea", id: "wf_clarovideo_problema" }, { label: "Fecha de nacimiento", type: "text", id: "wf_clarovideo_fecha_nac" }, { label: "Telefonos de contacto", type: "text", id: "wf_clarovideo_tels_contacto" }, { label: "Plataforma donde está tratando de registrarse", type: "text", id: "wf_clarovideo_plataforma" }],
+        "reparación en tiempo vencido": [{ label: "Teléfono de referencia", type: "text", id: "wf_rep_venc_tel_ref" }, { label: "No. de O/S", type: "text", id: "wf_rep_venc_os" }, { label: "Comentarios", type: "textarea", id: "wf_rep_venc_comentarios" }, { label: "No. Queja", type: "text", id: "wf_rep_venc_queja" }, { label: "Hora visita", type: "text", id: "wf_rep_venc_hora_visita" }, { label: "Pruebas Realizadas", type: "textarea", id: "wf_rep_venc_pruebas" }],
+        "mala atención al tecnico": [{ label: "Motivo", type: "text", id: "wf_mala_atencion_motivo" }, { label: "Número afectado", type: "text", id: "wf_mala_atencion_num_afectado" }, { label: "Nombre completo del cliente", type: "text", id: "wf_mala_atencion_nombre_cliente" }, { label: "Nombre de quien reporta", type: "text", id: "wf_mala_atencion_nombre_reporta" }, { label: "Teléfono de referencia", type: "text", id: "wf_mala_atencion_tel_ref" }, { label: "Fecha de solicitud", type: "text", id: "wf_mala_atencion_fecha_solicitud" }, { label: "Servicio contratado", type: "text", id: "wf_mala_atencion_servicio" }, { label: "Dirección de instalación", type: "text", id: "wf_mala_atencion_direccion" }, { label: "Descripción del reclamo", type: "textarea", id: "wf_mala_atencion_descripcion" }],
+        "check en rojo": [{ label: "Número", type: "text", id: "wf_check_rojo_numero" }, { label: "Correo Claro Video", type: "text", id: "wf_check_rojo_correo" }, { label: "Plan o paquete contratado", type: "text", id: "wf_check_rojo_plan" }, { label: "Check con error en GUI", type: "text", id: "wf_check_rojo_error_gui" }, { label: "Número de contacto", type: "text", id: "wf_check_rojo_num_contacto" }, { label: "Cliente", type: "text", id: "wf_check_rojo_cliente" }, { label: "Descripción", type: "textarea", id: "wf_check_rojo_descripcion" }, { label: "Pruebas realizadas", type: "textarea", id: "wf_check_rojo_pruebas" }],
+        "sin acceso a guía interactiva": [{ label: "Número", type: "text", id: "wf_guia_numero" }, { label: "Correo Claro Video", type: "text", id: "wf_guia_correo" }, { label: "Plan o paquete contratado", type: "text", id: "wf_guia_plan" }, { label: "Check AMCO y PLE", type: "text", id: "wf_guia_check_amco_ple" }, { label: "Mensaje que muestra TV", type: "text", id: "wf_guia_mensaje_tv" }, { label: "Número de contacto", type: "text", id: "wf_guia_num_contacto" }, { label: "Cliente", type: "text", id: "wf_guia_cliente" }, { label: "Descripción", type: "textarea", id: "wf_guia_descripcion" }, { label: "Pruebas realizadas", type: "textarea", id: "wf_guia_pruebas" }],
+        "configuración wifi": [{ label: "Quien genera queja", type: "text", id: "wf_wifi_quien_queja" }, { label: "Luz Pon", type: "text", id: "wf_wifi_luz_pon" }, { label: "Luz Los", type: "text", id: "wf_wifi_luz_los" }, { label: "Serie", type: "text", id: "wf_wifi_serie" }, { label: "Canal dañado", type: "text", id: "wf_wifi_canal_danado" }, { label: "Problema reportado", type: "textarea", id: "wf_wifi_problema_reportado" }, { label: "Pruebas Realizadas", type: "textarea", id: "wf_wifi_pruebas_realizadas" }, { label: "Contacto en sitio", type: "text", id: "wf_wifi_contacto_sitio" }, { label: "Teléfonos de referencias", type: "text", id: "wf_wifi_tels_referencias" }, { label: "Dirección", type: "text", id: "wf_wifi_direccion" }],
+        "reparación en plazo vigente": [{ label: "Teléfono de referencia", type: "text", id: "wf_reparacion_plazo_vigente_tel_ref" }, { label: "Comentarios", type: "textarea", id: "wf_reparacion_plazo_vigente_comentarios", defaultValue: "Seguimiento a queja en tiempo Vigente" }, { label: "No. Queja", type: "text", id: "wf_reparacion_plazo_vigente_no_queja" }, { label: "Hora visita", type: "text", id: "wf_reparacion_plazo_vigente_hora_visita", defaultValue: "8:00 a 5:00" }, { label: "Pruebas Realizadas", type: "textarea", id: "wf_reparacion_plazo_vigente_pruebas_realizadas", defaultValue: "Cl Indica que no ha llegado el técnico y le urge, por favor verificar." }],
+        "otros wf": [{ label: "Nombre de contacto", type: "text", id: "wf_otros_nombre_contacto" }, { label: "Teléfonos de referencia", type: "text", id: "wf_otros_tels_referencia" }, { label: "Numero de orden y/o queja", type: "text", id: "wf_otros_num_orden_queja" }, { label: "Inconveniente del cliente", type: "textarea", id: "wf_otros_inconveniente_cliente" }, { label: "Pruebas Realizada", type: "textarea", id: "wf_otros_pruebas_realizadas" }]
     };
 
     const predefinedOrdenMemos = {
-        "cableado ethernet": [
-            { label: "ASUNTO", type: "text", id: "orden_ethernet_asunto" },
-            { label: "NUMERO DE SERVICIO", type: "text", id: "orden_ethernet_num_servicio" },
-            { label: "NOMBRE DE TITULAR", type: "text", id: "orden_ethernet_nombre_titular" },
-            { label: "DPI TITULAR", type: "text", id: "orden_ethernet_dpi_titular" },
-            { label: "TELEFONO REFERENCIA", type: "text", id: "orden_ethernet_tel_referencia" },
-            { label: "DIRECCIÓN INSTALACIÓN", type: "text", id: "orden_ethernet_direccion" },
-            { label: "HORARIO DE VISITA", type: "text", id: "orden_ethernet_horario_visita" },
-            { label: "OBSERVACIONES", type: "textarea", id: "orden_ethernet_observaciones" },
-            { label: "TIENDA / CALL CENTER", type: "text", id: "orden_ethernet_tienda" }
-        ],
-        "orden de repetidores": [
-            { label: "ASUNTO", type: "text", id: "orden_repetidores_asunto" },
-            { label: "NUMERO DE SERVICIO", type: "text", id: "orden_repetidores_num_servicio" },
-            { label: "NOMBRE DE TITULAR", type: "text", id: "orden_repetidores_nombre_titular" },
-            { label: "DPI TITULAR", type: "text", id: "orden_repetidores_dpi_titular" },
-            { label: "TELEFONO REFERENCIA", type: "text", id: "orden_repetidores_tel_referencia" },
-            { label: "DIRECCIÓN INSTALACIÓN", type: "text", id: "orden_repetidores_direccion" },
-            { label: "HORARIO DE VISITA", type: "text", id: "orden_repetidores_horario_visita" },
-            { label: "OBSERVACIONES", type: "textarea", id: "orden_repetidores_observaciones" },
-            { label: "TIENDA / CALL CENTER", type: "text", id: "orden_repetidores_tienda" }
-        ],
-        "instalación en plazo vigente": [
-            { label: "Teléfono de referencia", type: "text", id: "orden_instalacion_plazo_vigente_tel_ref" },
-            { label: "No. de O/S", type: "text", id: "orden_instalacion_plazo_vigente_no_os" },
-            { label: "Comentarios", type: "textarea", id: "orden_instalacion_plazo_vigente_comentarios", defaultValue: "Seguimiento a orden en tiempo Vigente" },
-            { label: "Hora visita", type: "text", id: "orden_instalacion_plazo_vigente_hora_visita", defaultValue: "8:00 a 5:00" },
-            { label: "Pruebas Realizadas", type: "textarea", id: "orden_instalacion_plazo_vigente_pruebas_realizadas", defaultValue: "Cliente solicita informacion sobre instalacion, se encuentra en tiempo vigente" }
-        ]
+        "cableado ethernet": [{ label: "ASUNTO", type: "text", id: "orden_ethernet_asunto" }, { label: "NUMERO DE SERVICIO", type: "text", id: "orden_ethernet_num_servicio" }, { label: "NOMBRE DE TITULAR", type: "text", id: "orden_ethernet_nombre_titular" }, { label: "DPI TITULAR", type: "text", id: "orden_ethernet_dpi_titular" }, { label: "TELEFONO REFERENCIA", type: "text", id: "orden_ethernet_tel_referencia" }, { label: "DIRECCIÓN INSTALACIÓN", type: "text", id: "orden_ethernet_direccion" }, { label: "HORARIO DE VISITA", type: "text", id: "orden_ethernet_horario_visita" }, { label: "OBSERVACIONES", type: "textarea", id: "orden_ethernet_observaciones" }, { label: "TIENDA / CALL CENTER", type: "text", id: "orden_ethernet_tienda" }],
+        "orden de repetidores": [{ label: "ASUNTO", type: "text", id: "orden_repetidores_asunto" }, { label: "NUMERO DE SERVICIO", type: "text", id: "orden_repetidores_num_servicio" }, { label: "NOMBRE DE TITULAR", type: "text", id: "orden_repetidores_nombre_titular" }, { label: "DPI TITULAR", type: "text", id: "orden_repetidores_dpi_titular" }, { label: "TELEFONO REFERENCIA", type: "text", id: "orden_repetidores_tel_referencia" }, { label: "DIRECCIÓN INSTALACIÓN", type: "text", id: "orden_repetidores_direccion" }, { label: "HORARIO DE VISITA", type: "text", id: "orden_repetidores_horario_visita" }, { label: "OBSERVACIONES", type: "textarea", id: "orden_repetidores_observaciones" }, { label: "TIENDA / CALL CENTER", type: "text", id: "orden_repetidores_tienda" }],
+        "instalación en plazo vigente": [{ label: "Teléfono de referencia", type: "text", id: "orden_instalacion_plazo_vigente_tel_ref" }, { label: "No. de O/S", type: "text", id: "orden_instalacion_plazo_vigente_no_os" }, { label: "Comentarios", type: "textarea", id: "orden_instalacion_plazo_vigente_comentarios", defaultValue: "Seguimiento a orden en tiempo Vigente" }, { label: "Hora visita", type: "text", id: "orden_instalacion_plazo_vigente_hora_visita", defaultValue: "8:00 a 5:00" }, { label: "Pruebas Realizadas", type: "textarea", id: "orden_instalacion_plazo_vigente_pruebas_realizadas", defaultValue: "Cliente solicita informacion sobre instalacion, se encuentra en tiempo vigente" }]
     };
     
-    // --- BUG FIX: Added checkboxes and corrected textarea for "LINEA FIJA" memo ---
     const predefinedMemoTemplates = {
-        "INTERNET DSL": [
-            { label: "Luz Portadora", type: "checkbox-group", options: ["Fija", "Apagada", "Intermitente"], id:"luzPortadora" },
-            { label: "Luz Internet", type: "checkbox-group", options: ["Fija", "Apagada", "Intermitente"], id:"luzInternet" },
-            { label: "Estado del Puerto", type: "checkbox-group", options: ["UP", "DOWN", "DORMANT"], id:"estadoPuerto" },
-            { label: "SNR", type: "textarea", id:"SNRniveles" },
-            { label: "Estatus de niveles", type: "checkbox-group", options: ["Correctos", "Erroneos"], id:"estatusNiveles" },
-            { label: "Velocidad Current igual a Pisa", type: "text", id: "velocidadPisa" },
-            { label: "Canal dañado", type: "checkbox-group", options: ["Datos", "Voz", "Todos"], id:"canalDanado" },
-            { label: "Problema Reportado", type: "textarea", id: "problemaReportadoQueja" },
-            { label: "Pruebas Realizadas", type: "textarea", id: "pruebasRealizadasQueja", isTestArea: true },
-            { label: "Contacto En Sitio", type: "text", id: "contactoEnSitioQueja" },
-            { label: "Tel Contacto", type: "text", id: "telContactoQueja" },
-            { label: "Dirección", type: "text", id: "direccionQueja" },
-            { label: "Queja", type: "text", id: "quejaNumero" },
-            { label: "ID", type: "text", id: "idLlamadaQueja" }
-        ],
-        "TV DTH": [
-            { label: "Número", type: "text", id:"tvDthNumero" }, { label: "No. Tvs Afectados", type: "text", id:"tvDthAfectados" },
-            { label: "Serie STB", type: "text", id:"tvDthSerie" }, { label: "Smart Card", type: "text", id:"tvDthSmartCard" },
-            { label: "Modelo STB", type: "text", id:"tvDthModelo" }, { label: "Mensaje Que Muestra Tv", type: "text", id:"tvDthMensaje" },
-            { label: "Pruebas Realizadas", type: "textarea", id:"tvDthPruebas", isTestArea: true }, { label: "Contacto En Sitio", type: "text", id:"tvDthContacto" },
-            { label: "Tel. Contacto", type: "text", id:"tvDthTel" }, { label: "Dirección", type: "text", id:"tvDthDireccion" },
-            { label: "Queja", type: "text", id:"tvDthQueja" }, { label: "ID", type: "text", id:"tvDthId" }
-        ],
-         "TV HFC": [
-            { label: "Número", type: "text", id:"tvHfcNumero" }, { label: "No. Tvs Afectados", type: "text", id:"tvHfcAfectados" },
-            { label: "No. Serie Stb", type: "text", id:"tvHfcSerie" }, { label: "Mensaje Que Muestra Tv", type: "text", id:"tvHfcMensaje" },
-            { label: "Pruebas Realizadas", type: "textarea", id:"tvHfcPruebas", isTestArea: true }, { label: "Contacto En Sitio", type: "text", id:"tvHfcContacto" },
-            { label: "Tel. Contacto", type: "text", id:"tvHfcTel" }, { label: "Dirección", type: "text", id:"tvHfcDireccion" },
-            { label: "Queja", type: "text", id:"tvHfcQueja" }, { label: "ID", type: "text", id:"tvHfcId" }
-        ],
-        "INTERNET HFC/LINEA": [
-            { label: "Estado del Puerto", type: "checkbox-group", options: ["UP", "DOWN", "DORMANT"], id:"hfcEstadoPuerto" },
-            { label: "Luz portadora", type: "checkbox-group", options: ["fija", "intermitente", "apagada"], id:"hfcluzportadora" },
-            { label: "Luz online", type: "checkbox-group", options: ["fija", "intermitente", "apagada"], id:"hfcluzonline" },
-            { label: "Niveles De Señal", type: "text", id:"hfcNivelesSenal" }, { label: "Niveles De Ruido", type: "text", id:"hfcNivelesRuido" },
-            { label: "Estatus de niveles", type: "checkbox-group", options: ["Correctos", "Erroneos"], id:"hfcEstatusNiveles" },
-            { label: "Mac Address", type: "text", id:"hfcMac" }, { label: "Problema Reportado", type: "textarea", id:"hfcProblema" },
-            { label: "Pruebas Realizadas", type: "textarea", id:"hfcPruebas", isTestArea: true }, { label: "Contacto En Sitio", type: "text", id:"hfcContacto" },
-            { label: "Tel. Contacto", type: "text", id:"hfcTel" }, { label: "Dirección", type: "text", id:"hfcDireccion" },
-            { label: "Queja", type: "text", id:"hfcQueja" }, { label: "ID", type: "text", id:"hfcId" }
-        ],
-        "LINEA FIJA": [
-            { label: "Al Levantar El Auricular", type: "text", id:"lfAuricular" },
-            { label: "Cuando Le Llaman", type: "text", id:"lfLlaman" },
-            { label: "Diagnóstico", type: "checkbox-group", options: ["Sin tono", "Tono ocupado", "Ruido en la línea", "No saca llamadas", "No entran llamadas", "Llamadas se cortan"], id:"lfDiagnostico" },
-            { label: "Pruebas Realizadas", type: "textarea", id:"lfPruebas", isTestArea: true },
-            { label: "Contacto", type: "text", id:"lfContacto" },
-            { label: "Tel Referencia", type: "text", id:"lfTelRef" },
-            { label: "Dirección", type: "text", id:"lfDireccion" },
-            { label: "Queja", type: "text", id:"lfQueja" },
-            { label: "ID", type: "text", id:"lfId" }
-        ],
-        "GPON/LINEA": [
-            { label: "Estatus de niveles:", type: "checkbox-group", options: ["Correctos", "Erroneos"], id:"gponEstatusNiveles" },
-            { label: "Canal Dañado", type: "checkbox-group", options: ["Datos", "Voz", "Todos"], id:"gponCanalDanado" },
-            { label: "PON", type: "checkbox-group", options: ["fija", "apagada", "intermitente"], id:"gponluzpon" },
-            { label: "LOS", type: "checkbox-group", options: ["fija", "apagada", "roja"], id:"gponluzlos" },
-            { label: "Problema Reportado", type: "textarea", id:"gponProblema" }, { label: "Pruebas Realizadas", type: "textarea", id:"gponPruebas", isTestArea: true },
-            { label: "Contacto En Sitio", type: "text", id:"gponContacto" }, { label: "Tel De Contacto", type: "text", id:"gponTel" },
-            { label: "Dirección", type: "text", id:"gponDireccion" }, { label: "Queja", type: "text", id:"gponQueja" },
-            { label: "ID", type: "text", id:"gponId" }
-        ],
-        "IPTV": [
-            { label: "Número de Serie", type: "text", id:"iptvSerie" }, { label: "Número", type: "text", id:"iptvNumero" },
-            { label: "Mensaje Que Muestra Tv", type: "text", id:"iptvMensaje" }, { label: "Descripción", type: "textarea", id:"iptvDescripcion" },
-            { label: "Pruebas Realizadas", type: "textarea", id:"iptvPruebas", isTestArea: true }, { label: "Nombre Cliente", type: "text", id:"iptvCliente" },
-            { label: "Número De Contacto", type: "text", id:"iptvTel" }, { label: "Dirección", type: "text", id:"iptvDireccion" },
-            { label: "Queja", type: "text", id:"iptvQueja" }, { label: "ID", type: "text", id:"iptvId" }
-        ]
+        "INTERNET DSL": [{ label: "Luz Portadora", type: "checkbox-group", options: ["Fija", "Apagada", "Intermitente"], id:"luzPortadora" }, { label: "Luz Internet", type: "checkbox-group", options: ["Fija", "Apagada", "Intermitente"], id:"luzInternet" }, { label: "Estado del Puerto", type: "checkbox-group", options: ["UP", "DOWN", "DORMANT"], id:"estadoPuerto" }, { label: "SNR", type: "textarea", id:"SNRniveles" }, { label: "Estatus de niveles", type: "checkbox-group", options: ["Correctos", "Erroneos"], id:"estatusNiveles" }, { label: "Velocidad Current igual a Pisa", type: "text", id: "velocidadPisa" }, { label: "Canal dañado", type: "checkbox-group", options: ["Datos", "Voz", "Todos"], id:"canalDanado" }, { label: "Problema Reportado", type: "textarea", id: "problemaReportadoQueja" }, { label: "Pruebas Realizadas", type: "textarea", id: "pruebasRealizadasQueja", isTestArea: true }, { label: "Contacto En Sitio", type: "text", id: "contactoEnSitioQueja" }, { label: "Tel Contacto", type: "text", id: "telContactoQueja" }, { label: "Dirección", type: "text", id: "direccionQueja" }, { label: "Queja", type: "text", id: "quejaNumero" }, { label: "ID", type: "text", id: "idLlamadaQueja" }],
+        "TV DTH": [{ label: "Número", type: "text", id:"tvDthNumero" }, { label: "No. Tvs Afectados", type: "text", id:"tvDthAfectados" }, { label: "Serie STB", type: "text", id:"tvDthSerie" }, { label: "Smart Card", type: "text", id:"tvDthSmartCard" }, { label: "Modelo STB", type: "text", id:"tvDthModelo" }, { label: "Mensaje Que Muestra Tv", type: "text", id:"tvDthMensaje" }, { label: "Pruebas Realizadas", type: "textarea", id:"tvDthPruebas", isTestArea: true }, { label: "Contacto En Sitio", type: "text", id:"tvDthContacto" }, { label: "Tel. Contacto", type: "text", id:"tvDthTel" }, { label: "Dirección", type: "text", id:"tvDthDireccion" }, { label: "Queja", type: "text", id:"tvDthQueja" }, { label: "ID", type: "text", id:"tvDthId" }],
+         "TV HFC": [{ label: "Número", type: "text", id:"tvHfcNumero" }, { label: "No. Tvs Afectados", type: "text", id:"tvHfcAfectados" }, { label: "No. Serie Stb", type: "text", id:"tvHfcSerie" }, { label: "Mensaje Que Muestra Tv", type: "text", id:"tvHfcMensaje" }, { label: "Pruebas Realizadas", type: "textarea", id:"tvHfcPruebas", isTestArea: true }, { label: "Contacto En Sitio", type: "text", id:"tvHfcContacto" }, { label: "Tel. Contacto", type: "text", id:"tvHfcTel" }, { label: "Dirección", type: "text", id:"tvHfcDireccion" }, { label: "Queja", type: "text", id:"tvHfcQueja" }, { label: "ID", type: "text", id:"tvHfcId" }],
+        "INTERNET HFC/LINEA": [{ label: "Estado del Puerto", type: "checkbox-group", options: ["UP", "DOWN", "DORMANT"], id:"hfcEstadoPuerto" }, { label: "Luz portadora", type: "checkbox-group", options: ["fija", "intermitente", "apagada"], id:"hfcluzportadora" }, { label: "Luz online", type: "checkbox-group", options: ["fija", "intermitente", "apagada"], id:"hfcluzonline" }, { label: "Niveles De Señal", type: "text", id:"hfcNivelesSenal" }, { label: "Niveles De Ruido", type: "text", id:"hfcNivelesRuido" }, { label: "Estatus de niveles", type: "checkbox-group", options: ["Correctos", "Erroneos"], id:"hfcEstatusNiveles" }, { label: "Mac Address", type: "text", id:"hfcMac" }, { label: "Problema Reportado", type: "textarea", id:"hfcProblema" }, { label: "Pruebas Realizadas", type: "textarea", id:"hfcPruebas", isTestArea: true }, { label: "Contacto En Sitio", type: "text", id:"hfcContacto" }, { label: "Tel. Contacto", type: "text", id:"hfcTel" }, { label: "Dirección", type: "text", id:"hfcDireccion" }, { label: "Queja", type: "text", id:"hfcQueja" }, { label: "ID", type: "text", id:"hfcId" }],
+        "LINEA FIJA": [{ label: "Al Levantar El Auricular", type: "text", id:"lfAuricular" }, { label: "Cuando Le Llaman", type: "text", id:"lfLlaman" }, { label: "Diagnóstico", type: "checkbox-group", options: ["Sin tono", "Tono ocupado", "Ruido en la línea", "No saca llamadas", "No entran llamadas", "Llamadas se cortan"], id:"lfDiagnostico" }, { label: "Pruebas Realizadas", type: "textarea", id:"lfPruebas", isTestArea: true }, { label: "Contacto", type: "text", id:"lfContacto" }, { label: "Tel Referencia", type: "text", id:"lfTelRef" }, { label: "Dirección", type: "text", id:"lfDireccion" }, { label: "Queja", type: "text", id:"lfQueja" }, { label: "ID", type: "text", id:"lfId" }],
+        "GPON/LINEA": [{ label: "Estatus de niveles:", type: "checkbox-group", options: ["Correctos", "Erroneos"], id:"gponEstatusNiveles" }, { label: "Canal Dañado", type: "checkbox-group", options: ["Datos", "Voz", "Todos"], id:"gponCanalDanado" }, { label: "PON", type: "checkbox-group", options: ["fija", "apagada", "intermitente"], id:"gponluzpon" }, { label: "LOS", type: "checkbox-group", options: ["fija", "apagada", "roja"], id:"gponluzlos" }, { label: "Problema Reportado", type: "textarea", id:"gponProblema" }, { label: "Pruebas Realizadas", type: "textarea", id:"gponPruebas", isTestArea: true }, { label: "Contacto En Sitio", type: "text", id:"gponContacto" }, { label: "Tel De Contacto", type: "text", id:"gponTel" }, { label: "Dirección", type: "text", id:"gponDireccion" }, { label: "Queja", type: "text", id:"gponQueja" }, { label: "ID", type: "text", id:"gponId" }],
+        "IPTV": [{ label: "Número de Serie", type: "text", id:"iptvSerie" }, { label: "Número", type: "text", id:"iptvNumero" }, { label: "Mensaje Que Muestra Tv", type: "text", id:"iptvMensaje" }, { label: "Descripción", type: "textarea", id:"iptvDescripcion" }, { label: "Pruebas Realizadas", type: "textarea", id:"iptvPruebas", isTestArea: true }, { label: "Nombre Cliente", type: "text", id:"iptvCliente" }, { label: "Número De Contacto", type: "text", id:"iptvTel" }, { label: "Dirección", type: "text", id:"iptvDireccion" }, { label: "Queja", type: "text", id:"iptvQueja" }, { label: "ID", type: "text", id:"iptvId" }]
     };
     
     document.addEventListener('DOMContentLoaded', function () {
-        // --- INITIAL SETUP AND EVENT LISTENERS ---
         
-        // Setup automatic saving for all relevant inputs
         function setupAutoSaveListeners() {
             document.querySelectorAll('input, textarea, select').forEach(element => {
                 element.addEventListener('input', () => window.triggerSave());
             });
         }
-        setupAutoSaveListeners(); // Initial setup
+        setupAutoSaveListeners();
 
-        // --- NEURON ANIMATION ---
         (function() {
             const canvas = document.getElementById('neuronCanvas');
             if (!canvas) return;
@@ -2401,7 +1977,6 @@
                 }
             }
             
-            // Initialize neuron colors from defaults before first draw
             globalNeuronColorsRGB = [
                 defaultThemeSettings['--neuron-color-1-rgb'],
                 defaultThemeSettings['--neuron-color-2-rgb'],
@@ -2417,12 +1992,17 @@
             });
         })();
         
-        // --- TAB LOGIC ---
-        window.switchTab = function(tabId, isSubTab = false) {
+        // Removed applyDraggableBoxPositionsForTab as boxes are no longer draggable
+
+        // Modified switchTab
+        window.switchTab = function(tabId, isSubTab = false, preventSave = false) {
             let links, contents, parentContent;
             
             if (isSubTab) {
-                parentContent = document.getElementById(tabId).closest('.tab-content');
+                const subTabElement = document.getElementById(tabId);
+                if (!subTabElement) return;
+                parentContent = subTabElement.closest('.tab-content:not(.sub-tab-content)');
+                if (!parentContent) return;
                 links = parentContent.querySelectorAll('.sub-tab-link');
                 contents = parentContent.querySelectorAll('.sub-tab-content');
             } else {
@@ -2439,14 +2019,13 @@
             if (activeLink) activeLink.classList.add('active');
             if (activeContent) activeContent.classList.add('active');
 
-            // If switching a main tab, activate its first sub-tab by default
             if (!isSubTab && activeContent && activeContent.querySelector('.sub-tab-nav')) {
                 const firstSubTabLink = activeContent.querySelector('.sub-tab-link');
                 if (firstSubTabLink && !activeContent.querySelector('.sub-tab-link.active')) {
-                    switchTab(firstSubTabLink.dataset.tab, true);
+                    switchTab(firstSubTabLink.dataset.tab, true, true); // Prevent save on automatic sub-tab activation
                 }
             }
-            window.triggerSave();
+            // No automatic save on tab switch, only on explicit save button or input change
         }
 
         document.querySelectorAll('.tab-link').forEach(link => {
@@ -2457,7 +2036,6 @@
             });
         });
 
-        // --- WIDGETS LOGIC ---
         function toggleWidget(widgetToToggle, button) {
             const isAlreadyOpen = widgetToToggle === openWidgetPanel;
 
@@ -2469,7 +2047,7 @@
                     if (oldButton.id === 'toggleCopilot') oldButton.textContent = '💬';
                     else if (oldButton.id === 'toggleNotes') oldButton.textContent = '📝';
                     else if (oldButton.id === 'toggleUsers') oldButton.textContent = '👤';
-                    else if (oldButton.id === 'toggleAddBox') oldButton.textContent = '➕'; 
+                    // Removed toggleAddBox button logic
                     else if (oldButton.id === 'toggleTheme') oldButton.textContent = '🎨';
                  }
             }
@@ -2496,10 +2074,9 @@
         document.getElementById('toggleNotes')?.addEventListener('click', function() { toggleWidget(document.getElementById('notesWidget'), this); });
         document.getElementById('toggleUsers')?.addEventListener('click', function() { toggleWidget(document.getElementById('usersWidget'), this); });
         document.getElementById('toggleCopilot')?.addEventListener('click', function() { toggleWidget(document.getElementById('copilotWidget'), this); });
-        document.getElementById('toggleAddBox')?.addEventListener('click', function() { toggleWidget(document.getElementById('addBoxWidget'), this); });
+        // Removed event listener for toggleAddBox
         document.getElementById('toggleTheme')?.addEventListener('click', function() { toggleWidget(document.getElementById('themeWidgetPanel'), this); });
 
-        // --- THEME WIDGET LOGIC ---
         function hexToRgbString(hex) {
             let r = 0, g = 0, b = 0;
             if (hex.length == 4) { r = "0x" + hex[1] + hex[1]; g = "0x" + hex[2] + hex[2]; b = "0x" + hex[3] + hex[3]; }
@@ -2565,7 +2142,6 @@
         document.getElementById('applyThemeBtn')?.addEventListener('click', applyCurrentTheme);
         document.getElementById('resetThemeBtn')?.addEventListener('click', resetThemeToDefaults);
         
-        // --- TIMER LOGIC ---
         const topTimerDisplay = document.getElementById('topTimerDisplay');
         const topTimerInputMinutes = document.getElementById('topTimerInputMinutes');
         const startTimerBtnTop = document.getElementById('startTimerBtnTop');
@@ -2601,7 +2177,6 @@
         resetTimerBtnTop?.addEventListener('click', () => { clearInterval(timerInterval); setInitialTimerValuesTop(); });
         if(topTimerInputMinutes) { setInitialTimerValuesTop(); topTimerInputMinutes.addEventListener('change', setInitialTimerValuesTop); }
 
-        // --- WIDGETS (Notes & Users) COPY/CLEAR LOGIC ---
         document.getElementById('copyNotesButton')?.addEventListener('click', () => copyToClipboard('notesArea', 'Notas copiadas.'));
         document.getElementById('clearNotesButton')?.addEventListener('click', () => clearTextarea('notesArea', '¿Limpiar notas?'));
         document.getElementById('copyUsersButton')?.addEventListener('click', () => copyToClipboard('usersArea', 'Lista de usuarios copiada.'));
@@ -2621,7 +2196,6 @@
             });
         }
         
-        // --- GENERIC TEMPLATE LOGIC ---
         window.actualizarPruebasRealizadas = function() {
             const checkboxes = document.querySelectorAll('#sub-tab-genericas .checkbox-group input[type="checkbox"]:checked');
             const pruebasRealizadasEl = document.getElementById('pruebasRealizadas');
@@ -2651,7 +2225,6 @@
             });
         });
 
-        // --- CHECKBOX DYNAMICS (ADD/REMOVE) ---
         window.addCheckboxItem = function(checkboxGroupElement) {
             let newItemTitle = prompt("Ingrese el TÍTULO para el nuevo checkbox (lo que se muestra):");
             if (!newItemTitle || !newItemTitle.trim()) return;
@@ -2665,7 +2238,6 @@
             const addButtonContainer = checkboxGroupElement.querySelector('.add-item-btn-container');
             checkboxGroupElement.insertBefore(container, addButtonContainer);
             
-            // Re-attach listeners for the correct tab
             const activeTabId = checkboxGroupElement.closest('.sub-tab-content').id;
             if (activeTabId === 'sub-tab-genericas') {
                 container.querySelector('input').addEventListener('change', actualizarPruebasRealizadas);
@@ -2685,7 +2257,6 @@
             });
         };
 
-        // --- MEMOS DE QUEJAS LOGIC ---
         const opcionesMemoQuejasDropdown = document.getElementById('opcionesMemoQuejas');
         const formContainerMemoQuejas = document.getElementById('formContainerMemoQuejas');
 
@@ -2728,7 +2299,6 @@
                 formContainerMemoQuejas.appendChild(wrapper);
             });
             
-            // Attach listeners to all new checkboxes for this form
             formContainerMemoQuejas.querySelectorAll('input[type="checkbox"]').forEach(cb => {
                 cb.addEventListener('change', updateMemoPruebasRealizadas);
             });
@@ -2782,7 +2352,6 @@
             });
         });
 
-        // --- WF & ORDEN MEMOS LOGIC ---
         const wfMemosDropdown = document.getElementById('wfMemosDropdown');
         const ordenMemosDropdown = document.getElementById('ordenMemosDropdown');
         
@@ -2848,7 +2417,6 @@
         setupMemoLogic('wf');
         setupMemoLogic('orden');
 
-        // --- TRANSFERS LOGIC ---
         const dynamicTransfersList = document.getElementById('dynamicTransfersList');
         const addTransferBtn = document.getElementById('addTransferBtn');
         const defaultTransferItems = [
@@ -2893,81 +2461,9 @@
             });
         }
 
-        // --- IMPORT/EXPORT LOGIC ---
-        document.getElementById('exportDataBtn')?.addEventListener('click', () => {
-            const dataToExport = getUIDataForSave();
-            const dataStr = JSON.stringify(dataToExport, null, 2);
-            const blob = new Blob([dataStr], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `omega_backup_${new Date().toISOString().slice(0,10)}.json`;
-            a.click();
-            URL.revokeObjectURL(url);
-        });
+        // Removed makeElementDraggableAndResizable function
 
-        document.getElementById('importDataInput')?.addEventListener('change', (event) => {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    try {
-                        const importedData = JSON.parse(e.target.result);
-                        createCustomConfirm('¿Importar este archivo? Se sobrescribirán todos los datos actuales.', () => {
-                            applyDataToUI(importedData);
-                            window.triggerSave(); // Save the newly imported data
-                            createCustomAlert('Datos importados y guardados.');
-                        });
-                    } catch (error) {
-                        createCustomAlert('Error al importar. El archivo no es un JSON válido.');
-                    }
-                };
-                reader.readAsText(file);
-            }
-        });
-
-        // --- DRAGGABLE/RESIZABLE BOXES LOGIC ---
-        function makeElementDraggableAndResizable(elmnt) {
-            let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-            const dragHandle = elmnt.querySelector(".drag-handle");
-            if (dragHandle) dragHandle.onmousedown = dragMouseDown;
-
-            function dragMouseDown(e) {
-                e.preventDefault();
-                pos3 = e.clientX;
-                pos4 = e.clientY;
-                document.onmouseup = closeDragElement;
-                document.onmousemove = elementDrag;
-                elmnt.classList.add("dragging");
-            }
-
-            function elementDrag(e) {
-                e.preventDefault();
-                pos1 = pos3 - e.clientX;
-                pos2 = pos4 - e.clientY;
-                pos3 = e.clientX;
-                pos4 = e.clientY;
-                elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
-                elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
-            }
-
-            function closeDragElement() {
-                document.onmouseup = null;
-                document.onmousemove = null;
-                elmnt.classList.remove("dragging");
-                window.triggerSave(); // Save position on drop
-            }
-        }
-        document.querySelectorAll('.draggable-box').forEach(makeElementDraggableAndResizable);
-        
-        // --- MISC & UTILITY FUNCTIONS ---
-        window.editBoxTitle = function(titleSpanElement) {
-            const newTitle = prompt("Editar título del recuadro:", titleSpanElement.textContent.trim());
-            if (newTitle) {
-                titleSpanElement.textContent = newTitle.trim();
-                window.triggerSave();
-            }
-        };
+        // Removed editBoxTitle function
         window.loadDocumentInIframe = function(iframeId, docUrl) {
             const iframe = document.getElementById(iframeId);
             if (iframe) iframe.src = docUrl;
@@ -3002,9 +2498,6 @@
             modal.querySelector('#confirmYes').onclick = () => { onConfirm(); modal.remove(); };
             modal.querySelector('#confirmNo').onclick = () => modal.remove();
         }
-        
-        // Final initializations
-        initializeTMOCalculator();
         
     }); // End DOMContentLoaded
     </script>
