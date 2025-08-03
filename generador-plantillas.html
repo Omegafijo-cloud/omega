@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Omega - Fijo Soporte</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated background particles */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(120, 119, 198, 0.2) 0%, transparent 50%);
+            animation: float 6s ease-in-out infinite;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .logo-text {
+            font-size: 22px;
+            font-weight: 500;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 14px;
+        }
+
+        .nav-tabs {
+            background: #f8f9fa;
+            display: flex;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .nav-tab {
+            padding: 12px 25px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            color: #6c757d;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-tab.active {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+        }
+
+        .nav-tab:hover:not(.active) {
+            background: rgba(30, 60, 114, 0.1);
+            color: #1e3c72;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .form-section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1e3c72;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-subtitle {
+            font-size: 14px;
+            color: #6c757d;
+            margin-bottom: 20px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: #495057;
+        }
+
+        .form-input {
+            padding: 12px 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .checkbox-sections {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .checkbox-section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            border: 1px solid #e9ecef;
+        }
+
+        .checkbox-section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1e3c72;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .checkbox-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 0;
+        }
+
+        .checkbox-input {
+            width: 18px;
+            height: 18px;
+            accent-color: #667eea;
+            cursor: pointer;
+        }
+
+        .checkbox-label {
+            font-size: 14px;
+            color: #495057;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: flex-start;
+            padding-top: 20px;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+
+        .mode-toggle {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .mode-toggle:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Info icon */
+        .info-icon {
+            width: 16px;
+            height: 16px;
+            background: #667eea;
+            border-radius: 50%;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 10px;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .checkbox-sections {
+                grid-template-columns: 1fr;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .nav-tabs {
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="logo">
+                <div class="logo-icon">Ω</div>
+                <div class="logo-text">Omega - Fijo Soporte</div>
+            </div>
+            <div class="user-info">
+                <span>⏰ 05:00</span>
+                <span>234</span>
+                <div class="mode-toggle">Modo Queja</div>
+                <div style="width: 32px; height: 32px; background: #ff6b35; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">👤</div>
+            </div>
+        </header>
+
+        <nav class="nav-tabs">
+            <button class="nav-tab active">Plantillas</button>
+            <button class="nav-tab">Memos WF</button>
+            <button class="nav-tab">Memos Orden</button>
+            <button class="nav-tab">Transferencias</button>
+            <button class="nav-tab">Avisos</button>
+            <button class="nav-tab">Herramientas</button>
+            <button class="nav-tab">Archivos</button>
+        </nav>
+
+        <main class="content">
+            <div class="form-section">
+                <h2 class="section-title">
+                    📋 Formulario de Plantilla
+                </h2>
+                <p class="section-subtitle">Rellena el formulario base. Activa el modo queja si es necesario.</p>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">ID</label>
+                        <input type="text" class="form-input" placeholder="Ingrese ID">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Facturacom</label>
+                        <input type="text" class="form-input" placeholder="Ingrese Facturacom">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Nombre Contacto</label>
+                        <input type="text" class="form-input" placeholder="Ingrese nombre de contacto">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Móvil de contacto</label>
+                        <input type="tel" class="form-input" placeholder="Ingrese móvil">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Dirección</label>
+                        <textarea class="form-input form-textarea" placeholder="Ingrese dirección completa"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Problema reportado</label>
+                        <textarea class="form-input form-textarea" placeholder="Describa el problema reportado"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3 class="section-title">
+                        🔧 PRUEBAS REALIZADAS
+                    </h3>
+                    <div class="form-group">
+                        <textarea class="form-input form-textarea" placeholder="Escriba sus pruebas manuales aquí o seleccione de las opciones de la derecha..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="checkbox-sections">
+                <div class="checkbox-section">
+                    <h3 class="checkbox-section-title">
+                        <span class="info-icon">i</span>
+                        GPON ADSL HFC
+                    </h3>
+                    <div class="checkbox-grid">
+                        <label class="checkbox-item">
+                            <input type="checkbox" class="checkbox-input">
+                            <span class="checkbox-label">Luces router</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" class="checkbox-input">
+                            <span class="checkbox-label">Reset en UMP</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" class="checkbox-input">
+                            <span class="checkbox-label">Conexiones físicas</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" class="checkbox-input">
+                            <span class="checkbox-label">Otro toma corriente</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" class="checkbox-input">
+                            <span class="checkbox-label">Conexión splitter</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" class="checkbox-input">
+                            <span class="checkbox-label">Cambio de baterías</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" class="checkbox-input">
+                            <span class="checkbox-label">Conexión Coaxial</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" class="checkbox-input">
+                            <span class="checkbox-label">Conexiones Fibra Óptica</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" class="checkbox-input">
+                            <span class="checkbox-label">Test de velocidad</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" class="checkbox-input">
+                            <span class="checkbox-label">Prueba ping</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" class="checkbox-input">
+                            <span class="checkbox-label">Estado de la ONT</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" class="checkbox-input">
+                            <span class="checkbox-label">Niveles erróneos</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" class="checkbox-input">
+                            <span class="checkbox-label">Luz LOS en rojo</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" class="checkbox-input">
+                            <span class="checkbox-label">Reset en varios</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="checkbox-section">
+                    <h3 class="checkbox-section-title">
+                        <span class="info-icon">i</span>
+                        TV HFC DTH IPTV
+                    </h3>
+                    <div class="checkbox-grid">
+                        <label class="checkbox-item">
+                            <input type="checkbox" class="checkbox-input">
+                            <span class="checkbox-label">Conexión HDMI</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" class="checkbox-input">
+                            <span class="checkbox-label">Conexión RCA</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" class="checkbox-input">
+                            <span class="checkbox-label">Cable Coaxial</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" class="checkbox-input">
+                            <span class="checkbox-label">Sitio afectados</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" class="checkbox-input">
+                            <span class="checkbox-label">Serial STB</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" class="checkbox-input">
+                            <span class="checkbox-label">Mensaje que muestra la TV</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" class="checkbox-input">
+                            <span class="checkbox-label">Comandos enviados</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" class="checkbox-input">
+                            <span class="checkbox-label">Reset Físico</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" class="checkbox-input">
+                            <span class="checkbox-label">AMCO en verde</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="checkbox-section">
+                    <h3 class="checkbox-section-title">
+                        <span class="info-icon">i</span>
+                        Otros
+                    </h3>
+                    <div class="checkbox-grid">
+                        <label class="checkbox-item">
+                            <input type="checkbox" class="checkbox-input">
+                            <span class="checkbox-label">Se valida titularidad</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" class="checkbox-input">
+                            <span class="checkbox-label">Cliente no está en sitio</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" class="checkbox-input">
+                            <span class="checkbox-label">Cliente en Agencia</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" class="checkbox-input">
+                            <span class="checkbox-label">Cliente no quiere hacer pruebas</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" class="checkbox-input">
+                            <span class="checkbox-label">Cambio de contraseña</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" class="checkbox-input">
+                            <span class="checkbox-label">Soporte Efectivo</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" class="checkbox-input">
+                            <span class="checkbox-label">Se genera avería</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" class="checkbox-input">
+                            <span class="checkbox-label">Se envía reproceso</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn btn-primary" onclick="copyTemplate()">
+                    📋 Copiar Plantilla
+                </button>
+                <button class="btn btn-secondary" onclick="clearForm()">
+                    🔄 Limpiar
+                </button>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Tab functionality
+        document.querySelectorAll('.nav-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Generate template text
+        function generateTemplate() {
+            const fields = {
+                id: document.querySelector('input[placeholder="Ingrese ID"]').value,
+                facturacom: document.querySelector('input[placeholder="Ingrese Facturacom"]').value,
+                nombreContacto: document.querySelector('input[placeholder="Ingrese nombre de contacto"]').value,
+                movil: document.querySelector('input[placeholder="Ingrese móvil"]').value,
+                direccion: document.querySelector('textarea[placeholder="Ingrese dirección completa"]').value,
+                problema: document.querySelector('textarea[placeholder="Describa el problema reportado"]').value,
+                pruebas: document.querySelector('textarea[placeholder="Escriba sus pruebas manuales aquí o seleccione de las opciones de la derecha..."]').value
+            };
+
+            // Get selected checkboxes
+            const selectedTests = [];
+            document.querySelectorAll('.checkbox-input:checked').forEach(checkbox => {
+                const label = checkbox.nextElementSibling.textContent;
+                selectedTests.push(`✓ ${label}`);
+            });
+
+            // Generate template
+            let template = `
+PLANTILLA DE SOPORTE TÉCNICO
+============================
+
+📋 INFORMACIÓN DEL CLIENTE:
+• ID: ${fields.id || 'No especificado'}
+• Facturacom: ${fields.facturacom || 'No especificado'}
+• Nombre Contacto: ${fields.nombreContacto || 'No especificado'}
+• Móvil: ${fields.movil || 'No especificado'}
+• Dirección: ${fields.direccion || 'No especificado'}
+
+🔍 PROBLEMA REPORTADO:
+${fields.problema || 'No especificado'}
+
+🔧 PRUEBAS REALIZADAS:
+${fields.pruebas || ''}
+
+${selectedTests.length > 0 ? '\n📝 VERIFICACIONES TÉCNICAS:\n' + selectedTests.join('\n') : ''}
+
+📅 Fecha: ${new Date().toLocaleDateString('es-ES')}
+⏰ Hora: ${new Date().toLocaleTimeString('es-ES')}
+            `.trim();
+
+            return template;
+        }
+
+        // Copy template to clipboard
+        function copyTemplate() {
+            const template = generateTemplate();
+            navigator.clipboard.writeText(template).then(() => {
+                // Show success message
+                const btn = document.querySelector('.btn-primary');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '✅ ¡Copiado!';
+                btn.style.background = 'linear-gradient(135deg, #28a745 0%, #20c997 100%)';
+                
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+                }, 2000);
+            }).catch(err => {
+                console.error('Error al copiar:', err);
+                alert('Error al copiar la plantilla');
+            });
+        }
+
+        // Clear form
+        function clearForm() {
+            // Clear text inputs
+            document.querySelectorAll('.form-input').forEach(input => {
+                input.value = '';
+            });
+            
+            // Uncheck all checkboxes
+            document.querySelectorAll('.checkbox-input').forEach(checkbox => {
+                checkbox.checked = false;
+            });
+            
+            // Show confirmation
+            const btn = document.querySelector('.btn-secondary');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '✅ Limpiado';
+            btn.style.background = '#28a745';
+            
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.style.background = '#6c757d';
+            }, 1500);
+        }
+
+        // Auto-save functionality
+        function autoSave() {
+            const formData = {};
+            document.querySelectorAll('.form-input').forEach((input, index) => {
+                formData[`field_${index}`] = input.value;
+            });
+            
+            const checkboxData = {};
+            document.querySelectorAll('.checkbox-input').forEach((checkbox, index) => {
+                checkboxData[`checkbox_${index}`] = checkbox.checked;
+            });
+            
+            localStorage.setItem('template_form_data', JSON.stringify(formData));
+            localStorage.setItem('template_checkbox_data', JSON.stringify(checkboxData));
+        }
+
+        // Load saved data
+        function loadSavedData() {
+            const savedFormData = localStorage.getItem('template_form_data');
+            const savedCheckboxData = localStorage.getItem('template_checkbox_data');
+            
+            if (savedFormData) {
+                const formData = JSON.parse(savedFormData);
+                document.querySelectorAll('.form-input').forEach((input, index) => {
+                    if (formData[`field_${index}`]) {
+                        input.value = formData[`field_${index}`];
+                    }
+                });
+            }
+            
+            if (savedCheckboxData) {
+                const checkboxData = JSON.parse(savedCheckboxData);
+                document.querySelectorAll('.checkbox-input').forEach((checkbox, index) => {
+                    if (checkboxData[`checkbox_${index}`]) {
+                        checkbox.checked = checkboxData[`checkbox_${index}`];
+                    }
+                });
+            }
+        }
+
+        // Auto-save on input changes
+        document.addEventListener('input', autoSave);
+        document.addEventListener('change', autoSave);
+
+        // Load saved data on page load
+        document.addEventListener('DOMContentLoaded', loadSavedData);
+
+        // Update time display
+        function updateTime() {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('es-ES', { 
+                hour: '2-digit', 
+                minute: '2-digit' 
+            });
+            document.querySelector('.user-info span').textContent = `⏰ ${timeStr}`;
+        }
+
+        // Update time every minute
+        setInterval(updateTime, 60000);
+        updateTime();
+    </script>
+</body>
+</html>
